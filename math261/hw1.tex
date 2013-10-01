@@ -1,0 +1,48 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage[cm]{fullpage}
+\newcommand{\nc}{\newcommand}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\nc{\cn}{\mathbb{C}}
+\nc{\rn}{\mathbb{R}}
+\nc{\qn}{\mathbb{Q}}
+\nc{\zn}{\mathbb{Z}}
+\nc{\aff}{\mathbb{A}}
+\nc{\proj}{\mathbb{P}}
+\nc{\pd}[2]{\frac{\partial {#1}}{\partial {#2}}}
+\nc{\ep}{\epsilon}
+\nc{\topo}{\mathscr{T}}
+\nc{\basis}{\mathscr{B}}
+\nc{\nullset}{\varnothing}
+\nc{\openm}{\begin{pmatrix}}
+\nc{\closem}{\end{pmatrix}}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+\subsection*{2}
+We have $H$ is a subspace of $V$ because each $\rho(h)$ is a linear map preserving sums and scalar products. To show that it is $\rho-$invariant, consider an arbitrary $g\in G$ and $w\in V^H$. Since $H$ is normal, we have $g^{-1}hg\in H$, so $(g^{-1}hg)\cdot w=w$ for all $h\in H$. By acting with $g$ on both sides, we obtain $h\cdot(g\cdot w)=g\cdot w$, implying that $g\cdot w\in V^H$. This sub-representation does not need to be trivial: consider $A_5\triangleleft S_5$ acting on $\cn^5$ with the permutation representation. The $A_5-$invariants are the subspace spanned by $(1,1,1,1,1)$.
+\subsection*{3}
+By defn, $T$ is a $G$-linear map if for all $g\in G$ and $v\in V$ we have $T(\rho_1(g)v)=\rho_2(g)T(v)$. Let $w=(v,T(v))\in W$, and consider the action of $g$ on $w$ via $\rho_1\oplus\rho_2$. This results in $(\rho_1(g)v,\rho_2(g)T(v))=(\rho_1(g)v,T(\rho_1(g)v))\in W$, so $W$ is a sub-representation of $\rho_1\oplus\rho_2$. Conversely, if we have $g\cdot w=(\rho_1(g)v,\rho_2(g)T(v))=(v', T(v'))\in W$, we'd have $\rho_1(g)v=v'\implies \rho_2(g)T(v)=T(\rho_1(g)v)$ for all $v,g$, implying that $T$ is a $G$-linear map.
+\subsection*{4}
+a. Suppose $V$ is not itself irreducible. Then it contains sub-representations. Take the minimum of the degrees of these subrepresentations. Then any subrepresentation with this minimal degree must be irreducible. If it weren't, it would contain a proper subspace which is also a subspace of $V$ invariant under the action of $G$, which would violate the minimality.
+
+\noindent b. impossible? consider some $v$ in the irreducible subrep. its orbit is contained in the subrep and is therefore equal to the subreq. 
+\subsection*{5}
+a. If there is a common eigenvector, then the subspace spanned by that eigenvector is a subrepresentation, so the representation is reducible. Conversely, if the representation is reducible, then it must have a subrepresentation of degree $1$ and of degree $2$, since taking the orthogonal complement yields another subrepresentation. Then, any vector lying on the subrepresentation of degree $1$ must be a common eigenvector. 
+
+\noindent b. Consider the direct sum of two copies of the standard representation of $S_3$. This is of degree $4$ and is clearly reducible by construction. However, it can't have a common eigenvector, since if it did, it would imply that the matrices in one of the copies of the standard rep have a common eigenvector, which would imply that the standard representation is reducible since it's only two-dimensional.
+\subsection*{6}
+a. Denote the diagonal matrix $\openm a&0&0\\0&b&0\\0&0&c\closem$ as $\{a,b,c\}$. Let $\psi(1)=\psi(-1)=\{1,1,1\}, \psi(i)=\{1,-1,-1\}, \psi(j)=\{-1,1,-1\}, \psi(k)=\{-1,-1,1\}$. This satisfies all the relations that the quaternion group does, so it's a homomorphism. 
+
+\noindent b. The matrices all have $e_1$ as an eigenvector, so the $x$-axis is invariant under actions of the group, which makes it a subrep.
+
+\noindent c. The kernel is just $\{1, -1\}$.
+\end{document}
