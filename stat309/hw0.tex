@@ -13,7 +13,9 @@
 \newcommand{\closem}{\end{pmatrix}}
 \DeclareMathOperator{\cov}{cov}
 \DeclareMathOperator{\rank}{rank}
-\DeclareMathOperator{\null}{null}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Null}{null}
 \newcommand{\nc}{\newcommand}
 \newcommand{\rn}{\mathbb{R}}
 \begin{document}
@@ -25,8 +27,8 @@ Date: \today
 \subsection*{1}
 Let rank$(A)=m$. By rank-nullity, we have $\dim(\ker(A))=n-m$. Denote $\ker(A)$ as $V$ and $\im(A)$ as $W$.
 
-\noindent (i)$\implies$(ii): Choose bases $\{v_1,\ldots,v_{n-m}\}$ and $\{w_1,\ldots,w_m\}$ for $V$ and $W$. Then, $\span(V,W)=\span(v_1,\ldots,v_{n-m},w_1,\ldots,w_m)$. Suppose we have some nonzero $v\in V\cap W$.
-Then this implies a linear dependence between the $v_i$ and $w_i$, which implies that $\dim(\span(V,W))<n$, so $V+W$ is a strict subspace of $\rn^n$.
+\noindent (i)$\implies$(ii): Choose bases $\{v_1,\ldots,v_{n-m}\}$ and $\{w_1,\ldots,w_m\}$ for $V$ and $W$. Then, $\Span(V,W)=\Span(v_1,\ldots,v_{n-m},w_1,\ldots,w_m)$. Suppose we have some nonzero $v\in V\cap W$.
+Then this implies a linear dependence between the $v_i$ and $w_i$, which implies that $\dim(\Span(V,W))<n$, so $V+W$ is a strict subspace of $\rn^n$.
 
 \noindent (ii)$\implies$(iii): Since $V$ and $W$ are disjoint, with the choice of basis above, the set $\{v_1,\ldots,v_{n-m},w_1,\ldots,w_m\}$ is linearly independent and therefore spans $\rn^n$, implying that $V+W=\rn^n$. 
 By definition of direct sum, this combined with the disjointness implies that $\rn^n=V\oplus W$.
@@ -42,17 +44,35 @@ a. Suppose $v\in\im(AB)$. Then $v=(AB)w$ for some $w\in\rn^p$. Since $A(Bw)=v$ a
 
 \subsection*{3}
 a. We have $\im(AB)=A(\im(B))$. Since the dimension of the image can't be larger than the dimension of the domain, we have $\rank(AB)\leq\rank(B)$. Also, since $\im(AB)\subset\im(A)$, $\rank(AB)\leq\rank(A)$.
-For nullity, we have that $B$ maps $\ker(AB)$ into $\ker(A)$. Let $B'$ be $B$ restricted to $\ker(AB)$. Then, the rank of $B'$ is $\leq\null(A)$, and since $\ker(B)$ is contained in $\ker(AB)$, $\null(B')=\null(B)$.
-By rank-nullity, $\null(AB)=\rank(B')+\null(B')\leq\null(A)+\null(B)$.
+For nullity, we have that $B$ maps $\ker(AB)$ into $\ker(A)$. Let $B'$ be $B$ restricted to $\ker(AB)$. Then, the rank of $B'$ is $\leq\Null(A)$, and since $\ker(B)$ is contained in $\ker(AB)$, $\Null(B')=\Null(B)$.
+By rank-nullity, $\Null(AB)=\rank(B')+\Null(B')\leq\Null(A)+\Null(B)$.
 
-\noindent b. Denote the columns of $A$ by $a_i$ and the columns of $B$ by $b_i$. We have $\rank(A+B)=\dim(\span(\{a_i+b_i\}))\leq\dim(\span(\{a_1,\ldots,a_n,b_1,\ldots,b_n\}))\leq\dim(\span(\{a_i\}))+\dim(\span(\{b_i\}))$
+\noindent b. Denote the columns of $A$ by $a_i$ and the columns of $B$ by $b_i$. We have $\rank(A+B)=\dim(\Span(\{a_i+b_i\}))\leq\dim(\Span(\{a_1,\ldots,a_n,b_1,\ldots,b_n\}))\leq\dim(\Span(\{a_i\}))+\dim(\Span(\{b_i\}))$
 
 \noindent c. By (a) and rank-nullity, we have $n-\rank(AB)\leq2n-\rank(A)-\rank(B)\implies\rank(AB)+n\geq\rank(A)+\rank(B)$. If $AB=0$, then $\rank(AB)=0$, so $\rank(A)+\rank(B)\leq n$.
 
 \subsection*{4}
 a. Consider the span of the columns. The span of the first $m$ columns has dimension $\rank(A)$ and the span of the last $p$ columns has dimension $\rank(B)$. Since the two subspaces are disjoint owing to the placement of the zeros, their span together has dimension $\rank(A)+\rank(B)$.
 
-\noindent b. 
-\subsection*{5}
+\noindent b. Let $A=xy^T$, with $x$ and $y$ nonzero. Note that $a_{ij}=x_iy_j$. Consider any two nonzero rows of $A$, $\openm x_iy_1&\cdots&x_iy_n\closem$ and $\openm x_jy_1&\cdots&x_jy_n\closem$. These two rows are not linearly independent because they differ by a factor of $x_i/x_j$. Thus, the maximum size of a linearly independent set of rows is $1$, so the rank is $1$. If $x$ or $y$ are zero, then the resulting product is zero with rank zero.
 
+\subsection*{5}
+a. (i) WTS that $\im(A)$ and $\ker(A^T)$ have zero intersection. Consider $v\in\rn^n$(so that $Av\in\im(A)$) and $w\in\ker(A^T)$. We have $\langle Av,w\rangle=\langle v,A^Tw\rangle=0$ for all such $v,w$, so they must have zero intersection. 
+
+(ii) WTS that $A^T$ is injective when restricted to $\im(A)$, because then $\dim(\im(A^TA))=\dim(\im(A))=\dim(\im(A^T))=\rank(A^T)$. Take $v_1,v_2$ nonzero such that $Av_1\neq Av_2$. Then, if $A^TAv_1=A^TAv_2$, we'd have $v_1-v_2\in\ker(A^TA)=\ker(A)$, which contradicts $Av_1\neq Av_2$. 
+
+\noindent b. We have $A^Tb\in\im(A^T)=\im(A^TA)$ by (a), so there exists some $x$ such that $A^TAx=A^Tb$.
+
+\subsection*{6}
+a. Let $x_1$ be a solution to $Ax=b$ as well. Then, we have $Ax_0=Ax_1\implies x_0-x_1\in\ker(A)$, so $x_1=x_0+z$ for some $z\in\ker(A)$.
+
+\noindent b. Let $y=\sum\lambda_ix_i$. We have $A(\sum\lambda_ix_i)=\sum\lambda_iAx_i=b\sum\lambda_i$. If $Ay=b$, then $b=b\sum\lambda_i\implies\sum\lambda_i=1$, and vice versa.
+
+\noindent c. If $Az=0$, then $\conj{Az}=A\conj{z}=0$ too, so $z/2+\conj{z}/2$ is a real solution by (b).
+
+\subsection*{7}
+If we view the $v_i$ as the $i$th column of a matrix $V$, we have that $A=V^TV$. If all the $v_i$ are linearly independent, then $\ker(V^TV)=\ker(V)=\{0\}$. Conversely, if $\ker(V^TV)=0$, the $\ker(V)=0$ and all the $v_i$ are linearly independent.
+
+\subsection*{8}
+Extend the $u_i$ to form an orthonormal basis $u_1,\ldots,u_n$. Then, we can write $v=\sum a_iu_i$, so $\lVert v\rVert_2^2=\langle v,v\rangle=\sum a_i^2$. On the other side, we have $\sum^r\langle v,u_i\rangle^2=\sum^ra_i^2$, which is less than the RHS because we're missing summands. If equality holds for all $v$, then we must have $r=n$, for otherwise we'll always be missing a summand which could be positive.
 \end{document}
