@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\null}{null}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+
+\subsection*{1}
+Let rank$(A)=m$. By rank-nullity, we have $\dim(\ker(A))=n-m$. Denote $\ker(A)$ as $V$ and $\im(A)$ as $W$.
+
+\noindent (i)$\implies$(ii): Choose bases $\{v_1,\ldots,v_{n-m}\}$ and $\{w_1,\ldots,w_m\}$ for $V$ and $W$. Then, $\span(V,W)=\span(v_1,\ldots,v_{n-m},w_1,\ldots,w_m)$. Suppose we have some nonzero $v\in V\cap W$.
+Then this implies a linear dependence between the $v_i$ and $w_i$, which implies that $\dim(\span(V,W))<n$, so $V+W$ is a strict subspace of $\rn^n$.
+
+\noindent (ii)$\implies$(iii): Since $V$ and $W$ are disjoint, with the choice of basis above, the set $\{v_1,\ldots,v_{n-m},w_1,\ldots,w_m\}$ is linearly independent and therefore spans $\rn^n$, implying that $V+W=\rn^n$. 
+By definition of direct sum, this combined with the disjointness implies that $\rn^n=V\oplus W$.
+
+\noindent (iii)$\implies$(i): Trivial from the definition of direct sum.
+
+\subsection*{2}
+a. Suppose $v\in\im(AB)$. Then $v=(AB)w$ for some $w\in\rn^p$. Since $A(Bw)=v$ and $Bw\in\rn^n$, $v\in\im(A)$. Suppose $Bv=0$ so $v\in\ker(B)$. Then $(AB)v=A0=0$, so $v\in\ker(AB)$.
+
+\noindent b. If $B$ has full row rank, then $\dim(\im(B))=n$ so $\im(B)=\rn^n$. Since the image of $A$ is the image of $\rn^n$ under $A$, we have that $\im(B)=\im(AB)$.
+
+\noindent c. Let $\ker A=\{0\}$. Then for any $v\in\ker(AB)$, we have $ABv=0$. Since $A$ has a trivial kernel, the only way this can be zero is if $Bv=0$, implying $v\in\ker(B)$.
+
+\subsection*{3}
+a. We have $\im(AB)=A(\im(B))$. Since the dimension of the image can't be larger than the dimension of the domain, we have $\rank(AB)\leq\rank(B)$. Also, since $\im(AB)\subset\im(A)$, $\rank(AB)\leq\rank(A)$.
+For nullity, we have that $B$ maps $\ker(AB)$ into $\ker(A)$. Let $B'$ be $B$ restricted to $\ker(AB)$. Then, the rank of $B'$ is $\leq\null(A)$, and since $\ker(B)$ is contained in $\ker(AB)$, $\null(B')=\null(B)$.
+By rank-nullity, $\null(AB)=\rank(B')+\null(B')\leq\null(A)+\null(B)$.
+
+\noindent b. Denote the columns of $A$ by $a_i$ and the columns of $B$ by $b_i$. We have $\rank(A+B)=\dim(\span(\{a_i+b_i\}))\leq\dim(\span(\{a_1,\ldots,a_n,b_1,\ldots,b_n\}))\leq\dim(\span(\{a_i\}))+\dim(\span(\{b_i\}))$
+
+\noindent c. By (a) and rank-nullity, we have $n-\rank(AB)\leq2n-\rank(A)-\rank(B)\implies\rank(AB)+n\geq\rank(A)+\rank(B)$. If $AB=0$, then $\rank(AB)=0$, so $\rank(A)+\rank(B)\leq n$.
+
+\subsection*{4}
+a. Consider the span of the columns. The span of the first $m$ columns has dimension $\rank(A)$ and the span of the last $p$ columns has dimension $\rank(B)$. Since the two subspaces are disjoint owing to the placement of the zeros, their span together has dimension $\rank(A)+\rank(B)$.
+
+\noindent b. 
+\subsection*{5}
+
+\end{document}
