@@ -61,7 +61,7 @@ a. (i) WTS that $\im(A)$ and $\ker(A^T)$ have zero intersection. Consider $v\in\
 
 (ii) WTS that $A^T$ is injective when restricted to $\im(A)$, because then $\dim(\im(A^TA))=\dim(\im(A))=\dim(\im(A^T))=\rank(A^T)$. Take $v_1,v_2$ nonzero such that $Av_1\neq Av_2$. Then, if $A^TAv_1=A^TAv_2$, we'd have $v_1-v_2\in\ker(A^TA)=\ker(A)$, which contradicts $Av_1\neq Av_2$. 
 
-\noindent b. We have $A^Tb\in\im(A^T)=\im(A^TA)$ by (a), so there exists some $x$ such that $A^TAx=A^Tb$.
+\noindent b. We have $A^Tb\in\im(A^T)=\im(A^TA)$ by (a), so there exists some $x$ such that $A^TAx=A^Tb$. Over $\mathbb{F}_2$, let $A=\openm1&1\\1&1\closem$ and $b=\openm0\\1\closem$. We have $A^TA=\openm0&0\\0&0\closem$ and $A^Tb=\openm1\\0\closem$, so there is evidently no solution because $b$ is nonzero.
 
 \subsection*{6}
 a. Let $x_1$ be a solution to $Ax=b$ as well. Then, we have $Ax_0=Ax_1\implies x_0-x_1\in\ker(A)$, so $x_1=x_0+z$ for some $z\in\ker(A)$.
