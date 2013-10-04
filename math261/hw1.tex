@@ -34,7 +34,7 @@ By defn, $T$ is a $G$-linear map if for all $g\in G$ and $v\in V$ we have $T(\rh
 \subsection*{4}
 a. Suppose $V$ is not itself irreducible. Then it contains sub-representations. Take the minimum of the degrees of these subrepresentations. Then any subrepresentation with this minimal degree must be irreducible. If it weren't, it would contain a proper subspace which is also a subspace of $V$ invariant under the action of $G$, which would violate the minimality.
 
-\noindent b. impossible? consider some $v$ in the irreducible subrep. its orbit is contained in the subrep and is therefore equal to the subreq. 
+\noindent b. Consider the representation of $S_3$ mapping to permutation matrices over $\rn^3$. This representation is reducible because the span of $(1,1,1)$ is invariant. However, if we consider the orbit of $(1,0,0)$ under $S_3$, it contains all $3$ of the standard basis vectors and therefore spans all of $\rn^3$.
 \subsection*{5}
 a. If there is a common eigenvector, then the subspace spanned by that eigenvector is a subrepresentation, so the representation is reducible. Conversely, if the representation is reducible, then it must have a subrepresentation of degree $1$ and of degree $2$, since taking the orthogonal complement yields another subrepresentation. Then, any vector lying on the subrepresentation of degree $1$ must be a common eigenvector. 
 
@@ -57,12 +57,13 @@ The matrices formed by the elements of $G$ are all of the form $\openm1&n\\0&1\c
 a. Let $a_1=e_1\otimes e_1, a_2=e_1\otimes e_2$, and so on. We have $T'=T\otimes T:\rn^2\otimes\rn^2\to\rn^2\otimes\rn^2$, with $T\otimes T(e_i\otimes e_j)=T(e_i)\otimes T(e_j)$, so $T'(e_1\otimes e_1)=(3e_1+5e_2)\otimes(3e_1+5e_2)=9a_1+15a_2+15a_3+9a_4$, and so on. In matrix form with the order of the basis elements $a_1, a_2, a_3, a_4$, the matrix of $T'$ is 
 $$\openm9&3&3&1\\15&6&5&2\\15&5&6&2\\9&10&10&4\closem$$
 
-\noindent b. $\bigwedge^3 V$ is the zero vector space, so $T$ acts trivially.
+\noindent b. $\bigwedge^2\rn^2$ has one basis vector, $e_1\wedge e_2$. The action of $T$ on this basis vector is $Te_1\wedge Te_2=(3e_1+5e_2)\wedge(e_1+2e_2)=e_1\wedge e_2$, so $T$ acts as the identity.
 
 \subsection*{10}
 a. Let $\dim(V)=n, \dim(W)=m$. Let $\{w_1,\ldots,w_m\}$ be a basis for $W$ and $\{\phi_1,\ldots,\phi_n\}$ be a basis for $V$, where $\phi_i(v_j)=1$ if $i=j$ and $0$ otherwise. Then, we can write a basis of $W\otimes V^{*}$ as $\{w_i\otimes \phi_j, i\in[1,m], j\in[1,n]\}$. Associate $w_i\otimes\phi_j$ to the function that takes $v_j$ to $w_i$, and all other basis vectors of $V$ to $0$. It is clear that we can build up any linear map from $V$ to $W$ by adding together these maps: taking any linear map, we look at where it sends each basis vector of $V$ (a linear combination of the $w_i$, which can be obtained by making linear combinations of the tensored-together elements), and then just add the rest of them up. 
 
 \noindent b. Use the definition of the action of $g$ upon an element $\phi$ of $\text{Hom}(V,W)$ as $(g\phi)(v)=g\phi(g^{-1}v)$. Let $\phi$ be a basis element of $\text{Hom}(V,W)$, sending $v_x$ to $w_y$. Let $g^{-1}$ have the matrix $(a_{ij})$ over $V$ and $g$ have the matrix $(b_{ij})$ over $W$. Then, $(g\phi)(v_i)=g\phi(\sum a_{ki}v_k)=a_{xi}gw_j=a_{xi}$
 
-
+\subsection*{Bonus 2}
+Let $N=|G|+1$, and suppose we have a representation $V$ of $G$ of degree $N$. Consider the $G$-orbit of any element of $V$. Since this contains at most $N-1$ vectors, it spans at most a $N-1$-dimensional subspace of $V$ that is clearly invariant under $G$. Thus, $V$ cannot be irreducible.
 \end{document}
