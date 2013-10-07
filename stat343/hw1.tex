@@ -69,5 +69,26 @@ Total & 731.961& 9\\
 Square root of $2.24$ is indeed $1.496$.
 
 \subsection*{2.4}
+\ssn{1}
+R gives $\h{\beta_0}=29.917$ and $\h{\beta_1}=0.5417$, with $\se(\h{\beta_0})=1.622$ and $\se(\h{\beta{1}})=0.0.02596$. $r^2$ is $0.2408$, and the estimated variance of the residuals is $5.135$. The ANOVA table is below
+
+\begin{tabular}{cccccc}
+\hline
+Source & SS & df & MS & F & p\\
+\hline
+Regression & 2237. & 1 & 2237. & 435.47 & Below precision\\
+Residuals & 7052. & 1373 & 5.14 \\
+Total &  9289. & 1374\\
+\end{tabular}
+
+In testing whether $\beta_1=0$, we find that the $p$-value is too low to be expressed effective by machine precision, so there's a very high chance that the heights of daughters depends on the heights of the mothers.
+\ssn{2}
+Write $E(Dheight|Mheight)=(\beta_0+\beta_1\cdot\conj{Mheight})+\beta_1(Mheight-\conj{Mheight})$. In this problem, the $\beta_1$ term states whether the deviation of the daughter's height from the mean tends to be larger than, the same as, or smaller than the deviation of the mother's height from the mean, depending on whether $\beta_1>1$, $\beta_1=1$, or $\beta_1<1$, respectively. 
+
+As for the confidence interval for $\beta_1$, it's distributed according to $t_{1373}$, so the $t$-value for the $99.5$-th percentile is $2.5794$, resulting in a confidence interval of $(0.4748,0.6087)$.
+\ssn{3}
+The prediction is $64.589$ inches, with confidence interval $(64.401,64.778)$.
+\subsection*{2.7}
+\ssn{1}
 
 \end{document}
