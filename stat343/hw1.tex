@@ -12,8 +12,10 @@
 \newcommand{\openm}{\begin{pmatrix}}
 \newcommand{\closem}{\end{pmatrix}}
 \DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\se}{se}
 \newcommand{\nc}{\newcommand}
 \newcommand{\rn}{\mathbb{R}}
+\nc{\h}[1]{\widehat{#1}}
 \nc{\ssn}[1]{\subsubsection*{#1}}
 \begin{document}
 Name: Hall Liu
@@ -35,6 +37,7 @@ sss <- function(v1,v2) {
 }
 \end{verbatim}
 
+and so we obtain $SXX=472.076,SYY=731.961$, and $SXY=274.786$.
 The slope is $SXY/SXX=0.582$, and the intercept is $\conj{y}-m\conj{x}=-36.87$. 
 
 <insert plotted line over graph>
@@ -46,4 +49,25 @@ rss <- function(x, y, slope, intercept) {
 }
 \end{verbatim}
 will calculate the RSS. Running this, we get $RSS=572.014$ so $\widehat{\sigma^2}=71.5$.
+
+The estimate for the variance of $\h{\beta_1}$ is $\h{\sigma^2}/SXX=71.5/472.076=0.1514$ and the estimate for variance of $\h{\beta_0}$ is $\h{\sigma}^2\left(1/n+\conj{x}^2/SXX\right)=4156.64$. Estimated covariance is $-\h{\sigma}^2\frac{\conj{x}}{SXX}=-25.06$.
+
+The $t$-statistic for $\h{\beta_0}$ is $\frac{\h{\beta_0}}{\sigma_{\beta_0}}=-0.572$ and the $t$-statistic for $\h{\beta_1}$ has the same form with a value of $1.496$. Both these values are distributed according to $t_8$ under the null hypothesis. Using a two-sided test, the $p$-value for $\h{\beta_0}$ is $0.583$ and the $p$-value for $\h{beta_1}$ is $0.173$.
+
+\ssn{4}
+The df of the regression is $1$ and the df of the residuals is $n-2$. The sum of squares for the regression is $SS_\text{res}=SYY-\frac{(SXY)^2}{SXX}=572.014$, and $SS_\text{reg}=\frac{(SXY)^2}{SXX}=159.947$. The mean of squares for each of the two is the $SS$ divided by df. The $F$-statistic is $\frac{MS_\text{reg}}{MS_\text{res}}=2.24$. Under the $F_{1,8}$ distribution, this has a $p$-value of $0.173$.
+
+\begin{tabular}{cccccc}
+\hline
+Source & SS & df & MS & F & p\\
+\hline
+Regression & 159.947 & 1 & 159.947 & 2.24 & 0.173\\
+Residuals & 572.014 & 8 & 71.50 \\
+Total & 731.961& 9\\
+\end{tabular}
+
+Square root of $2.24$ is indeed $1.496$.
+
+\subsection*{2.4}
+
 \end{document}
