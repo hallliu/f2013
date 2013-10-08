@@ -13,6 +13,7 @@
 \newcommand{\closem}{\end{pmatrix}}
 \DeclareMathOperator{\cov}{cov}
 \DeclareMathOperator{\se}{se}
+\DeclareMathOperator{\var}{var}
 \newcommand{\nc}{\newcommand}
 \newcommand{\rn}{\mathbb{R}}
 \nc{\h}[1]{\widehat{#1}}
@@ -90,5 +91,31 @@ As for the confidence interval for $\beta_1$, it's distributed according to $t_{
 The prediction is $64.589$ inches, with confidence interval $(64.401,64.778)$.
 \subsection*{2.7}
 \ssn{1}
+Differentiating $RSS$ wrt $\beta_1$ and setting to $0$, we have $-2\sum(y_i-\beta_1x_i)x_i=0\implies \beta_1\sum x_i^2-\sum x_iy_i=0\implies \h{\beta_1}=\frac{\sum x_iy_i}{\sum x_i^2}$.
 
+Calculating the expectation of $\h{\beta_1}$, we let $y_i=\beta_1x_i+e_i$, where $E(e_i)=0$, so $\h{\beta_1}=\frac{\sum \beta_1x_i^2+x_ie_i}{\sum x_i^2}$. Taking the expectation of this and using linearity, the $\sum x_i^2$ terms in the numerator and denominator cancel out to leave the $\beta_1$, and the remaining term with $\sum x_ie_i$ disappears due to the assumption on the residuals, so we have $E(\h{\beta_1})=\beta_1$.
+
+Assume $\var(e_i)=\sigma^2$ for all $i$. To calculate variance, split the above expression for $\h{\beta_1}$ and observe that the first term is not random and therefore does not contribute to the variance. Hence, we want to calculate $\var\left(\frac{\sum x_ie_i}{\sum x_i^2}\right)$. Variance being linear, we can move it inside the sum and find that $\var(\h{\beta_1})=\frac{\sigma^2\sum x_i^2}{(\sum x_i^2)^2}=\frac{\sigma^2}{\sum x_i^2}$
+
+Since the mean equation has only one parameter, the residuals have $n-1$ df, so the estimator for $\sigma^2$ is $\frac{RSS}{n-1}$.
+\ssn{2}
+Let the null hypothesis be that $\beta_0$ is zero. Then, the $SS_\text{reg}$ is the $RSS$ under the null hypothesis minus the $RSS$ under the alternative hypothesis, or $\sum(y_i-\h{\beta_1}x_i)^2-(S_{YY}-\frac{(S_{XY})^2}{S_{XX}}$. The $RSS$ of the null hypothesis has $n-1$ df and the $RSS$ of the alternative has $n-2$ df, so $SS_\text{reg}$ has $1$ df as before. 
+
+\begin{tabular}{cccccc}
+\hline
+Source & SS & df & MS & F & p\\
+\hline
+Regression & $SS_\text{reg}$ & 1 & $SS_\text{reg}$ & $MS_\text{reg}/MS_\text{res}$ & \\
+Residuals & $RSS$ & $n-1$ & $RSS/(n-2)$ \\
+Total & $\sum (y_i-\h{\beta_1}x_i)^2$ & $n-1$\\
+\end{tabular}
+
+\ssn{3}
+We have $\h{\beta_1}=0.5204$ and $\h{\sigma}^2=2.89$. A $95\%$ confidence interval for $\beta_1$ is $(0.492,0.548)$. The ANOVA table computed by R shows that the $F$-statistic is $0.2193$ leading to a $p$-value of $0.6463$, leading us to conclude that there is insufficient evidence to say that the intercept is nonzero.
+\ssn{4}
+<insert plot here>
+
+Taking the intercept to be zero here seems to produce an acceptable result, as the residuals don't seem to follow any pattern about zero.
+\subsection*{2.11}
+Using the Ft.Collins snow data, R gives a $t$-statistic of $1.553$ for a $p$-value of $0.124$, and an $F$-statistic of $2.411$. Numerically, we have $t^2=F$ in this case.
 \end{document}
