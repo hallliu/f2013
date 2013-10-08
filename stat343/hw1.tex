@@ -26,7 +26,7 @@ Date: \today
 
 \subsection*{2.1}
 \ssn{1}
-<include picture here>
+\includegraphics[width=0.7\textwidth]{hw1_files/2_1_1.png}
 
 Based on this plot, a simple linear regression model may not be the best choice -- there are two plausible ways to view the trend. Either we can treat the two points at $(165.3,77.8)$ and $(169.6,71.2)$ as outliers and fit the rest of the data to a linear model, or we can decide that the two points that look like outliers are actually the result of random fluctuation and include them in the fit as well.
 \ssn{2}
@@ -41,7 +41,7 @@ sss <- function(v1,v2) {
 and so we obtain $SXX=472.076,SYY=731.961$, and $SXY=274.786$.
 The slope is $SXY/SXX=0.582$, and the intercept is $\conj{y}-m\conj{x}=-36.87$. 
 
-<insert plotted line over graph>
+\includegraphics[width=0.7\textwidth]{hw1_files/2_1_2.png}
 \ssn{3}
 We have $\widehat{\sigma^2}=\frac{RSS}{8}$. Once again, here is a function to compute the RSS:
 \begin{verbatim}
@@ -113,7 +113,7 @@ Total & $\sum (y_i-\h{\beta_1}x_i)^2$ & $n-1$\\
 \ssn{3}
 We have $\h{\beta_1}=0.5204$ and $\h{\sigma}^2=2.89$. A $95\%$ confidence interval for $\beta_1$ is $(0.492,0.548)$. The ANOVA table computed by R shows that the $F$-statistic is $0.2193$ leading to a $p$-value of $0.6463$, leading us to conclude that there is insufficient evidence to say that the intercept is nonzero.
 \ssn{4}
-<insert plot here>
+\includegraphics[width=0.7\textwidth]{hw1_files/2_7_4.png}
 
 Taking the intercept to be zero here seems to produce an acceptable result, as the residuals don't seem to follow any pattern about zero.
 \subsection*{2.11}
