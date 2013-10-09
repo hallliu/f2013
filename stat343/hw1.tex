@@ -51,7 +51,7 @@ rss <- function(x, y, slope, intercept) {
 \end{verbatim}
 will calculate the RSS. Running this, we get $RSS=572.014$ so $\widehat{\sigma^2}=71.5$.
 
-The estimate for the variance of $\h{\beta_1}$ is $\h{\sigma^2}/SXX=71.5/472.076=0.1514$ and the estimate for variance of $\h{\beta_0}$ is $\h{\sigma}^2\left(1/n+\conj{x}^2/SXX\right)=4156.64$. Estimated covariance is $-\h{\sigma}^2\frac{\conj{x}}{SXX}=-25.06$.
+The estimate for the variance of $\h{\beta_1}$ is $\h{\sigma^2}/SXX=71.5/472.076=0.1514$ and the estimate for variance of $\h{\beta_0}$ is $\h{\sigma}^2\left(1/n+\conj{x}^2/SXX\right)=4156.64$. Estimated covariance is $\h{\sigma}^2\frac{\conj{x}}{SXX}=25.06$.
 
 The $t$-statistic for $\h{\beta_0}$ is $\frac{\h{\beta_0}}{\sigma_{\beta_0}}=-0.572$ and the $t$-statistic for $\h{\beta_1}$ has the same form with a value of $1.496$. Both these values are distributed according to $t_8$ under the null hypothesis. Using a two-sided test, the $p$-value for $\h{\beta_0}$ is $0.583$ and the $p$-value for $\h{beta_1}$ is $0.173$.
 
@@ -88,7 +88,7 @@ Write $E(Dheight|Mheight)=(\beta_0+\beta_1\cdot\conj{Mheight})+\beta_1(Mheight-\
 
 As for the confidence interval for $\beta_1$, it's distributed according to $t_{1373}$, so the $t$-value for the $99.5$-th percentile is $2.5794$, resulting in a confidence interval of $(0.4748,0.6087)$.
 \ssn{3}
-The prediction is $64.589$ inches, with confidence interval $(64.401,64.778)$.
+The prediction is $64.589$ inches, with confidence interval $(58.74,70.44)$.
 \subsection*{2.7}
 \ssn{1}
 Differentiating $RSS$ wrt $\beta_1$ and setting to $0$, we have $-2\sum(y_i-\beta_1x_i)x_i=0\implies \beta_1\sum x_i^2-\sum x_iy_i=0\implies \h{\beta_1}=\frac{\sum x_iy_i}{\sum x_i^2}$.
