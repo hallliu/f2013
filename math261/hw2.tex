@@ -31,6 +31,55 @@ Date: \today
 \subsection*{2.5}
 Let the elements of $X$ form a basis for a vector space over $k$, so that the elements of $G$ act on $V$ by permuting the basis elements. Then, the matrix associated to an element $g\in G$ will be a permutation matrix. There will be a $1$ at the $i$th spot of the diagonal on this matrix iff the matrix leaves the $i$th basis element fixed, so the trace of the matrix is the number of elements of $X$ that $g$ fixes.
 \subsection*{2.21}
+Define a few things. Let the number of characters and conjugacy classes be $m$. Let $g_1,\ldots,g_m$ be representatives of the conjugacy classes with the size of the $i$th conjugacy class as $k_i$. Define 
+\[
+    A=\openm
+    \sqrt{k_1}\chi_1(g_1)&\cdots&\sqrt{k_m}\chi_1(g_m)\\
+    \vdots\\
+    \sqrt{k_1}\chi_m(g_1)&\cdots&\sqrt{k_m}\chi_m(g_m)\\
+    \closem
+    \quad
+    B=\openm
+    \sqrt{k_1}\conj{\chi_1(g_1)}&\cdots&\sqrt{k_1}\conj{\chi_m(g_1)}\\
+    \vdots\\
+    \sqrt{k_m}\conj{\chi_1(g_m)}&\cdots&\sqrt{k_m}\conj{\chi_m(g_m)}\\
+    \closem
+\]
+Now, the orthogonality condition for the rows of the character table implies that $AB=|G|\text{Id}_m$. Due to the orthogonality relation, we know that $A$ and $B$ are both invertible, so we can write $BA=|G|A^{-1}\text{Id}_mA=|G|\text{Id}_m$. This means that we have $\sum k_i\chi(g_i)\conj{\chi(g_i)}=|G|$, where the sum is taken over the representations. Dividing by $k_i$ gives the relation (i). Since the RHS of the matrix equation is diagonal, we obtain the relation (ii) as well by observing that all the other entries are zero.
+\subsection*{2.23}
+Let $\langle\cdot,\cdot\rangle$ be the inner product on characters. We have
+\begin{align*}
+    \langle\chi_W,\chi_U\rangle&=2\cdot1\cdot1+0\cdot1\cdot6+(-1)\cdot1\cdot8+0\cdot1\cdot6+2\cdot1\cdot3=0\\
+    \langle\chi_W,\chi_{U'}\rangle&=2\cdot1\cdot1+0\cdot(-1)\cdot6+(-1)\cdot1\cdot8+0\cdot(-1)\cdot6+2\cdot1\cdot3=0\\
+    \langle\chi_W,\chi_V\rangle&=2\cdot3\cdot1+(\text{3 zero terms})+2\cdot(-1)\cdot3=0\\
+    \langle\chi_W,\chi_{V'}\rangle&=2\cdot3\cdot1+(\text{3 zero terms})+2\cdot(-1)\cdot3=0\\
+    \langle\chi_W,\chi_W\rangle&=2\cdot2\cdot1+0+(-1)\cdot(-1)\cdot8+0+2\cdot2\cdot3=4+8+12=24=|S_4|\\
+\end{align*}
+\subsection*{2.25}
+Denote the permutation rep on the edges to have character $\chi_E$ and vertices to be $\chi_T$. The identity fixes all edges and all vertices, so $\chi_E(\text{id})=12$ and $\chi_T(\text{id})=8$. The transposition $(12)$ is a rotation by $\pi$ about a line joining two midpoints of edges, and this fixes no vertices and two edges, so $\chi_E((12))=2$ and $\chi_T((12))=0$. The cycle $(123)$ is a rotation by $2\pi/3$ along a long diagonal, and this fixes two vertices (the ones at the ends of the long diagonal) and no edges, so $\chi_E((123))=0$ and $\chi_T((123))=2$. The cycle $(1234)$ is a rotation by $\pi/2$ about the midline connecting two face-centers, and that fixes no vertices and no edges, so $\chi_E((1234))=\chi_T((1234))=0$. Finally, $(12)(34)$ is a rotation by $\pi$ along the same midline, and that also fixes no vertices and no edges, so $\chi_E((12)(34))=\chi_T((12)(34))=0$. The character table for these two is below
 
+\begin{tabular}{c|ccccc}
+    $S_4$&1&6&8&6&3\\
+         &1&$(12)$&$(123)$&$(1234)$&$(12)(34)$\\
+    \hline
+    $T$&8&0&2&0&0\\
+    $E$&12&2&0&0&0\\
+\end{tabular}
 
+Taking inner products with each of the irreducibles and looking for non-zero results, we have that $T=U\oplus U'\oplus V\oplus V'$. For $E$, we have $E=U\oplus V^2\oplus V'\oplus W$.
+\subsection*{2.27}
+Restricting a representation to a subgroup does not change the value of the character on individual elements. Thus, for each of the irreps of $S_4$, we can calculate the value of its character on $A_4$ by looking at the values of $\chi(g)$ for $g=\text{id},(123),(132)$, and $(12)(34)$. Note that $(132)$ is in the same conjugacy class as $(123)$ in $S_4$. Below is the table of the irreducible characters of $S_4$ restricted to $A_4$.
+
+\begin{tabular}{c|cccc}
+    $S_4$&1&4&4&3\\
+         &1&$(123)$&$(132)$&$(12)(34)$\\
+    \hline
+    $U$&1&1&1&1\\
+    $U'$&1&1&1&1\\
+    $V$&3&0&0&-1\\
+    $V'$&3&0&0&-1\\
+    $W$&2&-1&-1&2\\
+\end{tabular}
+
+Evidently, the two trivial reps are still irreducible. Additionally, the restriction of $V$ and $V'$ are equal to one of the irreducible characters in the table for $A_4$, so they remain irreducible. However, $\langle\chi_W,\chi_W\rangle=24$, which means that it's the direct sum of two other characters. Indeed, we see that it's the sum of $U'$ and $U''$ (as denoted in the char table for $A_4$ in Fulton\&Harris).
 \end{document}
