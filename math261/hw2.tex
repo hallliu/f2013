@@ -22,6 +22,7 @@
 \nc{\nullset}{\varnothing}
 \nc{\openm}{\begin{pmatrix}}
 \nc{\closem}{\end{pmatrix}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
 \begin{document}
 Name: Hall Liu
 
@@ -82,4 +83,53 @@ Restricting a representation to a subgroup does not change the value of the char
 \end{tabular}
 
 Evidently, the two trivial reps are still irreducible. Additionally, the restriction of $V$ and $V'$ are equal to one of the irreducible characters in the table for $A_4$, so they remain irreducible. However, $\langle\chi_W,\chi_W\rangle=24$, which means that it's the direct sum of two other characters. Indeed, we see that it's the sum of $U'$ and $U''$ (as denoted in the char table for $A_4$ in Fulton\&Harris).
+
+\subsection*{3}
+Consider the possible forms of $2\times2$ Jordan matrices, for these determine the conjugacy classes of matrices in $\text{GL}_2(\cn)$. The two possibilities are $\openm\lambda_1&0\\0&\lambda_2\closem$ and $\openm\lambda_1&1\\0&\lambda_1\closem$. Given a trace $t$, we can have one conjugacy class from the second case where $\lambda_1=t/2$, or we can have an infinite number of conjugacy classes from the first case given by choices of $\lambda_1+\lambda_2=t$. 
+\subsection*{4}
+Label the first matrix $A$ and the second matrix $B$. Any conjugacy matrix $P$ satisfying $PB=AP$ must take the form $P=\openm a&b\\0&-a\closem$, just from computing by hand. In order for it to be in the special linear group, it must have determinant $1$, or $-a^2=1$. Since this has a solution $i$ over $\cn$ but not over $\rn$, $P$ cannot exist in $\text{SL}_2(\rn)$ but does exist in $\text{SL}_2(\cn)$.
+\subsection*{5}
+Let $A$ be the matrix corresponding to any particular $g\in G$. We know that all eigenvalues of $A$ must be roots of unity with norm $1$. Since there are at most $\dim V$ eigenvalues (counting multiplicity), we have that the sum of the eigenvalues must be less than $\dim A$ by the triangle inequality.
+\subsection*{6}
+The value of $\chi_{V\otimes V}$ is just the square of the value of $\chi_V$, so we have that the character takes on values of $9,1,0,1,1$ on the conjugacy classes (in the same order as the character table in Fulton\&Harris). Taking inner products with each of the irreducible characters, we have that $V\otimes V=U\oplus V\oplus V'\oplus W$.
+\subsection*{7}
+\ssn{a}
+Denote $\mathbf{C}[X\sqcup Y]$ as $V$ and $\mathbf{C}{X}\oplus\mathbf{C}[Y]$ as $V'$. Consider the values of $\chi_V$ and $\chi_{V'}$ on some $g\in G$. 
+Since these are permutation reps, the value of the character is just the number of elements that $g$ fixes. Suppose that $g$ fixes $n$ elements in $X$ and $m$ elements in $Y$. Then $\chi_{V'}(g)=m+n$. 
+To calculate $\chi_V(g)$, note that $g$ still fixes the $n$ elements from the $X$-labeled part of $X\sqcup Y$ and the $m$ elements from the $Y$-labeled part, so the total number fixed is still $m+n$, so the characters are equal.
+\ssn{b}
+Denote $\mathbf{C}[X\times Y]$ as $V$ and $\mathbf{C}[X]\otimes\mathbf{C}[Y]$ as $V'$. Using the notation from above, $\chi_{V'}(g)=mn$. If we let $x_1,\ldots,x_n$ and $y_1,\ldots,y_m$ be the elements of $X$ and $Y$ that $g$ fixes, then $g$ fixes precisely the elements $\{(x_i,y_j)|1\leq i\leq n, 1\leq j\leq m\}$, which is of size $mn$, so the characters are equal once again.
+\ssn{c}
+Let $V_1,\ldots,V_d$ be the irreps of $G_1$ and $U_1,\ldots,U_r$ be the irreps of $G_2$. Then, for any $i,j$, let $G_1\times G_2$ act on the vector space $V_i\otimes U_j$ as $(g_1,g_2)\cdot(v\otimes u)=(g_1\cdot v)\otimes(g_2\cdot u)$. The value of the character of this representation on $(g_1,g_2)$ is $\chi_{V_i}(g)\cdot\chi_{U_j}(g)$ due to the multiplicativity of eigenvalues. The conjugacy classes of $G_1\times G_2$ are pairs of conjugacy classes from $G_1$ and $G_2$, with size the product of the sizes of the constituent of the pair. 
+
+Fix a pair of irreps $V,U$ of $G_1,G_2$, resp., and let $T$ denote the representation of $G_1\times G_2$ as obtained above from $V,U$.Now, if we let $g_i$ be a representative of class $c_i$ from $G_1$ and $g_j$ be a representative of class $c_j'$ from $G_2$, the value of $\chi_T$ on the class $(c_i,c_j')$ of $G_1\times G_2$ is $\chi_V(g_i)\cdot\chi_U(g_j)$. Taking the inner product of this with itself, we have
+\[
+    \frac{1}{|G_1||G_2|} \sum_{i}\sum_{j} |c_i||c_j|\conj{\chi_V(g_i)\chi_U(g_j)}\chi_V(g_i)\chi_U(g_j)=\frac{1}{|G_1||G_2|}\sum_i |c_i|\conj{\chi_V(g_i)}\chi_V(g_i)\left(\sum_j\conj{\chi_U(g_j)}\chi_U(g_j)\right)
+\]
+
+The inner sum resolves to $|G_2|$ because $U$ is an irrep of $G_2$, so that flies out of the sum and cancels with the $|G_2|$ on the outside, and what's left over becomes $1$ since $V$ is an irrep of $G_1$. Thus, $\langle T,T\rangle=1$, so $T$ is an irrep of $G_1\times G_2$. With a similar messy calculation, we can show that a $T'$ derived from a different pair of irreps has zero inner product with this $T$. Thus, since we have $d\cdot r$ different irreps of $G_1\times G_2$, the same number as the number of conjugacy classes, we must have that these are the only irreps.
+\subsection*{8}
+\ssn{a}
+First we need to determine the conjugacy classes of $Q_8$. We have a class for $1$ and a class for $-1$ since they form the center of the group. Then, we have the other conjugacy classes as $\{i,-i\},\{j,-j\},\{k,-k\}$ since for all elements $x,y\in Q_8$ we have $y^{-1}xy=x^{-1}=-x$. This makes for five classes, which means we're looking for five irreps.
+
+First, we have the trivial rep. One down, 4 to go. We can construct another one from the Pauli matrices: Let $-1$ map to $\text{Id}$, $i\mapsto\openm0&1\\1&0\closem$, $j\mapsto\openm0&-i\\i&0\closem$, and $k\mapsto\openm1&0\\0&-1\closem$. We can verify the relations manually: $\openm0&1\\1&0\closem^2=\text{Id}$, $\openm0&-i\\i&0\closem^2=\text{Id}$, another one for $k^2$, and $\openm0&1\\1&0\closem\openm0&-i\\i&0\closem\openm1&0\\0&-1\closem=\text{Id}$. Now, the trace of the matrices of $1$ and $-1$ are $2$, while all the other ones are zero.
+
+Three left. Since we know that $8=|Q_8|=\sum\dim(V_i)^2$, and we've already accounted for an irrep of dimension $1$ and $2$, we need $3$ more irreps whose dimensions squared add up to $3$. That means that all the ones left are of dimension $1$, so we can just look at maps to $\cn$ from now on (which makes this easier).
+
+Well, looking at part (b) of the problem, it gives us three one-dimensional representations: send $-1$ to $1$ and one of $i,j,k$ to $1$, and the others to $-1$. WLOG suppose that $i\mapsto1$. To show that these are reps, observe that $\rho(i)\rho(j)=-1=\rho(k)$, $\rho(j)\rho(i)=-1=\rho(-k)$, and the same relations check out for the other products. The characters of these (call them $\rho_i,\rho_j,\rho_k$ as in the problem statement are captured in the following character table:
+
+\begin{tabular}{c|ccccc}
+    $Q_8$&1&1&2&2&2\\
+         &1&$-1$&$i$&$j$&$k$\\
+    \hline
+    Trivial&1&1&1&1&1\\
+    $P$&2&2&0&0&0\\
+    $\rho_i$&1&1&1&-1&-1\\
+    $\rho_j$&1&1&-1&1&-1\\
+    $\rho_k$&1&1&-1&-1&1\\
+\end{tabular}
+\ssn{b}
+I think this is talking about the Pauli matrix rep which I already constructed
+\subsection*{9}
+Suppose that a representation has character value equal to the degree of the rep on some conjugacy class. This means that the sum of the eigenvalues is the number of eigenvalues, so since they're all roots of unity, they must all be $1$. Thus, this means that the rep acts trivially on this conjugacy class. Consider the union of all the conjugacy classes that this rep acts trivially on. This is the kernel of a group homomorphism, so it's a normal subgroup.
 \end{document}
