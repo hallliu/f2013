@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\vecx}{\mathbf{x}}
+\nc{\vecy}{\mathbf{y}}
+\nc{\vecv}{\mathbf{v}}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+
+\subsection*{1}
+\ssn{8.7.1}
+We have $\h{U}=HU$. If $U=\openm1&0&\cdots&0\closem^T$, then $HU$ is just the first column of $H$, or $(h_{1j})$ for $1\leq j\leq n$.
+\ssn{8.7.2}
+The residuals are $U-\h{U}$. The first entry is $1-h_{11}$, and the other entries are $0-h_{1j}$ or $-h_{1j}$ for $2\leq j\leq n$.
+\subsection*{2}
+\ssn{a}
+We have $\var(S_n)=\cov(S_n,S_n)$. Since covariance is a bilinear function, $\cov(\sum X_i, \sum X_i)=\sum\var(X_i)+\sum_{i\neq j}\cov(X_i,X_j)$. Since $\var(X_i)=\sigma^2$ for all $i$, this equals $n\sigma^2+\sigma^2\sum_{i\neq j}r_{ij}=n\sigma^2+n(n-1)\sigma^2r$.
+\ssn{b}
+Since $n$ is a scalar, $\var(S_n/n)=\frac{1}{n^2}\var(S_n)=\frac{\sigma^2}{n}+\frac{n-1}{n}\sigma^2r$
+\ssn{c}
+Ignore the $\sigma^2$ for the purposes of computing the ratio. The first term is $0.01$ when $n=100$, and the second term is $0.99\cdot r=0.0495$. This means that the contribution to the variance of $S_n$ from the codependence of the $X_i$ is almost $5$ times that of the contribution of the variance of the $X_i$, and so considering the $X_i$ independent based on $r<<1$ would result in a large mistake in the calculation of the variance of $S_n$.
+\subsection*{3}
+
+\begin{verbatim}
+> summary(a)
+
+Call:
+lm(formula = gamble ~ sex + status + income + verbal, data = teengamb)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-51.082 -11.320  -1.451   9.452  94.252 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  22.55565   17.19680   1.312   0.1968    
+sex1        -22.11833    8.21111  -2.694   0.0101 *  
+status        0.05223    0.28111   0.186   0.8535    
+income        4.96198    1.02539   4.839 1.79e-05 ***
+verbal       -2.95949    2.17215  -1.362   0.1803    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 22.69 on 42 degrees of freedom
+Multiple R-squared:  0.5267,	Adjusted R-squared:  0.4816 
+F-statistic: 11.69 on 4 and 42 DF,  p-value: 1.815e-06
+\end{verbatim}
+\ssn{a}
+Percentage of variation explained is the $R^2$ ratio, which is $0.5267$ here.
+\ssn{b}
+A call to \verb|sort(residuals(a))| gives $94.252$ as the largest positive residual at case $24$.
+\ssn{c}
+Mean is $8.173\times10^{-16}$ and median is $-1.451$.
+\ssn{d}
+This can be done with \verb|cor(residuals(a), predict(a))|, which gives $2.13\times10^{-17}$, which is practically zero after accounting for machine precision.
+\ssn{e}
+\verb|cor(residuals(a),teengamb$income)| gives $2.97\times10^{-17}$.
+\ssn{f}
+This is simply the value of the $\beta$ parameter for sex, since the difference between males and females has magnitude $1$ when treated numerically. Depending on which gender got assigned to $1$ and which one got assigned to $0$, either the prediction is greater for males by $22.11$ than females or vice versa.
+\subsection*{4}
+Note: This is a stripped-down version of a proof of Craig's theorem that I found online. 
+
+
+\subsection*{5}
+
+\end{document}
