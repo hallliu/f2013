@@ -12,6 +12,7 @@
 \newcommand{\openm}{\begin{pmatrix}}
 \newcommand{\closem}{\end{pmatrix}}
 \DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\var}{var}
 \newcommand{\nc}{\newcommand}
 \newcommand{\rn}{\mathbb{R}}
 \nc{\h}[1]{\widehat{#1}}
@@ -80,5 +81,40 @@ Note: This is a stripped-down version of a proof of Craig's theorem that I found
 
 
 \subsection*{5}
+Code is given in Python/Numpy/Scipy. 
+\ssn{a}
+\begin{verbatim}
+X = np.matrix('10 9 9 11 11 10 10 12; 15 14 13 15 14 14 16 13').T
+y = np.matrix('82 79 74 83 80 81 84 81').T
+
+(q,r) = np.linalg.qr(X)
+
+beta = np.linalg.solve(r, q.T * y)
+
+print beta
+\end{verbatim}
+We have $\beta_1=2.648$ and $\beta_2=3.739$.
+\begin{verbatim}
+predicted = X * beta
+residuals = y - predicted
+rss = np.dot(residuals.T, residuals)
+df = y.shape[0] - (X.shape[1])
+
+sigmasq = rss / df
+print sigmasq[0,0]
+\end{verbatim}
+This gives $\h{\sigma}^2=4.701$.
+\ssn{b}
+We have that $\frac{\h{\beta}_1-\beta_1}{\text{se}(\h{\beta}_1)}$ is distributed according to a $t_6$ distribution, and we can find $\text{se}(\h{\beta}_1)$ by looking at the appropriat element of $(X^TX)^{-1}\h{\sigma}^2$. Then,
+\begin{verbatim}
+beta_cov = linalg.inv(X.T * X) * sigmasq
+beta1_se = np.sqrt(beta_cov[0,0])
+
+tdist = scipy.stats.t(6)
+t_crit_val = tdist.ppf(0.975)
+print 'CI:({0}, {1})'.format(beta[0] - beta1_se*t_crit_val, beta[0] + beta1_se*t_crit_val)
+\end{verbatim}
+gives a confidence interval of $(1.121,4.174)$ for $\beta_1$.
+
 
 \end{document}
