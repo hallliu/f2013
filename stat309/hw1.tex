@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Null}{null}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\cn}{\mathbb{C}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\begin{document}
+
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+
+\subsection*{1}
+\ssn{a}
+Let $A$ be a $n\times 1$ matrix over $\cn$. Its matrix $2$-norm is $\sup_{|z|=1}\|Az\|_2$, where $z$ and $Az$ are scalars/$1\times 1$ vectors. If $a_i$ are the entries of $A$, then $\|Az\|=\openm a_1z&\cdots&a_nz\closem^T$, so its $2$-norm is $|z|\|A\|_2$, where the norm of $A$ is taken as a vector norm. However, since $|z|=1$, this is just $\|A\|_2$, the vector norm.
+
+In the case where $A$ is a $1\times n$ matrix, we have $Ax=\langle A^T,x\rangle$. The $2$-norm of this is just the complex modulus, so by the Cauchy-Schwarz inequality, we have $|Ax|^2\leq\langle A^T,A^T\rangle\cdot\langle x,x\rangle$. If we're calculating the matrix norm, we can set $\|x\|_2^2$ to $1$, so $|Ax|^2\leq\langle A^T,A^T\rangle=\|A\|_2^2$, where the norm on the LHS is the vector norm of $A$. Since the Cauchy-Schwarz inequality provides for equality for certain $x$, we must have that the matrix norm of $A$ is equal to the vector norm of $A$ as well.
+\ssn{b}
+
+\end{document}
