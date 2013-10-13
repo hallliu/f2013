@@ -77,8 +77,11 @@ This can be done with \verb|cor(residuals(a), predict(a))|, which gives $2.13\ti
 \ssn{f}
 This is simply the value of the $\beta$ parameter for sex, since the difference between males and females has magnitude $1$ when treated numerically. Depending on which gender got assigned to $1$ and which one got assigned to $0$, either the prediction is greater for males by $22.11$ than females or vice versa.
 \subsection*{4}
-Note: This is a stripped-down version of a proof of Craig's theorem that I found online. 
+Adapted from the proof found in Christensen.
 
+Since $A$, $B$, and $V$ are all symmetric positive-semidefinite, we can apply the Cholesky decomposition to each of them. Let $A=L^TL$, $B=M^TM$, and $V=N^TN$. Then, $y^TAy=y^TL^TLy=(Ly)^T(Ly)$, and similarly $y^TBy=(My)^T(My)$. Now, if we can show that $Ly$ and $My$ are independent, we will have our result. This is the same as $\cov(Ly,My)=0$ (since $y$ is normal), or $L\cov(y,y)M^T=0$, or $LVM^T=0$. Using the decomposition of $V$, this is again equivalent to $LN^TNM^T=0$ or $(NL^T)^T(NM^T)=0$. This is the same as the image of $NL^T$ being orthogonal to that of $NM^T$, but since $\text{im}(AA^T)=\text{im}(A)$, this condition is again equivalent to $(NL^TLN^T)^T(NM^TMN^T)=0\iff NL^TLN^TNM^TMN^T=0\iff NAVBN^T=0$.
+
+Now, examine the condition we're given, $VAVBV=0$. This is equivalent to $N^TNAVBV=0$, or $\text{im}(N^TN)\perp\text{im}(AVBV)$. Using the property of images on this, this is the same as $\text{im}(N^T)\perp\text{im}(AVBV)$, or $NAVBV=0$. Repeating the argument on the right side gives the desired result.
 
 \subsection*{5}
 Code is given in Python/Numpy/Scipy. 

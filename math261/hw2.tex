@@ -1,10 +1,8 @@
 \documentclass{article}
-\usepackage{geometry}
 \usepackage[namelimits,sumlimits]{amsmath}
 \usepackage{amssymb,amsfonts}
 \usepackage{multicol}
 \usepackage{mathrsfs}
-\usepackage[cm]{fullpage}
 \newcommand{\nc}{\newcommand}
 \newcommand{\tab}{\hspace*{5em}}
 \newcommand{\conj}{\overline}
@@ -23,11 +21,12 @@
 \nc{\openm}{\begin{pmatrix}}
 \nc{\closem}{\end{pmatrix}}
 \nc{\ssn}[1]{\subsubsection*{#1}}
+\usepackage[margin=1.25cm]{geometry}
 \begin{document}
 Name: Hall Liu
 
 Date: \today 
-\vspace{1.5cm}
+\vspace{0.5cm}
 
 \subsection*{2.5}
 Let the elements of $X$ form a basis for a vector space over $k$, so that the elements of $G$ act on $V$ by permuting the basis elements. Then, the matrix associated to an element $g\in G$ will be a permutation matrix. There will be a $1$ at the $i$th spot of the diagonal on this matrix iff the matrix leaves the $i$th basis element fixed, so the trace of the matrix is the number of elements of $X$ that $g$ fixes.
