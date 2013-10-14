@@ -14,12 +14,14 @@
 \DeclareMathOperator{\cov}{cov}
 \DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\Span}{span}
 \DeclareMathOperator{\Null}{null}
 \newcommand{\nc}{\newcommand}
 \newcommand{\rn}{\mathbb{R}}
 \nc{\cn}{\mathbb{C}}
 \nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[2]{\langle #1,#2\rangle}
 \begin{document}
 
 Name: Hall Liu
@@ -33,5 +35,30 @@ Let $A$ be a $n\times 1$ matrix over $\cn$. Its matrix $2$-norm is $\sup_{|z|=1}
 
 In the case where $A$ is a $1\times n$ matrix, we have $Ax=\langle A^T,x\rangle$. The $2$-norm of this is just the complex modulus, so by the Cauchy-Schwarz inequality, we have $|Ax|^2\leq\langle A^T,A^T\rangle\cdot\langle x,x\rangle$. If we're calculating the matrix norm, we can set $\|x\|_2^2$ to $1$, so $|Ax|^2\leq\langle A^T,A^T\rangle=\|A\|_2^2$, where the norm on the LHS is the vector norm of $A$. Since the Cauchy-Schwarz inequality provides for equality for certain $x$, we must have that the matrix norm of $A$ is equal to the vector norm of $A$ as well.
 \ssn{b}
+Label the columns of $U$ as $u_1,u_2,\ldots,u_n$. Then $Ux=\sum u_ix_i$, where $x_i$ is a scalar. Then, since the $u_i$ are orthogonal to each other, the Pythagoran theorem gives $\|Ux\|_2^2=\sum \|u_i\|_2^2|x_i|^2=\sum|x_i|^2=\|x\|_2^2$.
+\ssn{d}
+Consider $\|UAVx\|_2$ for $\|x\|_2=1$. This is the same as considering $\|UAx\|_2$ for $\|x\|_2=1$, since $V$ preserves norms and is invertible. However, we also have that $\|U(Ax)\|_2=\|Ax\|_2$ for all $x$ because $U$ is also unitary, so the set of complex values $\|UAVx\|_2$ is the same as the set of complex values $\|Ax\|_2$ for $\|x\|_2=1$, so their sups must be the same, and therefore the matrix norm of $UAV$ is the same as the matrix norm of $A$.
+\ssn{e}
+The $ii$th entry of $A^*A$ is $\sum_j|a_{ji}|^2$, and same for the $ii$th entry of $AA^*$. Summing over $i$ in both cases gives a sum of squares of every entry in the matrix, which is the same as $\|A\|_F$. 
 
+Then, $\|UAV\|_F=\tr(UAVV^*A^*U^*)=\tr(UAA^*U^*)$. Since $U^*=U^{-1}$, $UAA^*U^*$ is in the same conjugacy class as $AA^*$, so they have the same trace. Thus, this is the same as the trace of $AA^*$, which is in turn the Frobenius norm of $A$.
+\ssn{f}
+(i)$\implies$(iii):
+Consider the action of $U$ on $e_i+e_j$ where the $e_i$ are the standard basis vectors and $i\neq j$. Since $U$ preserves the $2$-norm, we have that $\|Ue_i+Ue_j\|^2=2$, or $\langle Ue_i+Ue_j,Ue_i+Ue_j\rangle=2$. Expanding this, we get 
+\begin{align*}
+    &\langle Ue_i,Ue_i\rangle+\langle Ue_j,Ue_j\rangle+\langle Ue_i,Ue_j\rangle+\conj{\langle Ue_i,Ue_j\rangle}=2\\
+    &\implies2+2\text{Re}(\langle Ue_i,Ue_j\rangle)=2\\
+    &\implies \text{Re}(\langle Ue_i,Ue_j\rangle)=0
+\end{align*}
+
+Repeating this calculation for $e_i+ie_j$ gives that $\text{Im}(\langle Ue_i,Ue_j\rangle)=0$, so the columns of $U$ must be orthogonal to each other. In addition, they must be orthonormal as well because $\inner{Ue_i}{Ue_i}=1$, and from this we have immediately that $U$ is unitary.
+
+(iii)$\implies$(ii): $\inner{Ux}{Uy}=\sum_{i,j}\conj{x_i}y_j\inner{u_i}{u_j}=\sum_i\conj{x_i}y_i=\inner{x}{y}$ since the columns of $U$ are orthonormal.
+
+(ii)$\implies$(i): $\|Ux\|_2^2=\inner{Ux}{Ux}=\inner{x}{x}=\|x\|_2^2$ by (ii).
+\subsection*{2}
+Examine $\|(I-A)v\|_\alpha=\|v-Av\|_\alpha$. Restrict our consideration to $v$ with norm $1$ (since if $A$ were singular, it'd have to send a whole subspace to $0$, and any nonzero subspace contains some vector with norm $1$). Then, by the triangle inequality, $\|v-Av\|_\alpha\geq\left|1-\|Av\|_\alpha\right|>0$, since $\|Av\|_\alpha$ is less than $1$ because $\|A\|_\alpha<1$. Thus by positive-definiteness, $(I-A)v\neq0$ if $v\neq0$.
+
+By the sub-multiplicativity of the induced norm, we have $\|I-A\|\|(I-A)^{-1}\|\geq1$, and by the triangle inequality we have $\|I-A\|\leq1+\|A\|$, so combining these inequalities gives $\|(I-A)^{-1}\|\geq\frac{1}{1+\|A\|}$. For the other side of the inequality, write $(I-A)^{-1}=I+\sum_{i=1}^\infty A^i$ by analogy with the standard series expansion for $\frac{1}{1-x}$. This converges since $\|A\|<1$, and the difference between arbitrary partial sums is less than the difference between the corresponding partial sum of the geometric series of $\|A\|$. Then, we can take the norm of both sides, obtaining $\|(I-A)^{-1}\|\leq\sum_{i=0}^\infty\|A\|^i=\frac{1}{1-\|A\|}$.
+\subsection*{3}
 \end{document}
