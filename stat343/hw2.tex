@@ -119,5 +119,51 @@ print 'CI:({0}, {1})'.format(beta[0] - beta1_se*t_crit_val, beta[0] + beta1_se*t
 \end{verbatim}
 gives a confidence interval of $(1.121,4.174)$ for $\beta_1$.
 
+As for $\beta_1+\beta_2$, let $R=\openm1&1\closem$. We have from the lecture notes that the set of points $R\beta$ where
+\[(R\h{\beta}-R\beta)^T(R(X^TX)^{-1}R^T)^{-1}(R\h{\beta}-R\beta)<\h{\sigma}^2\cdot f\]
+is the confidence interval for $\beta_1+\beta_2$ with $f$ as the critical value from the $F_{1,6}$ distribution at the $95\%$ level.
 
+To compute this, we first obtain a value for $(R(X^TX)^{-1}R^T)^{-1}$ (henceforth named $s_1$) with the following code:
+\begin{verbatim}
+R = np.matrix("1 1")
+xtxinv = linalg.inv(X.T * X)
+s_1 = 1 / ((R * xtxinv * R.T)[0,0])
+\end{verbatim}
+
+Note that this is a scalar value. Now, since $R\h{\beta}$ and $R\beta$ are also scalars, we essentially have
+\[
+    (R\h{\beta}-R\beta)^2<\frac{\h{\sigma}^2\cdot f}{s_1}\\
+    \implies R\h{\beta}-\h{\sigma}\sqrt{\frac{f}{s_1}}<R\beta<R\h{\beta}+\h{\sigma}\sqrt{\frac{f}{s_1}}
+\]
+
+Thus, we can finish computing the confidence interval with the following code:
+\begin{verbatim}
+rhb = beta.sum()
+sigmahat = np.sqrt(sigmasq)
+f_dist = scipy.stats.f(1,6)
+f_crit = f_dist.ppf(0.95)
+half_width = sigmahat * np.sqrt(f_crit / s_1)
+print "CI for b_1+b_2: ({0}, {1})".format(rhb - half_width, rhb + half_width)
+\end{verbatim}
+finding a result of $(5.933,6.840)$.
+\ssn{c}
+The $t$-statistic for this test is $\frac{\h{\beta_2}-3}{\text{se}(\h{\beta_1}}$. Under the null hypothesis, this is distributed as $t_6$. We can compute the $p$-value as follows:
+\begin{verbatim}
+tval = (beta[1,0] - 3)/np.sqrt(beta_cov[1,1])
+p_val = 1 - tdist.cdf(tval)
+print tval, p_val
+\end{verbatim}
+which gives a $t$-value of $1.643$ and a $p$-value of $0.076$ (multiplied by $2$ since it's a two-sided test). Thus, we cannot reject the null hypothesis at the $\alpha=0.01$ level.
+\ssn{d}
+Using the distribution of $R\h{\beta}$ from the lecture notes again, if we set $R=\openm1&-1\closem$ and take the null hypothesis to be $R\beta=0$, then the $F$-statistic is
+\[\frac{(R\h{\beta})^2(R(X^TX)^{-1}R^T)}{\h{\sigma}^2}\]
+which follows a $F_{1,6}$ distribution under the null hypothesis. To obtain the $p$-value, we can use the following code:
+\begin{verbatim}
+R1 = np.matrix("1 -1")
+s_2 = 1 / ((R1 * xtxinv * R1.T)[0,0])
+rhb1 = (R1 * beta)[0,0]
+f_stat = rhb1 * rhb1 * s_2 / sigmahat
+print f_stat, 1 - f_dist.cdf(f_stat)
+\end{verbatim}
+This gives a $F$-statistic of $2.247$ and a corresponding $p$-value of $0.185$.
 \end{document}
