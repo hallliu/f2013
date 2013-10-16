@@ -22,6 +22,7 @@ print sigmasq
 beta_cov = linalg.inv(X.T * X) * sigmasq
 beta1_se = np.sqrt(beta_cov[0,0])
 
+import ipdb;ipdb.set_trace()
 tdist = scipy.stats.t(6)
 t_crit_val = tdist.ppf(0.975)
 print 'CI:({0}, {1})'.format(beta[0] - beta1_se*t_crit_val, beta[0] + beta1_se*t_crit_val)
@@ -44,5 +45,5 @@ print tval, p_val
 R1 = np.matrix("1 -1")
 s_2 = 1 / ((R1 * xtxinv * R1.T)[0,0])
 rhb1 = (R1 * beta)[0,0]
-f_stat = rhb1 * rhb1 * s_2 / sigmahat
+f_stat = rhb1 * rhb1 * s_2 / sigmasq
 print f_stat, 1 - f_dist.cdf(f_stat)

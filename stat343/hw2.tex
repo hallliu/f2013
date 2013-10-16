@@ -162,8 +162,8 @@ which follows a $F_{1,6}$ distribution under the null hypothesis. To obtain the 
 R1 = np.matrix("1 -1")
 s_2 = 1 / ((R1 * xtxinv * R1.T)[0,0])
 rhb1 = (R1 * beta)[0,0]
-f_stat = rhb1 * rhb1 * s_2 / sigmahat
+f_stat = rhb1 * rhb1 * s_2 / sigmasq
 print f_stat, 1 - f_dist.cdf(f_stat)
 \end{verbatim}
-This gives a $F$-statistic of $2.247$ and a corresponding $p$-value of $0.185$.
+This gives a $F$-statistic of $1.036$ and a corresponding $p$-value of $0.348$.
 \end{document}
