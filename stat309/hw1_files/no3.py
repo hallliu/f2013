@@ -15,7 +15,7 @@ Python has a pascal function, but it's really fucking slow, so it's getting load
 from disk too
 '''
 def pascal(dimension):
-    return np.matrix(np.loadtxt('pascal/p{0}'.format(dimension)))
+    return np.matrix(np.load('pascal/p{0}.npy'.format(dimension)))
 
 
 def run_stats(dimension):
@@ -23,7 +23,7 @@ def run_stats(dimension):
     # Generation of the 4 relevant matrices
     matrices['normal'] = np.matrix(np.random.randn(dimension, dimension))
     matrices['hilbert'] = np.matrix(sp.hilbert(dimension))
-    matrices['pascal'] = np.matrix(sp.pascal(dimension)).astype('float64')
+    matrices['pascal'] = np.matrix(pascal(dimension))
     matrices['magic'] = np.matrix(magic(dimension))
 
     x = np.matrix(np.ones((dimension,1)))
