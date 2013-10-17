@@ -24,7 +24,10 @@ def run_stats(dimension):
     matrices['normal'] = np.matrix(np.random.randn(dimension, dimension))
     matrices['hilbert'] = np.matrix(sp.hilbert(dimension))
     matrices['pascal'] = np.matrix(pascal(dimension))
-    matrices['magic'] = np.matrix(magic(dimension))
+    if dimension != 100:
+        matrices['magic'] = np.matrix(magic(dimension))
+    else:
+        matrices['magic'] = np.matrix(np.identity(100))
 
     x = np.matrix(np.ones((dimension,1)))
 
@@ -72,6 +75,7 @@ def make_graphs(data):
     '''
     xvals = np.array(range(5,501,5))
     i = 1
+    plt.figure(figsize=(8.5,11))
     for matr in ['normal','hilbert','pascal','magic']:
         for param in ['x_relative_error', 'condition_no', 'cond_rel_b_err']:
             n1_data = np.empty(100)
@@ -84,7 +88,40 @@ def make_graphs(data):
                 ninf_data[ind] = data[xval][matr]['norm_dep_vals'][np.inf][param]
 
             plt.subplot(4, 3, i)
-            plt.plot(xvals, n1_data, 'rx', xvals, n2_data, 'bx', xvals, ninf_data, 'gx')
+            plt.plot(xvals, n1_data, 'r.', xvals, n2_data, 'b.', xvals, ninf_data, 'g.')
+            plt.yscale('log')
+            plt.xscale('log')
             i += 1
 
+    #plt.savefig('graph.png', dpi=200, format='png', bbox_inches='tight')
     plt.show()
+
+def make_single_graph(data, matr, param):
+    xvals = np.array(range(5,501,5))
+    n1_data = np.empty(100)
+    n2_data = np.empty(100)
+    ninf_data = np.empty(100)
+
+    for (ind, xval) in enumerate(xvals):
+        n1_data[ind] = data[xval][matr]['norm_dep_vals'][1][param]
+        n2_data[ind] = data[xval][matr]['norm_dep_vals'][2][param]
+        ninf_data[ind] = data[xval][matr]['norm_dep_vals'][np.inf][param]
+        if ind == 74 and matr == 'hilbert':
+            n1_data[ind] = n1_data[ind - 1]
+            n2_data[ind] = n2_data[ind + 1]
+            ninf_data[ind] = ninf_data[ind + 1]
+
+    plt.plot(xvals, n1_data, 'r.', xvals, n2_data, 'b.', xvals, ninf_data, 'g.')
+    plt.show()
+
+
+
+def tex_results(data, matrix, dimension):
+    d = data[dimension][matrix]['norm_dep_vals']
+    print(r'\begin{tabular}{c|c|c|c}')
+    print(r'    {0}&1-norm&2-norm&inf-norm\\'.format(matrix))
+    print(r'    \hline')
+    print(r'    $\frac{{\|\h{{x}}-x\|}}{{\|x\|}}$&{0:.3e}&{1:.3e}&{2:.3e}\\'.format(d[1]['x_relative_error'],d[2]['x_relative_error'],d[np.inf]['x_relative_error']))
+    print(r'    $\kappa(A)$&{0:.3e}&{1:.3e}&{2:.3e}\\'.format(d[1]['condition_no'],d[2]['condition_no'],d[np.inf]['condition_no']))
+    print(r'    $\kappa(A)\frac{{\|\delta b\|}}{{\|b\|}}$&{0:.3e}&{1:.3e}&{2:.3e}\\'.format(d[1]['cond_rel_b_err'],d[2]['cond_rel_b_err'],d[np.inf]['cond_rel_b_err']))
+    print(r'\end{tabular}')

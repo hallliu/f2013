@@ -22,6 +22,7 @@
 \nc{\cn}{\mathbb{C}}
 \nc{\ssn}[1]{\subsubsection*{#1}}
 \nc{\inner}[2]{\langle #1,#2\rangle}
+\nc{\h}[1]{\widehat{#1}}
 \begin{document}
 
 Name: Hall Liu
@@ -63,4 +64,58 @@ Examine $\|(I-A)v\|_\alpha=\|v-Av\|_\alpha$. Restrict our consideration to $v$ w
 
 By the sub-multiplicativity of the induced norm, we have $\|I-A\|\|(I-A)^{-1}\|\geq1$, and by the triangle inequality we have $\|I-A\|\leq1+\|A\|$, so combining these inequalities gives $\|(I-A)^{-1}\|\geq\frac{1}{1+\|A\|}$. For the other side of the inequality, write $(I-A)^{-1}=I+\sum_{i=1}^\infty A^i$ by analogy with the standard series expansion for $\frac{1}{1-x}$. This converges since $\|A\|<1$, and the difference between arbitrary partial sums is less than the difference between the corresponding partial sum of the geometric series of $\|A\|$. Then, we can take the norm of both sides, obtaining $\|(I-A)^{-1}\|\leq\sum_{i=0}^\infty\|A\|^i=\frac{1}{1-\|A\|}$.
 \subsection*{3}
+Here are tables recording the relevant values for $n=5$.
+
+
+\vspace{10pt}
+\begin{tabular}{c|c|c|c}
+    normal&1-norm&2-norm&inf-norm\\
+    \hline
+        $\frac{\|\h{x}-x\|}{\|x\|}$&1.998e-16&2.275e-16&3.331e-16\\
+        $\kappa(A)$&1.471e+01&5.309e+00&8.624e+00\\
+        $\kappa(A)\frac{\|\delta b\|}{\|b\|}$&5.741e-15&2.134e-15&3.588e-15\\
+\end{tabular}
+
+
+\vspace{10pt}
+\begin{tabular}{c|c|c|c}
+        hilbert&1-norm&2-norm&inf-norm\\
+        \hline
+            $\frac{\|\h{x}-x\|}{\|x\|}$&2.552e-13&3.493e-13&6.168e-13\\
+            $\kappa(A)$&9.437e+05&4.766e+05&9.437e+05\\
+            $\kappa(A)\frac{\|\delta b\|}{\|b\|}$&1.623e-11&1.686e-11&4.588e-11\\
+\end{tabular}
+
+
+\vspace{10pt}
+\begin{tabular}{c|c|c|c}
+        pascal&1-norm&2-norm&inf-norm\\
+        \hline
+            $\frac{\|\h{x}-x\|}{\|x\|}$&0.000e+00&0.000e+00&0.000e+00\\
+            $\kappa(A)$&1.562e+04&8.518e+03&1.562e+04\\
+            $\kappa(A)\frac{\|\delta b\|}{\|b\|}$&0.000e+00&0.000e+00&0.000e+00\\
+\end{tabular}
+
+
+\vspace{10pt}
+\begin{tabular}{c|c|c|c}
+        magic&1-norm&2-norm&inf-norm\\
+        \hline
+            $\frac{\|\h{x}-x\|}{\|x\|}$&1.554e-16&1.790e-16&2.220e-16\\
+            $\kappa(A)$&6.850e+00&5.462e+00&6.850e+00\\
+            $\kappa(A)\frac{\|\delta b\|}{\|b\|}$&2.995e-16&5.340e-16&1.498e-15\\
+\end{tabular}
+
+The graph for the other dimensions follows. The graphs are ordered Normal, Hilbert, Pascal, Magic going down the rows, and $\frac{\|\h{x}-x\|}{\|x\|}$, $\kappa(A)$, and $\kappa(A)\frac{\|\delta b\|}{\|b\|}$ going across the columns. 
+
+\includegraphics[width=0.95\textwidth]{hw1_files/graph.png}
+%TODO: Use log-log plot for everything but pascal
+On all the graphs, red indicates the $1$-norm, blue indicates the $2$-norm, and green indicates the $\infty$-norm.
+
+\ssn{Random normal matrices}
+Due to the large spread in the data for the normal matrices, it was impossible to get meaningful data on anything but a log plot. By looking at said log plot, it seems that all the parameters increase polynomially with increasing dimension. For the relative error in $x$, there is a consistent trend $\|\cdot\|_1<\|\cdot\|_2<\|\cdot\|_\infty$. In fact, this trend in the norms seems to hold true for all the matrix types. This can be explained by $\delta x$ being usually fairly small, where the norms don't differ much, and the denominator changing rapidly from $n$ to $\sqrt{n}$ to $1$ as we move down the norms. 
+
+The condition number seems to be the lowest for the $2$-norm and about the same for the $1$- and $\infty$- norms, which makes sense because they're calculated basically the same way and the randomness for the normal distribution doesn't care whether you're summing over rows or columns. 
+
+The condition number multiplied by relative error in $b$ follows a similar trend as the condition number, but with more of an increase depending on dimension (quadratically as opposed to linearly?)
 \end{document}
