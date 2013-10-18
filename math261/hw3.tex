@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage[cm]{fullpage}
+\newcommand{\nc}{\newcommand}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\nc{\cn}{\mathbb{C}}
+\nc{\rn}{\mathbb{R}}
+\nc{\qn}{\mathbb{Q}}
+\nc{\zn}{\mathbb{Z}}
+\nc{\aff}{\mathbb{A}}
+\nc{\proj}{\mathbb{P}}
+\nc{\pd}[2]{\frac{\partial {#1}}{\partial {#2}}}
+\nc{\ep}{\epsilon}
+\nc{\topo}{\mathscr{T}}
+\nc{\basis}{\mathscr{B}}
+\nc{\nullset}{\varnothing}
+\nc{\openm}{\begin{pmatrix}}
+\nc{\closem}{\end{pmatrix}}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+\subsection*{2.2}
+The eigenvalues of $g$ on $S^2(V)$ are $\lambda_i\lambda_j$ for $i\leq j$ (with $\lambda_i,\lambda_j$ eigenvalues of $g$ on $V$). These correspond to the eigenvectors $v_i\otimes v_j$, where we restrict $i\leq j$ because $v_i\otimes v_j=v_j\otimes v_i$. Thus, the trace of $\rho(g)$ is $\sum_{i\leq j}\lambda_i\lambda_j=\sum_{i<j}\lambda_i\lambda_j+\sum_i\lambda_i^2=\frac{1}{2}(\chi_V(g)^2+\chi_V(g^2))$ by using the formula for $\sum_{i<j}\lambda_i\lambda_j$ from the proof of prop. 2.1.
+\subsection*{2.3}
+The eigenvectors of $g$ on $\bigwedge^kV$ are of the form $v_{i_1}\wedge v_{i_2}\wedge\cdots\wedge v_{i_k}$ for $i_1<i_2<\cdots<i_k$, since changing the order only changes the sign and we cannot have repeats. Thus, this forms the eigenvalues $\lambda_{i_1}\lambda_{i_2}\cdots\lambda_{i_k}$. Summing these gives the $k$th symmetric polynomial in $n$ variables evaluated on the $\lambda_i$. Using the expression found in Appendix A, we could put this in terms of the character of $V$, but it gets nasty fast for larger values of $k$. Of course, for $k>n$, this turns out to be zero, and for $k=n$ it's the trivial rep.
+
+Similarly, for the symmetric power, the eigenvectors take the form $v_{i_1}\otimes v_{i_2}\otimes\cdots\otimes v_{i_k}$ with $i_1\leq i_2\leq\cdots\leq i_k$. This corresponds to eigenvalues $\lambda_{i_1}\lambda_{i_2}\cdots\lambda_{i_k}$ with the same condition on the $i$s. Note that this corresponds to degree $k$ monomials in $n$ variables evaluated on $\lambda_1,\ldots,\lambda_n$, so the sum of these is the complete homogeneous symmetric polynomial of degree $k$ over $n$ variables. Once again, it's a nasty expression that I don't really want to type out.
+\subsection*{2.26}
+wtf
+\subsection*{4}
+$S_1$: This has one conjugacy class. The only nonzero character polynomial is $X_1$.
+
+\noindent $S_2$: This has two conjugacy classes, one with the identity and one with the transposition, so the two polynomials in the basis are $X_1$ and $X_2$.
+
+\noindent $S_3$: Partitions of $3$ are $1+1+1$, $1+2$, and $3$. In this order, we can see $X_1$ as the vector $\openm1&1&0\closem$, $X_2$ as $\openm0&1&0\closem$, and $X_3$ as $\openm0&0&1\closem$, so since $X_1-X_2=\openm1&0&0\closem$, these three form a basis.
+
+\noindent $S_4$: Partitions of $4$ are $1+1+1+1$, $2+2$, $1+1+2$, $1+3$, and $4$. Arranging $X_1$ through $X_4$ as the columns of a matrix with rows as the conjugacy classes, we have
+\[\openm4&0&0&0\\0&2&0&0\\2&1&0&0\\1&0&1&0\\0&0&0&1\closem$\]
+We have $X_1X_2=\openm0&0&2&0&0\closem^T$. If we add this on as a column and take the determinant (really easy because of the sparsity), it comes out to $16$, so these five columns form a basis.
+\subsection*{5}
+Partitions of $5$: $1+1+1+1+1$, $2+1+1+1$, $1+2+2$, $3+1+1$, $3+2$, $4+1$, $5$. $7$ partitions. Getting the $X_1$ through $X_5$ into a matrix gives
+\[\openm5&0&0&0&0\\3&1&0&0&0\\1&2&0&0&0\\2&0&1&0&0\\0&1&1&0&0\\1&0&0&1&0\\0&0&0&0&1\closem\]
+Taking the SVD of this matrix gives $5$ nonzero singular values, so this matrix is full-rank and we can just add on vectors to get a basis. As before, if we try $X_1X_2$, we get $\openm0&3&2&0&0&0&0\closem^T$. Adding this to the matrix results in $6$ singular values, so we now just need to find one more. Taking $X_2X_3$ gives $\openm0&0&0&0&1&0&0\closem$, and adding this on as a column gives a square matrix with determinant $20$, so we're done.
+\subsection*{6}
+a. We have $\chi_{\bigwedge^2\cn^n}=\frac{1}{2}\left(\chi_{\cn^n}(g)^2-\chi_{\cn^n}(g^2)\right)$. Note that $\chi_{\cn^n}(g^2)$ is just the number of elements that $g$ fixes if it had all its $2$-cycles removed, or $\chi_{\cn^n}(g)+X_2(g)$. Denote $\chi_{\cn^n}$ by just $\chi$ because I'm tired of typing it. Then, the expression for the character on $\bigwedge^2\cn^n$ is $\frac{1}{2}\left(\chi(g)^2-\chi(g)-X_2(g)\right)$. Now, note that $\chi(g)$, the number of elements that $g$ fixes, is simply $X_1$, the number of $1$-cycles in $g$, so we end up with $\frac{1}{2}(X_1^2-X_1-X_2)$.
+
+\noindent b. Let $\chi_n$ now denote the character of the sign rep. of $S_n$. Suppose that there were some character polynomial $P$ such that $\chi_n=P$ for all $n>N$. Since $P$ contains a finite number of terms, let $l$ be the maximum index of the the $X_i$ that appears in $P$. Now consider $(1 2 \cdots l+1)\in S_{l+1}$ and $(1 2 \cdots l+2)\in S_{l+2}$. The value of $\chi_{l+1}$ on the first is different from that of $\chi_{l+2}$ on the latter since one is an even cycle and the other is odd. However, $P$ is zero on both, since $X_1,\ldots,X_l$ are zero for both. This presents a contradiction, so no such $P$ exists.
+\end{document}
