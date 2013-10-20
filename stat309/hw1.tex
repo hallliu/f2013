@@ -118,4 +118,44 @@ Due to the large spread in the data for the normal matrices, it was impossible t
 The condition number seems to be the lowest for the $2$-norm and about the same for the $1$- and $\infty$- norms, which makes sense because they're calculated basically the same way and the randomness for the normal distribution doesn't care whether you're summing over rows or columns. 
 
 The condition number multiplied by relative error in $b$ follows a similar trend as the condition number, but with more of an increase depending on dimension (quadratically as opposed to linearly?)
+\subsection*{4}
+\ssn{a}
+Suppose $(A-\delta A)$ is singular. Then there exists some $v$ of norm $1$ in its kernel. Examine $\frac{1}{\kappa(A)}$. This is equal to
+\begin{align*}
+    &\frac{1}{\|A\|\|A^{-1}\|}\\
+    =&\frac{1}{\|A\|\max\frac{\|A^{-1}x\|}{\|x\|}}\\
+    \leq&\frac{1}{\|A\|\frac{\|A^{-1}Av\|}{\|Av\|}}\\
+    =&\frac{\|Av\|}{\|A\|\|v\|}\\
+    =&\frac{\|(A-(A+\delta A))v\|}{\|A\|\|v\|}\\
+    =&\frac{\|\delta Av\|}{\|A\|\|v\|}\\
+    \leq&\frac{\|\delta A\|\|v\|}{\|A\|\|v\|}
+\end{align*}
+This contradicts the condition that we were given, so no such $v$ may exist.
+\ssn{b}
+Expanding, we have $b=Ax+A\delta x+\delta Ax + \delta A\delta x=b$, or $A\delta x+\delta A\h{x}=0$, so $\delta x=-A^{-1}\delta A\h{x}$. Taking the norm on both sides and using compatibility gives $\|\delta x\|\leq\|A^{-1}\|\|\delta A\|\|\h{x}\|$, or $\frac{\|\delta x\|}{\|\h{x}\|}\leq\|A^{-1}\|\frac{\|A\|}{\|A\|}\|\delta A\|=\kappa(A)\frac{\|\delta A\|}{\|A\|}$.
+\ssn{c}
+Starting from the result in (b), multiplying both sides and applying the triangle inequality to $\|\h{x}\|$ gives 
+\begin{align*}
+    \|\delta x\|&\leq\kappa(A)\frac{\|\delta A\|}{\|A\|}(\|x\|+\|\delta x\|)\\
+    \left(1-\kappa(A)\frac{\|\delta A\|}{\|A\|}\right)\|\delta x\|&\leq\kappa(A)\frac{\|\delta A\|}{\|A\|}\|x\|\\
+\end{align*}
+Since (4.2) guarantees that the LHS is nonzero, we can divide by $\left(1-\kappa(A)\frac{\|\delta A\|}{\|A\|}\right)$ and achieve our desired result.
+\subsection*{5}
+\ssn{a}
+Consider the function $f:\cn^{m\times n}\times\cn^{n\times p}\to\rn$ defined by $f(A,B)=\frac{\|AB\|}{\|A\|\|B\|}$. The range of this function is the same as if we just restricted $A$ and $B$ to have norm $1$, since the scalar multiples factor out of the norm. Thus, since all norms are topologically equivalent, we can view $f$ as a continuous function mapping the product of two unit spheres into $\rn$. Since the unit sphere is compact, the image of $f$ is also compact, which means it's bounded above by some $K\in\rn$. Then, if we let $c>K$, we have $\frac{\|AB\|_c}{\|A\|_c\|B\|_c}=\frac{1}{c}f(A,B)<1$, which means that $\|\cdot\|_c$ is submultiplicative.
+
+For the H\"{o}lder $\infty$ norm, fix $\|\cdot\|=\|\cdot\|_{H,\infty}$. Let the largest element of $A$ be $a$ and the largest element of $B$ be $b$. Then, the largest element of $AB$ has the form $\sum_ka_{ik}b_{kj}\leq\sum_kab=n\|A\|\|B\|$, so we can let $c=n$.
+\ssn{b}
+We only have to verify it for one Jordan block, since $D_\ep$ can also be seen as a block matrix. Then, let $D_{\ep,r}$ be the diagonal block corresponding to the location of the $r$th Jordan block of size $n_r$. We have
+\begin{align*}
+    D_{\ep,r}^{-1}J_rD_{\ep,r}&=\openm\ep^{-a}&&\\&\ddots&\\&&\ep^{-(a+n_r)}\closem\openm\lambda_r&1&&\\&\ddots&\ddots&\\&&\ddots&1\\&&&\lambda_r\closem\openm\ep^{a}&&\\&\ddots&\\&&\ep^{(a+n_r)}\closem\\
+                              &=\openm\ep^{-a}&&\\&\ddots&\\&&\ep^{-(a+n_r)}\closem\openm\ep^a\lambda_r&\ep^{a+1}&&\\&\ddots&\ddots&\\&&\ddots&\ep^{(a+n_r)}\\&&&\ep^{-(a+n_r)}\lambda_r\closem\\
+                              &=\openm\lambda_r&\ep&&\\&\ddots&\ddots&\\&&\ddots&\ep\\&&&\lambda_r\closem
+\end{align*}
+\ssn{c}
+The infinity operator norm is the maximum of the sum along the rows. Since $D_\ep^{-1}JD_\ep$ takes on the same form as the Jordan matrix, the sum along the rows is always either $\lambda_r+\ep$ or $\lambda_r$ for some eigenvalue $\lambda_r$. Since $\rho(J)$ is the largest eigenvalue of $J$, the row sum will never be greater than the largest eigenvalue plus $\ep$.
+\ssn{d}
+Let $A=P^{-1}JP$, and define $\|x\|=\|D_\ep^{-1}Px\|_\infty$ for $x\in\cn^n$. Then, $\frac{\|Ax\|}{\|x\|}=\frac{\|D_\ep^{-1}PAx\|_\infty}{\|D_\ep^{-1}Px\|_\infty}$. However, note that maximizing this over all $x\in\cn^n$ is equivalent to maximizing this over all $P^{-1}D_\ep x\in\cn^n$, since $D_\ep$ and $P$ are both bijective. Then, we have that the norm induced on $A$ by this vector norm is
+\[\|A\|=\max\frac{\|D_\ep^{-1}PAP^{-1}D_\ep x\|_\infty}{\|x\|_\infty}=\|D_\ep^{-1}JD_\ep\|_\infty\]
+Now, the maximum row-sum of $D_\ep^{-1}JD_\ep$ will always be at least as large as the largest eigenvalue of $J$, since there is always going to be one row containing solely the largest eigenvalue. Thus, since the eigenvalues of $A$ and $J$ are identical, we have our desired result following from (c).
 \end{document}
