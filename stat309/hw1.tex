@@ -64,8 +64,9 @@ Examine $\|(I-A)v\|_\alpha=\|v-Av\|_\alpha$. Restrict our consideration to $v$ w
 
 By the sub-multiplicativity of the induced norm, we have $\|I-A\|\|(I-A)^{-1}\|\geq1$, and by the triangle inequality we have $\|I-A\|\leq1+\|A\|$, so combining these inequalities gives $\|(I-A)^{-1}\|\geq\frac{1}{1+\|A\|}$. For the other side of the inequality, write $(I-A)^{-1}=I+\sum_{i=1}^\infty A^i$ by analogy with the standard series expansion for $\frac{1}{1-x}$. This converges since $\|A\|<1$, and the difference between arbitrary partial sums is less than the difference between the corresponding partial sum of the geometric series of $\|A\|$. Then, we can take the norm of both sides, obtaining $\|(I-A)^{-1}\|\leq\sum_{i=0}^\infty\|A\|^i=\frac{1}{1-\|A\|}$.
 \subsection*{3}
-Here are tables recording the relevant values for $n=5$.
+Relevant code is attached at the end. Everything is in Python, written to be Python3 compatible.
 
+Here are tables recording the relevant values for $n=5$.
 
 \vspace{10pt}
 \begin{tabular}{c|c|c|c}
@@ -74,7 +75,7 @@ Here are tables recording the relevant values for $n=5$.
         $\frac{\|\h{x}-x\|}{\|x\|}$&1.998e-16&2.275e-16&3.331e-16\\
         $\kappa(A)$&1.471e+01&5.309e+00&8.624e+00\\
         $\kappa(A)\frac{\|\delta b\|}{\|b\|}$&5.741e-15&2.134e-15&3.588e-15\\
-\end{tabular}
+lb\end{tabular}
 
 
 \vspace{10pt}
@@ -109,15 +110,36 @@ Here are tables recording the relevant values for $n=5$.
 The graph for the other dimensions follows. The graphs are ordered Normal, Hilbert, Pascal, Magic going down the rows, and $\frac{\|\h{x}-x\|}{\|x\|}$, $\kappa(A)$, and $\kappa(A)\frac{\|\delta b\|}{\|b\|}$ going across the columns. 
 
 \includegraphics[width=0.95\textwidth]{hw1_files/graph.png}
-%TODO: Use log-log plot for everything but pascal
+
 On all the graphs, red indicates the $1$-norm, blue indicates the $2$-norm, and green indicates the $\infty$-norm.
 
-\ssn{Random normal matrices}
-Due to the large spread in the data for the normal matrices, it was impossible to get meaningful data on anything but a log plot. By looking at said log plot, it seems that all the parameters increase polynomially with increasing dimension. For the relative error in $x$, there is a consistent trend $\|\cdot\|_1<\|\cdot\|_2<\|\cdot\|_\infty$. In fact, this trend in the norms seems to hold true for all the matrix types. This can be explained by $\delta x$ being usually fairly small, where the norms don't differ much, and the denominator changing rapidly from $n$ to $\sqrt{n}$ to $1$ as we move down the norms. 
+\ssn{d}
+Due to the large spread in the data for all the matrices, it was impossible to get meaningful data on anything but a log-log plot. For the random normal matrices in particular, it seems that relative error in $x$ increases linearly with dimension, which makes sense because the condition number increases linearly and the relative error in $x$ is bounded by the condition number times the relative error in $b$. Since $b$ is calculated fairly simply, we'd expect its relative error to be fairly constant. 
 
-The condition number seems to be the lowest for the $2$-norm and about the same for the $1$- and $\infty$- norms, which makes sense because they're calculated basically the same way and the randomness for the normal distribution doesn't care whether you're summing over rows or columns. 
+As for the trend in the norms, there is a consistent trend $\|\cdot\|_1<\|\cdot\|_2<\|\cdot\|_\infty$. In fact, this trend in the norms seems to hold true for all the matrix types. This can be explained by $\delta x$ being usually fairly small, where the norms don't differ much, and the denominator changing rapidly from $n$ to $\sqrt{n}$ to $1$ as we move down the norms. 
 
-The condition number multiplied by relative error in $b$ follows a similar trend as the condition number, but with more of an increase depending on dimension (quadratically as opposed to linearly?)
+For the Hilbert matrices, the trend seems to be logarithmic. This can be explained by looking at the infinity norm of $A$ -- the maximum row sum is the sum along the first row, which is just the harmonic series as $n$ increases, and this is known to increase logarithmically.
+
+For the Pascal matrices, the trend is strikingly exponential, with a simple log-plot showing a straight line. The largest entry is always a binomial coeffient of the form $\binom{2k}{k}$, which is asymptotically exponential. It then follows that the max row/column sum would be bounded above and below by some factor that is asymptotically dominated by this exponential factor, so the condition number would be asymptotically exponential as well.
+
+Finally, the magic square matrices show an interesting trend. The matrices with odd dimension have low errors/condition numbers, whereas the matrices with even dimension have high errors/condition numbers. Both increase roughly linearly with dimension, though at different scales. Presumably this has something to do with the construction of magic squares, for which methods differ for odd, doubly even, and even dimensions, but I'm not familiar enough with these to comment on them.
+\ssn{e}
+Taking the inverse incurs a huge hit to accuracy. Below is a graph presenting the ratio of $\frac{\|x-\h{x}\|}{\|x\|}$ in the inverse case to that in the solve case, arranged as Normal, Hilbert, Pascal, Magic from left to right, top to bottom.
+
+\includegraphics[width=0.7\textwidth]{hw1_files/inverr.png}
+
+In addition, the median of these ratios across all dimensions is as follows:
+
+\begin{tabular}{c|c}
+    Normal&2.5\\
+    Hilbert&$1.12\times10^{11}$\\
+    Pascal&$2.02\times10^{12}$\\
+    Magic&7.018\\
+\end{tabular}
+
+\ssn{f}
+By Cramer's rule, the $(1,1)$ entry of $A^{-1}$ is just $\frac{1}{\det(A)}C_{11}$, where $C_{11}$ is the determinant of $A$ with its first row and column removed. The function to do this is in the attached program as \verb|inv11| and \verb|inv11_test|.
+
 \subsection*{4}
 \ssn{a}
 Suppose $(A-\delta A)$ is singular. Then there exists some $v$ of norm $1$ in its kernel. Examine $\frac{1}{\kappa(A)}$. This is equal to

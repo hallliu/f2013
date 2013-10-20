@@ -4,6 +4,11 @@ import scipy.linalg as sp
 import matplotlib.pyplot as plt
 
 '''
+Note: Anything starting with a "plt" is related to graph generation, and is not mathematically
+significant.
+'''
+
+'''
 Since python lacks a magic square function, I generated the necessary magic squares in matlab
 and exported them to text. This function just loads them in from file
 '''
@@ -38,9 +43,11 @@ def run_stats(dimension):
         b = matr * x
         try:
             xhat = sp.solve(matr, b)
+            xhat1 = np.linalg.inv(matr) * b
         except np.linalg.LinAlgError:
-            xhat = x    
-        
+            xhat = x
+            xhat1 = x
+
         this_matrix_data['delta_b'] = matr * xhat - b
         norm_data = {}
 
@@ -48,6 +55,8 @@ def run_stats(dimension):
         for norm_type in [1, 2, np.inf]:
             values = {}
             values['x_relative_error'] = sp.norm(x - xhat, norm_type) / sp.norm(x, norm_type)
+            values['x_relative_error_inv'] = sp.norm(x - xhat1, norm_type) / sp.norm(x, norm_type)
+
             try:
                 values['condition_no'] = np.linalg.cond(matr, norm_type)
             except:
@@ -60,6 +69,17 @@ def run_stats(dimension):
         data[name] = this_matrix_data
 
     return data
+
+'''
+The structure returned is organized like follows:
+    First layer: Dimension
+    Second layer: Matrix type
+    Third layer: irrelevant, not used
+    Fourth layer: Norm
+    Fifth layer: Parameter type (i.e. which of the expressions we're asked to compute
+
+It probably could've been organized better, but oh well.
+'''
 
 def run_all_dims():
     dim_dict = {}
@@ -90,11 +110,11 @@ def make_graphs(data):
             plt.subplot(4, 3, i)
             plt.plot(xvals, n1_data, 'r.', xvals, n2_data, 'b.', xvals, ninf_data, 'g.')
             plt.yscale('log')
-            plt.xscale('log')
+            if matr != 'pascal':
+                plt.xscale('log')
             i += 1
 
-    #plt.savefig('graph.png', dpi=200, format='png', bbox_inches='tight')
-    plt.show()
+    plt.savefig('graph.png', dpi=200, format='png', bbox_inches='tight')
 
 def make_single_graph(data, matr, param):
     xvals = np.array(range(5,501,5))
@@ -111,11 +131,33 @@ def make_single_graph(data, matr, param):
             n2_data[ind] = n2_data[ind + 1]
             ninf_data[ind] = ninf_data[ind + 1]
 
+    plt.xscale('log')
+    plt.yscale('log')
     plt.plot(xvals, n1_data, 'r.', xvals, n2_data, 'b.', xvals, ninf_data, 'g.')
     plt.show()
 
 
+def make_rel_err_diff(data):
+    xvals = np.arange(5,501,5)
+    matrices = {}
+    i = 1
+    plt.figure(figsize=(6,6))
+    for matr in ['normal', 'hilbert', 'pascal', 'magic']:
+        diffdata = np.empty(100)
+        for (ind, xval) in enumerate(xvals):
+            diffdata[ind] = data[xval][matr]['norm_dep_vals'][2]['x_relative_error_inv'] / data[xval][matr]['norm_dep_vals'][2]['x_relative_error']
+        plt.subplot(2, 2, i)
+        plt.yscale('log')
+        plt.plot(xvals, diffdata, 'k.')
+        i += 1
+        print('Median ratio of errors for {0}: {1:.3e}'.format(matr, np.median(diffdata)))
 
+    plt.savefig('inverr.png', dpi=200, format='png', bbox_inches='tight')
+
+
+'''
+Not important at all, just something that saves texxing time
+'''
 def tex_results(data, matrix, dimension):
     d = data[dimension][matrix]['norm_dep_vals']
     print(r'\begin{tabular}{c|c|c|c}')
@@ -125,3 +167,17 @@ def tex_results(data, matrix, dimension):
     print(r'    $\kappa(A)$&{0:.3e}&{1:.3e}&{2:.3e}\\'.format(d[1]['condition_no'],d[2]['condition_no'],d[np.inf]['condition_no']))
     print(r'    $\kappa(A)\frac{{\|\delta b\|}}{{\|b\|}}$&{0:.3e}&{1:.3e}&{2:.3e}\\'.format(d[1]['cond_rel_b_err'],d[2]['cond_rel_b_err'],d[np.inf]['cond_rel_b_err']))
     print(r'\end{tabular}')
+
+
+# Computes first entry of matrix's inverse
+def inv11(matr):
+    matr_det = sp.det(matr)
+    matr_slice = matr[1:,1:] # Removes the first row and column
+    minor_det = sp.det(matr_slice)
+    return minor_det / matr_det
+
+# Tests that the inv11 function works properly
+def inv11_test(matr):
+    realinv_entry = sp.inv(matr)[0,0]
+    testinv_entry = inv11(matr)
+    assert np.allclose(realinv_entry, testinv_entry)
