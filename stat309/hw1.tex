@@ -162,6 +162,40 @@ Starting from the result in (b), multiplying both sides and applying the triangl
     \left(1-\kappa(A)\frac{\|\delta A\|}{\|A\|}\right)\|\delta x\|&\leq\kappa(A)\frac{\|\delta A\|}{\|A\|}\|x\|\\
 \end{align*}
 Since (4.2) guarantees that the LHS is nonzero, we can divide by $\left(1-\kappa(A)\frac{\|\delta A\|}{\|A\|}\right)$ and achieve our desired result.
+\ssn{d}
+Expanding gives $Ax+A\delta x+\delta Ax+\delta A\delta x = b+\delta b$, or $A\delta x+\delta A\h{x}=\delta b$ after subtracting $b$ on both sides. Moving the $\delta A$ term over and multiplying both sides by $A^{-1}$ gives $\delta x=A^{-1}(\delta b-\delta A\h{x})$.
+
+Taking the norm on both sides and using compatibility, we have
+\begin{align*}
+    \|\delta x\|&\leq\|A^{-1}\|\|\delta b-\delta A\h{x}\|\\
+    &\leq\kappa(A)\frac{1}{\|A\|}(\|\delta b\|+\|\delta A\|\|\h{x}\|)\\
+    &\leq\kappa(A)\left(\frac{\|\delta b\|}{\|A\|} + \frac{\|\delta A\|\|\h{x}\|}{\|A\|}\right)\\
+    \frac{\|\delta x\|}{\|\h{x}\|}&\leq\kappa(A)\left(\frac{\|\delta A\|}{\|A\|}+\frac{\|\delta b\|}{\|A\|\|\h{x}\|}\right)\\
+\end{align*}
+
+Now, note that $(A+\delta A)\h{x}=\h{b}$ implies that
+\begin{align*}
+    \|A+\delta A\|\|\h{x}\|&\geq\|\h{b}\|\\
+    \|\h{x}\|&\geq\frac{\|\h{b}\|}{\|A+\delta A\|}\\
+    \frac{\|A+\delta A\|}{\|\h{b}\|}&\geq\frac{1}{\|\h{x}\|}\\
+    \frac{\|A\|+\|\delta A\|}{\|\h{b}\|}&\geq\frac{1}{\|\h{x}\|}
+\end{align*}
+
+Then, substituting this into the RHS of the first expression derived above gives
+\begin{align*}
+    \frac{\|\delta x\|}{\|\h{x}\|}&\leq\kappa(A)\left(\frac{\|\delta A\|}{\|A\|}+\frac{\|\delta b\|(\|A\|+\|\delta A\|)}{\|A\|\|\h{b}\|}\right)\\
+    \frac{\|\delta x\|}{\|\h{x}\|}&\leq\kappa(A)\left(\frac{\|\delta A\|}{\|A\|}+\frac{\|\delta b\|}{\|\h{b}\|}+\frac{\|\delta b\|\|\delta A\|}{\|\h{b}\|\|A\|}\right)\\
+\end{align*}
+\ssn{e}
+Begin with $\|\delta x\|\leq\kappa(A)\frac{1}{\|A\|}(\|\delta b\|+\|\delta A\|\|\h{x}\|)$ from the last problem and expand $\h{x}$. We then have
+\begin{align*}
+    \|\delta x\|&\leq\kappa(A)\left(\frac{\|\delta b\|}{\|A\|}+\frac{\|\delta A\|}{\|A\|}\|x\|+\frac{\|\delta A\|}{\|A\|}\|\delta x\|)\right)\\
+    \|\delta x\|-\kappa(A)\frac{\|\delta A\|}{\|A\|}\|\delta x\|&\leq\kappa(A)\left(\frac{\|\delta b\|}{\|A\|}+\frac{\|\delta A\|}{\|A\|}\|x\|\right)\\
+    \|\delta x\|&\leq\frac{\kappa(A)\left(\frac{\|\delta b\|}{\|A\|}+\frac{\|\delta A\|}{\|A\|}\|x\|\right)}{1-\kappa(A)\frac{\|\delta A\|}{\|A\|}}
+    \frac{\|\delta x\|}{\|x\|}&\leq\frac{\kappa(A)\left(\frac{\|\delta b\|}{\|A\|\|x\|}+\frac{\|\delta A\|}{\|A\|}\right)}{1-\kappa(A)\frac{\|\delta A\|}{\|A\|}}
+\end{align*}
+Then, by compatibility, we can turn the $\|A\|\|x\|$ in the denominator in the numerator into $\|Ax\|=\|b\|$, which gives the result we want.
+
 \subsection*{5}
 \ssn{a}
 Consider the function $f:\cn^{m\times n}\times\cn^{n\times p}\to\rn$ defined by $f(A,B)=\frac{\|AB\|}{\|A\|\|B\|}$. The range of this function is the same as if we just restricted $A$ and $B$ to have norm $1$, since the scalar multiples factor out of the norm. Thus, since all norms are topologically equivalent, we can view $f$ as a continuous function mapping the product of two unit spheres into $\rn$. Since the unit sphere is compact, the image of $f$ is also compact, which means it's bounded above by some $K\in\rn$. Then, if we let $c>K$, we have $\frac{\|AB\|_c}{\|A\|_c\|B\|_c}=\frac{1}{c}f(A,B)<1$, which means that $\|\cdot\|_c$ is submultiplicative.
@@ -180,4 +214,62 @@ The infinity operator norm is the maximum of the sum along the rows. Since $D_\e
 Let $A=P^{-1}JP$, and define $\|x\|=\|D_\ep^{-1}Px\|_\infty$ for $x\in\cn^n$. Then, $\frac{\|Ax\|}{\|x\|}=\frac{\|D_\ep^{-1}PAx\|_\infty}{\|D_\ep^{-1}Px\|_\infty}$. However, note that maximizing this over all $x\in\cn^n$ is equivalent to maximizing this over all $P^{-1}D_\ep x\in\cn^n$, since $D_\ep$ and $P$ are both bijective. Then, we have that the norm induced on $A$ by this vector norm is
 \[\|A\|=\max\frac{\|D_\ep^{-1}PAP^{-1}D_\ep x\|_\infty}{\|x\|_\infty}=\|D_\ep^{-1}JD_\ep\|_\infty\]
 Now, the maximum row-sum of $D_\ep^{-1}JD_\ep$ will always be at least as large as the largest eigenvalue of $J$, since there is always going to be one row containing solely the largest eigenvalue. Thus, since the eigenvalues of $A$ and $J$ are identical, we have our desired result following from (c).
+\subsection*{6}
+\ssn{a}
+For $n=12$, $\|A\|_1=48$ and $\|A\|_\infty=78$. For $n=25$, the same values are $325$ and $181$, respectively.
+\ssn{b}
+For $n=12$, $\|A\|_2=47.74$ and $\rho(A)=32.23$. For $n=25$, the same values are $180.8$ and $77.98$, respectively.
+\ssn{c}
+From the description of the matrix we're given, the value of the $i$th diagonal element is simply $n-i+1$, where $n$ is the dimension of the matrix. For all rows but the first, the one value to the left of the diagonal should be the same as the diagonal, and the values to the right should fall off one by one as we move to the right, ending at $1$ at the very right column of the matrix. Their sum is simply the sum of all natural numbers less than or equal to the diagonal element. Thus, for each $i$ from $1$ to $n-1$, there is a Gershgorin disc centered at $i$ with radius $\frac{i(i-1)}{2}$, and an additional disc centered at $n$ with radius $\frac{(n-1)(n-2)}{2}$.
+\ssn{d}
+$n=12$:
+
+\begin{tabular}{cc}
+    Eigenvalues&Singular values\\
+     \hline
+         $32.2289$&$47.7360$\\
+         $20.1990$&$18.0281$\\
+         $12.3111$&$10.7908$\\
+         $6.9615$&$7.6225$\\
+         $3.5119$&$5.8980$\\
+         $1.5540$&$4.8270$\\
+         $0.6435$&$4.0001$\\
+         $0.0310$&$3.2112$\\
+         $0.0495$&$2.4240$\\
+         $0.0812$&$1.6387$\\
+         $0.1436$&$0.8694$\\
+         $0.2847$&$0.0000$\\
+\end{tabular}
+
+$n=25$:
+
+\begin{tabular}{cc}
+    Eigenvalues&Singular values\\
+     \hline
+         $77.9837$&$180.7546$\\
+         $60.5984$&$70.3443$\\
+         $47.7777$&$43.2984$\\
+         $37.5667$&$31.1583$\\
+         $29.2021$&$24.3174$\\
+         $22.2856$&$19.9658$\\
+         $16.5772$&$16.9829$\\
+         $11.9193$&$14.8370$\\
+         $8.2006$&$13.2461$\\
+         $5.3359$&$12.0457$\\
+         $3.2479$&$11.1084$\\
+         $1.8424$&$10.2940$\\
+         $1.3040$&$9.5057$\\
+         $1.0630+0.4912i$&$8.7194$\\
+         $1.0630$&$7.9330$\\
+         $0.6357+0.7764i$&$7.1464$\\
+         $0.6357$&$6.3598$\\
+         $0.1830+0.8436i$&$5.5729$\\
+         $0.1830$&$4.7859$\\
+         $-0.2062+0.7243i$&$3.9986$\\
+         $-0.2062$&$3.2112$\\
+         $-0.4788+0.4793i$&$2.4240$\\
+         $-0.4788$&$1.6387$\\
+         $-0.6175+0.1670i$&$0.8694$\\
+         $-0.6175$&$0.0000$\\
+ \end{tabular}
 \end{document}
