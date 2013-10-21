@@ -22,6 +22,7 @@
 \nc{\nullset}{\varnothing}
 \nc{\openm}{\begin{pmatrix}}
 \nc{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\im}{im}
 \begin{document}
 Name: Hall Liu
 
@@ -34,7 +35,21 @@ The eigenvectors of $g$ on $\bigwedge^kV$ are of the form $v_{i_1}\wedge v_{i_2}
 
 Similarly, for the symmetric power, the eigenvectors take the form $v_{i_1}\otimes v_{i_2}\otimes\cdots\otimes v_{i_k}$ with $i_1\leq i_2\leq\cdots\leq i_k$. This corresponds to eigenvalues $\lambda_{i_1}\lambda_{i_2}\cdots\lambda_{i_k}$ with the same condition on the $i$s. Note that this corresponds to degree $k$ monomials in $n$ variables evaluated on $\lambda_1,\ldots,\lambda_n$, so the sum of these is the complete homogeneous symmetric polynomial of degree $k$ over $n$ variables. Once again, it's a nasty expression that I don't really want to type out.
 \subsection*{2.26}
-wtf
+Consider the normal subgroup formed by the conjugacy class of $A_4$ represented by $(1 2)(3 4)$. Taking the quotient of $A_4$ by this subgroup yields a group isomorphic to $\zn_3$, where $(123)$ and $(132)$ are sent to distinct generators. Thus, the three one-dimensional representations of $\zn_3$ induce three representations on $A_4$. In these three irreps, a generator is sent to either $\omega^0$,$\omega^1$, or $\omega^2$, where $\omega$ is a primitive $3$rd root of unity. Thus, the class $(123)$ is sent to one of these, and $(132)$ is sent to its square. Thus, we have the first three rows of the character table.
+
+\begin{tabular}{c|cccc}
+    $A_4$&1&4&4&3\\
+         &1&$(123)$&$(132)$&$(12)(34)$\\
+    \hline
+    $U$&1&1&1&1\\
+    $U'$&1&$\omega$&$\omega^2$&1\\
+    $U''$&1&$\omega^2$&$\omega$&1\\
+    $V$&3&$x$&$y$&$z$\\
+\end{tabular}
+
+Now, we know that the final representation is three-dimensional. If we use orthogonality of the columns in the table, we have that the first column must be orthogonal to the second, or $1\times 1+1\times\omega+1\times\omega^2+3x=0$. Since the sum of the three third roots of unity is zero, $x$ must also be zero. By a similar argument with the first and third columns, $y$ is zero too.
+
+The first and last columns being orthogonal implies that $1+1+1+3z=0$, or $z=-1$, so we have our result.
 \subsection*{4}
 $S_1$: This has one conjugacy class. The only nonzero character polynomial is $X_1$.
 
@@ -43,7 +58,7 @@ $S_1$: This has one conjugacy class. The only nonzero character polynomial is $X
 \noindent $S_3$: Partitions of $3$ are $1+1+1$, $1+2$, and $3$. In this order, we can see $X_1$ as the vector $\openm1&1&0\closem$, $X_2$ as $\openm0&1&0\closem$, and $X_3$ as $\openm0&0&1\closem$, so since $X_1-X_2=\openm1&0&0\closem$, these three form a basis.
 
 \noindent $S_4$: Partitions of $4$ are $1+1+1+1$, $2+2$, $1+1+2$, $1+3$, and $4$. Arranging $X_1$ through $X_4$ as the columns of a matrix with rows as the conjugacy classes, we have
-\[\openm4&0&0&0\\0&2&0&0\\2&1&0&0\\1&0&1&0\\0&0&0&1\closem$\]
+\[\openm4&0&0&0\\0&2&0&0\\2&1&0&0\\1&0&1&0\\0&0&0&1\closem\]
 We have $X_1X_2=\openm0&0&2&0&0\closem^T$. If we add this on as a column and take the determinant (really easy because of the sparsity), it comes out to $16$, so these five columns form a basis.
 \subsection*{5}
 Partitions of $5$: $1+1+1+1+1$, $2+1+1+1$, $1+2+2$, $3+1+1$, $3+2$, $4+1$, $5$. $7$ partitions. Getting the $X_1$ through $X_5$ into a matrix gives
@@ -53,4 +68,13 @@ Taking the SVD of this matrix gives $5$ nonzero singular values, so this matrix 
 a. We have $\chi_{\bigwedge^2\cn^n}=\frac{1}{2}\left(\chi_{\cn^n}(g)^2-\chi_{\cn^n}(g^2)\right)$. Note that $\chi_{\cn^n}(g^2)$ is just the number of elements that $g$ fixes if it had all its $2$-cycles removed, or $\chi_{\cn^n}(g)+X_2(g)$. Denote $\chi_{\cn^n}$ by just $\chi$ because I'm tired of typing it. Then, the expression for the character on $\bigwedge^2\cn^n$ is $\frac{1}{2}\left(\chi(g)^2-\chi(g)-X_2(g)\right)$. Now, note that $\chi(g)$, the number of elements that $g$ fixes, is simply $X_1$, the number of $1$-cycles in $g$, so we end up with $\frac{1}{2}(X_1^2-X_1-X_2)$.
 
 \noindent b. Let $\chi_n$ now denote the character of the sign rep. of $S_n$. Suppose that there were some character polynomial $P$ such that $\chi_n=P$ for all $n>N$. Since $P$ contains a finite number of terms, let $l$ be the maximum index of the the $X_i$ that appears in $P$. Now consider $(1 2 \cdots l+1)\in S_{l+1}$ and $(1 2 \cdots l+2)\in S_{l+2}$. The value of $\chi_{l+1}$ on the first is different from that of $\chi_{l+2}$ on the latter since one is an even cycle and the other is odd. However, $P$ is zero on both, since $X_1,\ldots,X_l$ are zero for both. This presents a contradiction, so no such $P$ exists.
+\subsection*{Bonus 1}
+To compute the conjugacy classes of $G$, start with an arbitrary $g\in G$. Consider the set $\{h^{-1}gh:h\in G\}$. This is the conjugacy class containing $g$, and it can be computed in finite time by just trying everything in $G$. Remove this set from $G$, pick a $g'$ from what's left, and repeat until we only have the identity left. This gives a list of the conjugacy classes as well as their sizes. Now let there be $r$ conjugacy classes, each with size $n_r$. 
+
+To find $G$-invariant subspaces of $V_\text{reg}$, we look at projections onto these subspaces. By (2.32) from the book, the map 
+\[P=\frac{\dim V_i}{|G|}\sum_{g\in G}\conj{\chi_{V_i}(g)}g\]
+is a projection onto the $G$-invariant subspace $V_i^{\oplus m_i}$ of $V_\text{reg}$, so we need to determine the $r$ parameters $\chi_{V_i}(g)$ for each of the conjugacy groups. 
+
+To determine these, we can just take anything that makes $\im(P)$ $G$-invariant, or $\rho(g)\im(P)=\im(P)$ for all $g\in G$. Thus, for all $v\in V_\text{reg}$ and all $g\in G$, we want the action of $P$ on $\rho(g)Pv$ to be the identity, or $P\rho(g)P=\rho(g)P$ for all $g\in G$. Since $\rho(g)$ is just a permutation matrix of zeros and ones, we get a system of quadratic equations that we can solve. Presumably this is a problem that engineers have already figured out how to do computationally. There won't be unique solutions, but any solution we find this way will be valid. Then, we can compute the character of this subrep by considering the trace of matrices $\rho(g)P$, take the inner product with $V_\text{reg}$, subtract out the appropriate number, then keep going until we've picked everything off.
+
 \end{document}
