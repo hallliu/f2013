@@ -185,5 +185,22 @@ Multiple R-squared:  0.8246,	Adjusted R-squared:  0.809
 F-statistic: 52.88 on 4 and 45 DF,  p-value: < 2.2e-16
 \end{verbatim}
 
-The hypothesis that $\beta_\text{salary}$ is now $0.496$, which suggests that the addition of \verb|takers| subsumed most of the effect of salary. 
+The hypothesis that $\beta_\text{salary}$ is now $0.496$, which suggests that the addition of \verb|takers| subsumed most of the effect of salary. Running an $F$-test for this model against the old model gives
+\begin{verbatim}
+> anova(m0, m1)
+Analysis of Variance Table
+
+Model 1: total ~ expend + ratio + salary
+Model 2: total ~ takers + expend + ratio + salary
+  Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+1     46 216812                                  
+2     45  48124  1    168688 157.74 2.607e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+\end{verbatim}
+
+The $p$-valus is on the order of $10^{-16}$, which suggests that the \verb|takers| parameter is a very good predictor of total SAT score. Note that the $p$-value here is roughly equal to that for the $t$-test in the call to \verb|summary(m1)| above. We can give a theoretical justification as follows: 
+
+Using the notation from the lectures, let $H$ correspond to the smaller model and $L$ correspond to the model with one extra parameter (a total of $p$ parameters). Assume that we're in the case where $H$ and $L$ are spanned by orthonormal standard basis vectors (if not, we can use the same argument as in the lecture notes to get there). Then, the numerator of the $F$-statistic is $\frac{y_{p}^2}{\h{\sigma}^2}$, and the denominator is $\frac{1}{n-p}\sum_{i=p+1}^n\frac{y_i^2}{\h{\sigma}^2}$. If we take the square root of this whole thing, we end up with the $t$-statistic for testing that the extra parameter is nonzero. 
+
 \end{document}
