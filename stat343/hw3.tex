@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\rk}{rk}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+
+\subsection*{1}
+\ssn{a}
+Suppose $R$ is not invertible. Then $\rk(R)<p$, so $\dim(\im(R))<p\implies\dim(\im(QR))<p\implies\rk(QR)=\rk(x)<p$. However, this contradicts the assumption that $X$ has full column rank.
+\ssn{b}
+Our original formula to find $\h{\beta}$ is to solve $(X^TX)\h{\beta}=X^Ty$. Substituting in $X=QR$, we have $(R^TQ^TQR)\h{\beta}=R^TQ^Ty$, or $R^TR\h{\beta}=R^TQ^Ty$ since $Q^TQ=I$. Since we showed above that $R$ and therefore $R^T$ is invertible, we can cancel and obtain $R\h{\beta}=Q^Ty$ or $\h{\beta}=R^{-1}Q^Ty$ (but we don't actually want to take $R^{-1}$ when we do the computation).
+\ssn{c}
+The condition number of $X^TX$ is about the square of the condition number of $X$, so any perturbations in $X$ or in $y$ are magnified by that much. In contrast, assuming that the $QR$ decomposition has good numerical properties, the equation $R\h{\beta}=Q^Ty$ is easy to solve because $R$ is upper triangular so we can just do this easily by back-substitution. 
+\subsection*{2}
+Let $X=QR$. Then $H=X(X^TX)^{-1}X^T=(QR)(R^TQ^TQR)^{-1}R^TQ^T=QR(R^TR)^{-1}R^TQ^T=QRR^{-1}R^{-T}R^TQ^T=QQ^T$
+\subsection*{3}
+\ssn{a}
+\begin{verbatim}
+> fullmodel=lm(lpsa~lcavol+lweight+age+lbph+svi+lcp+gleason+pgg45, data=prostate)
+> confint(fullmodel, "age", level=0.95, data=prostate)
+          2.5 %      97.5 %
+          age -0.04184062 0.002566267
+> confint(fullmodel, "age", level=0.90, data=prostate)
+          5 %         95 %
+          age -0.0382102 -0.001064151
+\end{verbatim}
+These results state that a $95\%$ confidence interval for the parameter corresponding to age is $(-0.0418, 0.0026)$ and a $90\%$ confidence interval for the same parameter is $(-0.0382,0.0011)$. Judging by these intervals, we can tell that the $p$-value for age must be somewhere between $0.05$ and $0.1$. Since we know that the function $f(x)=P(\beta_\text{age}\in(\mu-x, \mu+x))$ is continuous, we then know that $f(-\mu)$ lies somewhere between the two values that we know.
+\ssn{b}
+\begin{verbatim}
+> plot(ellipse(fullmodel, c(4,5), level=0.95), type='l')
+> points(0,0)
+\end{verbatim}
+
+\includegraphics[width=0.7\textwidth]{hw3_files/3b.png}
+
+The hypothesis test that the location of the origin informs us about is testing $H_0:\beta_\text{age}=\beta_\text{lbph}=0$ versus $H_a:\beta_\text{age}\neq0\text{ or }\beta_\text{lbph}\neq0$ at the $\alpha=0.05$ level. Since the point $(0,0)$ corresponding to $\beta_\text{age}=0$ and $\beta_\text{lbph}=0$ lies within the joint region that we're $95\%$ sure that $(\beta_\text{age},\beta_\text{lbph})$ lies in, we cannot reject the null hypothesis.
+\ssn{c}
+\begin{verbatim}
+> new_data=data.frame(lcavol=1.44692,lweight=3.62301, age=65, lbph=0.3001, svi=0, lcp=-0.79851, gleason=7, pgg45=15)
+> new_data$svi <- factor(new_data$svi)
+> predict(fullmodel, new_data, interval="predict")
+       fit       lwr      upr
+       1 2.389053 0.9646584 3.813447
+\end{verbatim}
+
+\end{document}
