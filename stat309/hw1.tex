@@ -47,7 +47,7 @@ The $ii$th entry of $A^*A$ is $\sum_j|a_{ji}|^2$, and same for the $ii$th entry 
 Then, $\|UAV\|_F=\tr(UAVV^*A^*U^*)=\tr(UAA^*U^*)$. Since $U^*=U^{-1}$, $UAA^*U^*$ is in the same conjugacy class as $AA^*$, so they have the same trace. Thus, this is the same as the trace of $AA^*$, which is in turn the Frobenius norm of $A$.
 \ssn{f}
 (i)$\implies$(iii):
-Consider the action of $U$ on $e_i+e_j$ where the $e_i$ are the standard basis vectors and $i\neq j$. Since $U$ preserves the $2$-norm, we have that $\|Ue_i+Ue_j\|^2=2$, or $\langle Ue_i+Ue_j,Ue_i+Ue_j\rangle=2$. Expanding this, we get 
+Consider the action of $U$ on $e_i+e_j$ where the $e_i$ are the standard basis vectors and $i\neq j$. This picks off the $i$th and $j$th columns of $U$, and our aim is to show that they're orthogonal, from which unitarity follows. Since $U$ preserves the $2$-norm, we have that $\|Ue_i+Ue_j\|^2=2$, or $\langle Ue_i+Ue_j,Ue_i+Ue_j\rangle=2$. Expanding this, we get 
 \begin{align*}
     &\langle Ue_i,Ue_i\rangle+\langle Ue_j,Ue_j\rangle+\langle Ue_i,Ue_j\rangle+\conj{\langle Ue_i,Ue_j\rangle}=2\\
     &\implies2+2\text{Re}(\langle Ue_i,Ue_j\rangle)=2\\

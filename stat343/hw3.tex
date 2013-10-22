@@ -62,4 +62,128 @@ The hypothesis test that the location of the origin informs us about is testing 
        1 2.389053 0.9646584 3.813447
 \end{verbatim}
 
+We create a new data point with the specified numbers, convert \verb|svi| into a categorical variable, then call the confidence interval function on it. We predict that the \verb|lpsa| for this person will be $2.389$, with a $95\%$ chance that it will fall in the range $(0.965,3.813)$.
+\ssn{d}
+\begin{verbatim}
+> new_data1=data.frame(lcavol=1.44692,lweight=3.62301, age=65, lbph=0.3001, svi=0, lcp=-0.79851, gleason=7, pgg45=15)
+> new_data1$svi <- factor(new_data1$svi)
+> predict(fullmodel, new_data1, interval="predict")
+       fit      lwr      upr
+       1 3.272726 1.538744 5.006707
+\end{verbatim}
+
+With the age set to $20$, we now predict that the individual's \verb|lpsa| will be $3.273$ with a $95\%$ chance of it falling in the range $(1.539, 5.007)$. The confidence interval here is considerably wider than that in part (c). This can be explained by the distance of the age of this individual from that of the rest of the data we have. A call to \verb|summary(prostate)| gives that the mean age in the training data is $63.9$ with the lowest age in the dataset being $41$. If we look at the $x^T(X^TX)^{-1}x$ term in the standard error of prediction, the more that $x$ differs from the columns of $X$, the greater this value will be. Alternatively, we can view it as a penalty for extrapolating beyond the data that we are aware of.
+\ssn{e}
+\begin{verbatim}
+> tstats<-numeric(4000)
+> for (i in 1:4000) {
+    +     model <- lm(lpsa~lcavol+lweight+sample(age)+lbph+svi+lcp+gleason+pgg45, data=prostate)
+    +     tstats[i] <- summary(model)$coef[4,3]
+    + }
+> summary(fullmodel)$coef[4,3]
+[1] -1.757599
+> mean(abs(tstats) > 1.7576)
+[1] 0.083
+\end{verbatim}
+
+For each iteration in some large number of samples, we create a model with the age values randomly permuted, then extract the $t$-statistic from it. If the age in fact did have no effect on the lpsa, we would expect that randomly permuting the age values would have no consistent effect on the $t$-statistic, so we'd expect the resulting statistics to be about evenly scattered below and above the original $t$-statistic. However, if we look at the proportion of randomly sampled $t$-statistics that are greater than the original, only about $8\%$ are. This suggests that the original ages were placed in such a way that actually does affect the lpsa.
+\subsection*{4}
+\ssn{a}
+\begin{verbatim}
+> smallmodel=lm(lpsa~lcavol+lweight+svi, data=prostate)
+> predict(smallmodel, new_data, interval='predict')
+       fit       lwr      upr
+1 2.372534 0.9383436 3.806724
+> predict(smallmodel, new_data1, interval='predict')
+       fit       lwr      upr
+1 2.372534 0.9383436 3.806724
+\end{verbatim}
+
+We first remove everything but the lcavol, lweight, and svi from the model, since these were the only things significant at the $5\%$ level. Then, running predictions on the two data points before gives a predicted value of $2.373$ with a confidence interval of $(0.938, 3.807)$ in both cases (since the only thing that differed was age, and we removed that from the model). This confidence interval is about the same width as the one for the 65-year-old, and narrower than the one from the 20-year-old. Given that this produces the same/better results with less parameters, I'd be more inclined to use this model over the full model, especially since we can avoid extrapolation due to age in this instance.
+\ssn{b}
+\begin{verbatim}
+> anova(smallmodel,fullmodel)
+Analysis of Variance Table
+
+Model 1: lpsa ~ lcavol + lweight + svi
+Model 2: lpsa ~ lcavol + lweight + age + lbph + svi + lcp + gleason + 
+    pgg45
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1     93 47.785                           
+2     88 44.163  5    3.6218 1.4434 0.2167
+\end{verbatim}
+
+There is no significant improvement in model performance from switching to the full model. Since we have more degrees of freedom in the smaller one, that one should be preferred.
+\subsection*{5}
+\ssn{a}
+\begin{verbatim}
+> m0 = lm(total~expend+ratio+salary, data=sat)
+
+> summary(m0)
+
+Call:
+lm(formula = total ~ expend + ratio + salary, data = sat)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-140.911  -46.740   -7.535   47.966  123.329 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 1069.234    110.925   9.639 1.29e-12 ***
+expend        16.469     22.050   0.747   0.4589    
+ratio          6.330      6.542   0.968   0.3383    
+salary        -8.823      4.697  -1.878   0.0667 .  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 68.65 on 46 degrees of freedom
+Multiple R-squared:  0.2096,	Adjusted R-squared:  0.1581 
+F-statistic: 4.066 on 3 and 46 DF,  p-value: 0.01209
+\end{verbatim}
+
+Testing $\beta_\text{salary}=0$ is just a matter of looking at the $t$-value from the summary above. Since the $p$-value is $0.0667$, it is insignificant at the $5\%$ level. To test the hypothesis that all three parameters are zero, we run an $F$-test against the mean-only model:
+\begin{verbatim}
+> meanmodel=lm(total~1, data=sat)
+> anova(meanmodel, m0)
+Analysis of Variance Table
+
+Model 1: total ~ 1
+Model 2: total ~ expend + ratio + salary
+  Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+1     49 274308                              
+2     46 216812  3     57496 4.0662 0.01209 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+\end{verbatim}
+This gives a $p$-value of $0.012$, which suggests that there is at least some dependence on the predictors that we chose. 
+\ssn{b}
+\begin{verbatim}
+
+> m1 = lm(total~takers+expend+ratio+salary, data=sat)
+> summary(m1)
+
+Call:
+lm(formula = total ~ takers + expend + ratio + salary, data = sat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-90.531 -20.855  -1.746  15.979  66.571 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 1045.9715    52.8698  19.784  < 2e-16 ***
+takers        -2.9045     0.2313 -12.559 2.61e-16 ***
+expend         4.4626    10.5465   0.423    0.674    
+ratio         -3.6242     3.2154  -1.127    0.266    
+salary         1.6379     2.3872   0.686    0.496    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 32.7 on 45 degrees of freedom
+Multiple R-squared:  0.8246,	Adjusted R-squared:  0.809 
+F-statistic: 52.88 on 4 and 45 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+The hypothesis that $\beta_\text{salary}$ is now $0.496$, which suggests that the addition of \verb|takers| subsumed most of the effect of salary. 
 \end{document}
