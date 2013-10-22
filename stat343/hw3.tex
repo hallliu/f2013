@@ -203,4 +203,6 @@ The $p$-valus is on the order of $10^{-16}$, which suggests that the \verb|taker
 
 Using the notation from the lectures, let $H$ correspond to the smaller model and $L$ correspond to the model with one extra parameter (a total of $p$ parameters). Assume that we're in the case where $H$ and $L$ are spanned by orthonormal standard basis vectors (if not, we can use the same argument as in the lecture notes to get there). Then, the numerator of the $F$-statistic is $\frac{y_{p}^2}{\h{\sigma}^2}$, and the denominator is $\frac{1}{n-p}\sum_{i=p+1}^n\frac{y_i^2}{\h{\sigma}^2}$. If we take the square root of this whole thing, we end up with the $t$-statistic for testing that the extra parameter is nonzero. 
 
+\ssn{6}
+Let $z=\beta_1+\beta_3+e$, where $e\sim N(0,\sigma^2)$. This is distributed as $N(\beta_1+\beta_3,\sigma^2)$. To estimate this using the results from the regression analysis, note that predicting $z$ is simply predicting a new observation at $x^*=\openm1&0&1&0\cdots&0\closem^T$. Thus, we can calculate the confidence interval for prediction and get a confidence interval for $z$.
 \end{document}
