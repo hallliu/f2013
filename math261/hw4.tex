@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage[cm]{fullpage}
+\newcommand{\nc}{\newcommand}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\nc{\cn}{\mathbb{C}}
+\nc{\rn}{\mathbb{R}}
+\nc{\qn}{\mathbb{Q}}
+\nc{\zn}{\mathbb{Z}}
+\nc{\aff}{\mathbb{A}}
+\nc{\proj}{\mathbb{P}}
+\nc{\pd}[2]{\frac{\partial {#1}}{\partial {#2}}}
+\nc{\ep}{\epsilon}
+\nc{\topo}{\mathscr{T}}
+\nc{\basis}{\mathscr{B}}
+\nc{\nullset}{\varnothing}
+\nc{\openm}{\begin{pmatrix}}
+\nc{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\sym}{Sym}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+Taking inner products of characters is a pain, so I used the following code to reduce the amount of petty arithmetic I had to do.
+\begin{verbatim}
+def innerprod(a,b,weights):
+    assert len(a) == len(b)
+    assert len(b) == len(weights)
+
+    s = 0
+    for i in range(len(b)):
+        s += a[i].conjugate() * b[i] * weights[i]
+
+    return s
+\end{verbatim}
+
+\subsection*{3.1}
+We know that the permutation representation of $S_5$ on $\cn^5$ has character $\openm 5&3&2&1&0&1&0\closem$ (listed in the same order as in the book) just by counting the number of elements fixed by each conj. class. We also know that this rep is the direct sum of the standard rep and a copy of the trivial rep, so subtracting out the character of the trivial rep from this one should give the character of standard rep, or $\openm4&2&1&0&-1&0&-1\closem$.
+
+The alternating rep has character $\openm1&-1&1&-1&1&1&-1\closem$. Tensoring this together with the standard rep, we multiply their characters and get $\openm4&-2&1&0&-1&0&1\closem$. We can verify that this is an irrep by taking the inner product with itself, and it indeed comes out to $1$ (calculations not shown because pointless typing)
+\subsection*{3.2}
+\ssn{a}
+From the previous HW, the character of $\sym^2(V)$ is $\frac{\chi_V(g)^2+\chi_V(g^2)}{2}$. Calculating this for the rep $V$ of $S_5$, we have that the character is $\openm10&4&1&0&0&2&1\closem$. 
+\ssn{b}
+Taking the inner product of this character with itself gives $3$, so by looking at the expansion of the inner product of the irreducible decomposition of $\chi_{\sym^2(V)}$ with itself, we see that there must be three irreducibles in there to give an inner product of $3$.
+\ssn{c}
+Successively taking inner products of $\sym^2(V)$ with the five irreps we already know about, we find that we get an inner product of $1$ with $U$ and $V$. Subtracting these two out of the character of $\sym^2(V)$, we get $\openm5&1&-1&-1&0&1&1\closem$, which we know must be an irrep due to (b). Then, we can complete the table using the fact that the remaining irrep must have dimension $5$ and the orthogonality of the columns of the table.
+\subsection*{3.3}
+Character of $\bigwedge^2(W)$ is $\openm10&-2&1&0&0&-2&1\closem$. Taking inner products of this with all the irreps, we see that it takes the value $1$ at $V'$ and $\bigwedge^2V$, so that's the decomposition.
+
+Character of $\sym^2(W)$ is $\openm15&3&0&1&0&3&0\closem$. Taking inner products with the irreps, we get the value $1$ at $U$, $V$, $W$, and $W'$.
+
+Character of $V\otimes W$ is $\openm20&-2&-1&0&0&0&1\closem$. This decomposes into $V'$, $\bigwedge^2 V$, $W$, and $W'$.
+\subsection*{3}
+\ssn{a}
+Jordan$\implies$: Suppose $H$ is normal. Then, $H$ must be a union of conjugacy classes, so if it contains one element from each conjugacy class, it must contain all elements in $G$. Thus, we can assume $H$ is not normal, and let $G$ act on the set of subgroups conjugate to $H$ (let's call it $A$) by conjugation. Then, by Jordan's theorem, there exists some $g\in G$ such that $g$ fixes no subgroups in $A$. Consider the conjugacy class of this $g$. Every element in this conjugacy class fixes no subgroups in $A$, for if $g'=fgf^{-1}$ fixes some $a\in A$, then $g\cdot (f^{-1}\cdot a)=f^{-1}\cdot (g'\cdot a)=f^{-1}\cdot a$. Now consider the normalizer of $H$. This is the set of all elements in $G$ which fix $H$ on conjugation. Clearly it is disjoint with the conjugacy class of $g$, but since the normalizer of $H$ contains $H$, $H$ is also disjoint with the conjugacy class of $g$.
+
+$\implies$Jordan: Let $G$ act transitively on $X$. Let $|X|=n$, and let $H_1,\ldots,H_n$ be the stabilizer subgroups of the the elements of $X$. None of the $H_i$ are equal to $G$, for that would mean that the action is not transitive. For any pair $i,j<n$, let $h_i\in H_i$ arbitrarily. There exists some $g\in G$ such that $g\cdot i=j$, so $gh_ig^{-1}\cdot j=gh_i\cdot i=g\cdot i=j$, which means that $H_i$ is conjugate to $H_j$ for all pairs $i,j$. By the assumption, there exists some conjugacy class of $G$ disjoint from $H_1$, and now we know that it's disjoint from all the $H_i$. This means that no elements in this conjugacy class fix any elements of $X$.
+\ssn{b}
+
+\end{document}
