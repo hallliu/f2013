@@ -66,5 +66,9 @@ Jordan$\implies$: Suppose $H$ is normal. Then, $H$ must be a union of conjugacy 
 
 $\implies$Jordan: Let $G$ act transitively on $X$. Let $|X|=n$, and let $H_1,\ldots,H_n$ be the stabilizer subgroups of the the elements of $X$. None of the $H_i$ are equal to $G$, for that would mean that the action is not transitive. For any pair $i,j<n$, let $h_i\in H_i$ arbitrarily. There exists some $g\in G$ such that $g\cdot i=j$, so $gh_ig^{-1}\cdot j=gh_i\cdot i=g\cdot i=j$, which means that $H_i$ is conjugate to $H_j$ for all pairs $i,j$. By the assumption, there exists some conjugacy class of $G$ disjoint from $H_1$, and now we know that it's disjoint from all the $H_i$. This means that no elements in this conjugacy class fix any elements of $X$.
 \ssn{b}
+(b)$\implies$)(a): If there are two distinct characters equal on $H$, then $H$ cannot intersect all the conjugacy classes of $G$, for that would make any two characters equal on $H$, on $G$.
+
+(a)$\implies$(b): Consider the set of characters on $G$ as a $\zn$-module. Then, the set of irreducible characters forms a basis for this $\zn$-module. Now consider the set of characters on $H$ which satisfy the property that if two conjugacy classes in $H$ result from a conjugacy class of $G$ splitting when going into the subgroup, then the character takes the same value on both classes. This is a $\zn$-module as well, and we have a nice map from the characters on $G$ to this module just by restriction to the subgroup. Our aim, then, is to show that this map is not injective. To do this, note that the maximum size of a basis of the second module is at most the number of conjugacy class in $G$, but since $H$ is disjoint from at least one conjugacy class of $G$, this is actually a strict inequality. Thus, the map is not injective, so there are two distinct characters on $G$ which restrict to the same character on $H$.
+\subsection*{4}
 
 \end{document}
