@@ -28,6 +28,24 @@ Name: Hall Liu
 
 Date: \today 
 \vspace{1.5cm}
+\subsection*{1}
+\ssn{a}
+We have immediately from the definition that $W^\perp$ intersects with $W$ only at zero, as zero is the only vector which has zero inner product with itself. Now, let $w_1,\ldots,w_r$ be an o.n. basis for $W$. For any vector $v\in\cn^n$, let $v'=v-\sum_i\frac{\inner{v}{w_i}}{\inner{w_i}{w_i}}w_i\in W$ be the projection of $v$ onto $W$. Then, taking $\inner{v'}{w_i}$ for any basis vector $w_i$ gives
+$\inner{v}{w_i}-\frac{\inner{v}{w_i}}{\inner{w_i}{w_i}}=0$ since $\|w_i\|=1$ by definition. Thus, we can decompose $v$ into a sum of a vector in $W^\perp$ and a vector in $W$.
 
-1. blah blah blah
+Now, we have $\cn^n=W\oplus W^\perp$. If we let $X=W^\perp$, then $\cn^n=X\oplus X^\perp=W^\perp\oplus(W^\perp)^\perp$, which tells us that $W$ and $(W^\perp)^\perp$ must have the same dimension. Since we know that $W\subset (W^\perp)^\perp$ because all things in $W$ are orthogonal to all things in $W^\perp$, we therefore have equality.
+\ssn{b}
+Let $v\in\cn^m$ such that $A^*v=0$, and $w=Ax$ for some $x\in\cn^n$. Then, $\inner{v}{w}=\inner{v}{Ax}=\inner{A^*v}{x}=\inner{0}{x}=0$ for all such pairs $v,w$, showing that $\ker(A^*)=\im(A)^\perp$. Similarly, if we let $v=A^*x$ for some $x\in\cn^m$ and $w\in\cn^n$ be such that $Aw=0$, we have $\inner{w}{v}=\inner{w}{A^*x}=\inner{Ax}{x}=0$.
+\ssn{c}
+$\ker(A^*)$ and $\im(A)$ are subspaces of $\cn^m$ that are orthogonal complements of each other, so by (a) their direct sum is equal to $\cn^m$. Similarly, $\ker(A)$ and $\im(A^*)$ are orthogonally complementary subspacse of $\cn^n$, so $\cn^n$ equals their direct sum.
+\ssn{d}
+We begin by noting that if $x\in V^\perp$, then the projection of $x$ onto $V$ is the zero vector, since the projection operator is equal to $\sum_i\inner{x}{v_i}v_i$ for some o.n. basis $\{v_i\}$ of $V$.
+\begin{align*}
+    P_{\ker(A)}x&=P_{\ker(A)}x_0+P_{\ker(A)}x_1=x_0\\
+    P_{\im(A^*)}x&=P_{\im(A^*)}x_0+P_{\im(A^*)}x_1=x_1\\
+    P_{\ker(A^*)}y&=P_{\ker(A^*)}y_0+P_{\ker(A^*)}y_1=y_0\\
+    P_{\im(A)}y&=P_{\im(A)}y_0+P_{\im(A)}y_1=y_1\\
+\end{align*}
+\ssn{e}
+
 \end{document}
