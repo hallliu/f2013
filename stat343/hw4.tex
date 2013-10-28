@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\im}{im}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[2]{\langle #1,#2\rangle}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+\subsection*{1}
+Let $h_1,\ldots,h_r$ be an o.n. basis for $H$, so $Qh_i$ for $i\in[1,r]$ is an o.n. basis for $QH$. Since $Q$ is bijective, each vector in $QH^\perp$ can be expressed as $Qv$ for some $v\in H^\perp$. Thus, let $Qv\in QH\perp$. Taking the inner product with all the basis elements of $QH$, we have $\inner{Qv}{Qh_i}=\inner{v}{h_i}=0$, so $Qv\in(QH)^\perp$. This implies that $QH^\perp\subset(QH)^\perp$. Now, since $Q$ is bijective, $\dim(QH)=\dim(H)=r\implies\dim((QH)^\perp)=n-r$ and $\dim(H^\perp)=\dim(QH^\perp)=n-r$, which implies equality.
+\subsection*{2}
+Since $H$ is idempotent, we have $H=H^2$, which implies that $h_{ii}=\sum_jh_{ij}h_{ji}=\sum_jh_{ij}^2$, since $H$ is symmetric. Then, since $HX=X$, multiplying $H$ by the first column of $X$ (the one with all $1$s) should give all $1$s back. Thus, for any $i$, $\sum_j1\cdot h_{ij}=1$, or $\sum_j h_{ij}=1$. Now, denote the $i$th row/column of $H$ by $h_i$. By Cauchy-Schwarz, $1=\inner{h_i}{1}^2\leq\inner{h_i}{h_i}\inner{1}{1}=nh_{ii}$, so we have $h_{ii}\geq\frac{1}{n}$.
+
+For the other inequality, note that if $x_i=x_j$, then $h_{ii}=h_{ij}$ since $h_{ij}=x_i(X^TX)^{-1}x_j^T$. Then, we have $h_{ii}=rh_{ii}^2+\sum_{x_i\neq x_j}h_{ij}^2\leq rh_{ii}^2$. Dividing on both sides by $h_{ii}$ (which is strictly positive because $X^TX$ is pos. def.), we have $1\leq rh_{ii}$, or $h_{ii}\leq\frac{1}{r}$.
+
+Let $X=\openm1&0\\1&1\closem$. Then $H$ is the identity, which achieves equality for the upper bound.
+\end{document}
