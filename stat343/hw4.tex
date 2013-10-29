@@ -31,5 +31,44 @@ Since $H$ is idempotent, we have $H=H^2$, which implies that $h_{ii}=\sum_jh_{ij
 
 For the other inequality, note that if $x_i=x_j$, then $h_{ii}=h_{ij}$ since $h_{ij}=x_i(X^TX)^{-1}x_j^T$. Then, we have $h_{ii}=rh_{ii}^2+\sum_{x_i\neq x_j}h_{ij}^2\leq rh_{ii}^2$. Dividing on both sides by $h_{ii}$ (which is strictly positive because $X^TX$ is pos. def.), we have $1\leq rh_{ii}$, or $h_{ii}\leq\frac{1}{r}$.
 
-Let $X=\openm1&0\\1&1\closem$. Then $H$ is the identity, which achieves equality for the upper bound.
+Let $X=\openm1&0\\1&1\closem$. Then $H$ is the identity, which achieves equality for the upper bound. 
+% TODO: lower bound
+\subsection*{3}
+\ssn{a}
+\includegraphics[width=0.7\textwidth]{hw4_files/3_a.png}
+
+As seen from the plot of residuals versus the fitted values above, there is a distinct linear trend in the residuals. This suggests that there is some variable not included in the model which has a strong effect on the response.
+\ssn{b}
+We can take the Q-Q plot of the residuals and compare them to a ``null plot'' generated from a random normal sample, as seen in the two plots here.
+
+\noindent\includegraphics[width=0.5\textwidth]{hw4_files/3b_resids.png}
+\includegraphics[width=0.5\textwidth]{hw4_files/3b_baseline.png}
+
+They look very similar, which suggests that the normality assumption on the residuals is sound.
+\ssn{c}
+We now compare the half-normal plot of the leverages with a null plot. Case 32 is the most extreme of the leverages, with a value of $0.3304$. Since twice the ``average'' leverage should be $2\cdot9/97=0.186$, this point is probably worth taking a look at.
+
+\noindent\includegraphics[width=0.5\textwidth]{hw4_files/3c_leverages.png}
+\includegraphics[width=0.5\textwidth]{hw4_files/3c_null.png}
+
+\ssn{d}
+We can check outliers by using the jackknife residuals, found with the R command \verb|rstudent()|. Running this gives case 39 as the one with the most extreme jackknife residual, with a value of $-2.217$. This is surprising because this point actually had fairly low leverage. It could be that this point was only distant in one dimension from the rest of the data, which means that it actually had fairly low pull on the regression parameters. 
+
+Now, we can calculate the Bonferroni threshold with \verb|qt(0.05/(97*2), 87)|, and this gives $-3.607$, which indicates that case 39 isn't really much of an outlier at all.
+\ssn{e}
+Checking the Cook distance on a half-normal plot, we see that 32, 47, 69, and 95 are the cases that stand out the most. Taking the most outstanding one, 32, and computing a new model \verb|c| with it excluded, we can find the relative difference in the results
+\begin{verbatim}
+ (Intercept)       lcavol      lweight          age         lbph          svi          lcp      gleason 
+ 0.743234304  0.036947598 -0.367892871 -0.083224201  0.107082175  0.007484213 -0.004861717 -0.122875708 
+       pgg45 
+ 0.012578993
+\end{verbatim}
+Thus, we see that there was a very large change from excluding point 32.
+\ssn{f}
+\subsection*{4}
+In order to have the dimensions match up, we must have $\beta_i\in\rn^{n_i}$. However, if the $n_i$ are distinct, we cannot compare the $\beta_i$ for equality. Thus, let's just suppose that all the $n_i$ are equal to $n$. Label the individual entries of the $X_i$ as $x_{ijk}$, where the $j$ and $k$ indicate the position of the entry within each $X_i$, and similarly with the $y_i\mapsto y_{ij}$. Then, under the null hypothesis, the model is $y_{ij}=\sum_k\beta_{k}x_{ijk}+e_{ij}$. Rewritten in matrix form, this is $y=X\beta+e$, where $y,e\in\rn^{rn}$, $X$ is the vertical concatenation of the $X_i$ (in $\rn^{rn\times p}$), and $\beta$ is the $p$-long coefficient vector. 
+
+The alternative hypothesis is $y_{ij}=\sum_k\beta_{ik}x_{ijk}+e_{ij}$, or $y=X'\beta'+e$, where now $X$ is the block diagonal matrix formed by joining the $X_i$ along the diagonal and $\beta'$ is the vertical concatenation of the $\beta_i$. Thus, to test the null hypothesis, one could simply compare the smaller model obtained above to the larger alternative model using the standard $F$-test.
+\subsection*{5}
+
 \end{document}
