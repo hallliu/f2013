@@ -33,7 +33,7 @@ Since $H$ is idempotent, we have $H=H^2$, which implies that $h_{ii}=\sum_jh_{ij
 For the other inequality, note that if $x_i=x_j$, then $h_{ii}=h_{ij}$ since $h_{ij}=x_i(X^TX)^{-1}x_j^T$. Then, we have $h_{ii}=rh_{ii}^2+\sum_{x_i\neq x_j}h_{ij}^2\leq rh_{ii}^2$. Dividing on both sides by $h_{ii}$ (which is strictly positive because $X^TX$ is pos. def.), we have $1\leq rh_{ii}$, or $h_{ii}\leq\frac{1}{r}$.
 
 Let $X=\openm1&0\\1&1\closem$. Then $H$ is the identity, which achieves equality for the upper bound. 
-% TODO: lower bound
+For the lower bound, take the model with only the intercept, so let $X=\openm1&1&\hdots&1\closem^T$. Then we have $X(X^TX)^{-1}X^T$ is the matrix filled with values $1/n$, which attains the lower bound.
 \subsection*{3}
 \ssn{a}
 \noindent\includegraphics[width=0.5\textwidth]{hw4_files/3a_resids.png}
