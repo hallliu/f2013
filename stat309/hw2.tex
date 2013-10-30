@@ -14,14 +14,17 @@
 \DeclareMathOperator{\cov}{cov}
 \DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\Span}{span}
 \DeclareMathOperator{\Null}{null}
+\renewcommand{\Re}{\mathrm{Re}}
 \newcommand{\nc}{\newcommand}
 \newcommand{\rn}{\mathbb{R}}
 \nc{\cn}{\mathbb{C}}
 \nc{\ssn}[1]{\subsubsection*{#1}}
 \nc{\inner}[2]{\langle #1,#2\rangle}
 \nc{\h}[1]{\widehat{#1}}
+\nc{\norm}[1]{\left\|{#1}\right\|}
 \begin{document}
 
 Name: Hall Liu
@@ -57,5 +60,39 @@ Let $x$ be such that $Ax=b_1$, and write $x=x_0+x_1$ where $x_0\in\ker(A)$ and $
 \ssn{h}
 For the kernel, $\ker(A)=\ker(A^*A)=\ker(AA^*)=\ker(A^*)$. For the image, we have $\im(A)=\im(AA^*)=\im(A^*A)=\im(A)$. Then by the Fredholm alternative, $\cn^n=\ker(A)\oplus\im(A^*)=\ker(A)\oplus\im(A)$. 
 \subsection*{2}
+\ssn{a}
+From HW1, we know that $\|A\|_F^2=\tr(A^*A)$, so 
+\begin{align*}
+    \|A-BX\|_F^2&=\tr((A-BX)^*(A-BX))\\
+    &=\tr((A^*-X^*B^*)(A-BX))&\\
+    &=\tr(A^*A-A^*BX-X^*B^*A+X^*B^*BX)\\
+    &=\tr(A^*A)-\tr((X^*B^*A)^*)-\tr(X^*B^*A)+\tr(X^*B^*BX)
+\end{align*}
+Since the trace of the conj. transpose of a matrix is just the conjugate of the trace, the middle two terms collapse to $2\Re(\tr(X^*B^*A))$. Also, since trace is invariant under change of basis, the last term becomes just $\tr(B^*B)$, which results in the expression that we wanted. Since the only term that depends on $X$ is $\Re(\tr(X^*B^*A))$, we might as well just maximize this instead.
+\ssn{b}
+Write $X^*B^*A=X^*U\Sigma V$ by taking the SVD of $B^*A$. Then, since the trace is invariant under cyclic permutations, we have $\tr(X^*B^*A)=\tr(\Sigma V^*X^*U)=\tr(\Sigma\Lambda)$ where $\Lambda$ is unitary. Working out the matrix multiplication, the diagonal entries of $\Sigma\Lambda$ are of the form $\sigma_i\lambda_{ii}$. Since each column of $\Lambda$ has norm $1$, every entry of $\Lambda$ is at most norm $1$, so $\Re(\sigma_i\lambda_{ii})$ is bounded above by $\Re(\sigma_i)$. Thus, $\Re(\tr(\Sigma\Lambda))\leq\Re(\tr(\Sigma))=\sum_i\sigma_i(B^*A)$, which is what we wanted. Equality is attained when $\Lambda=I_n$, or when $V^*X^*U=I_n\implies X=UV^*$. 
+\ssn{c}
+Since from above, we have that the minimum is attained when $X=UV^*$, plugging into the formula in (a) gives $\tr(A^*A)+\tr(B^*B)-2\sum\sigma_i(B^*A)$. Now, we know from class that $\tr(A^*A)$ is the sum of the squares of the singular values of $A$, and same with $B$. Putting these all together and accounting for possibly zero singular values, we get the formula we were supposed to prove.
+\ssn{d}
+(i): The unitariness of $V$ and $U$ is given by the existence of the SVD. Since $A$ is full-rank and $n\leq m$, it must have $n$ nonzero singular values.
 
+\noindent(ii): Use the fact that left- or right- multiplying by a unitary matrix does not change the Frobenius norm. Then, we have
+\begin{align*}
+    \|AX-B\|_F^2&=\left\|U\openm\Sigma\\0\closem V^*X-B\right\|_F^2\\
+                &=\left\|\openm\Sigma\\0\closem V^*X-U^*B\right\|_F^2\\
+                &=\left\|\openm\Sigma\\0\closem V^*XV-U^*BV\right\|_F^2\\
+                &=\left\|\openm\Sigma\\0\closem V^*XV-\openm C_1\\C_2\closem\right\|_F^2\\
+\end{align*}
+Since we can just split up the Frobenius norm into concatenations of vectors (or matrices here), this is equal to $\norm{\Sigma V^*XV-C_1}_F^2+\norm{C_2}_F^2$, which is the desired result.
+
+\noindent(iii): The first term is due to the sum of squares along the diagonals of $\Sigma Y-C_1$. The rest of it is $\sum_{j\neq i}|\sigma_iy_{ij}-c_{ij}|^2$, but since $Y$ is Hermitian, we can pair up each term with the corresponding term flipped across the diagonal and get $\sum_{j>i}|\sigma_iy_{ij}-c_{ij}|^2+|\sigma_j\conj{y_{ij}}-c_{ji}|^2=\sum_{j>i}|\sigma_iy_{ij}-c_{ij}|^2+|\sigma_jy_{ij}-\conj{c_{ji}}|^2$. 
+
+We can minimize this term-by-term, since each of the terms depends only on one $y_{ij}$. Let $a=\sigma_i, b=c_{ij}, c=\sigma_j, d=\conj{c_{ji}}$ (with $a,c\in\rn$). Then, the problem is to minimize $|az-b|^2+|cz-d|^2$, or $a^2|z-b/a|^2+c^2|z-d/c|^2$. Thus, $z$ must lie on the line from $b/a$ to $d/c$. Suppose $z$ is at distance $l$ from $b/a$, and let $L=|b/a-d/c|$. Then, we want to minimize $a^2l^2+c^2(L-l)^2$. Differentiating wrt $l$ and minimizing this way, we obtain $l=\frac{c^2L}{c^2+a^2}$. Now, since we have $z=b/a+\frac{b/a-d/c}{L}l$, this becomes $\frac{b}{a}+\frac{b/a-d/c}{c^2+a^2}=\frac{ab+cd}{a^2+c^2}$ (maybe), which is the desired result.
+\ssn{e}
+For $\det(A)=0$, just let $X=A$. Otherwise, $A$ is invertible, and thus has a SVD $U\Sigma V^*$ where $\Sigma$ is diagonal and invertible. Then, $|\det(A)|=\det(\Sigma)$, so all we have to do is find some $X$ that has determinant equal to that of $\Sigma$.
+
+We have $\norm{A-X}_F^2=\norm{U\Sigma V^*-X}_F^2=\norm{\Sigma-U^*XV}_F^2=\norm{\Sigma-D}_F^2$, where $D$ is defined appropriately. If we let $\det(U)=u$ and $\det(V)=v$, then we must have $\det(X)=\frac{u}{v}\det(D)$, or $\det(D)=\frac{v}{u}|\det(A)|$. The problem now becomes finding such a $D$ that minimizes $\norm{\Sigma-D}_F^2$. 
+
+
+Let $WDT^*$ be the SVD of any matrix $X$ with the correct determinant. Then, we must have $\det(D)=\det(X)$
 \end{document}
