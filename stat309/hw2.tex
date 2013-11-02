@@ -113,4 +113,31 @@ Now, note that for any $i$ and $v\in\cn^n$, $q_is_i^*v$ is a scalar multiple of 
 For specific counterexamples, consider $\openm0\\1\closem\openm1&1\closem+\openm0\\2\closem\openm1&-1\closem=\openm0&0\\1&1\closem+\openm0&0\\2&-2\closem$, which cannot be rank $2$ because the first row is all zero. Also consider $\openm1\\-1\closem\openm0&1\closem+\openm1\\1\closem\openm0&2\closem=\openm0&1\\0&-1\closem+\openm0&2\\0&2\closem$, which is again not rank $2$.
 \ssn{d}
 Suppose $A$ can be written as a sum of $k$ rank-1 matrices. Let $A=x_1y_1^*+\cdots+x_ky_k^*$. Then $\im(A)\subset\bigcup\Span(x_1,\ldots,x_k)$ by the same argument as (c), which implies $\rank(A)\leq k$. Now, since $A$ can always be written as $\sum_i\sigma_iu_iv_i^*$ where $u_i$ and $v_i$ are the left- and right- singular vectors of $A$, the lower bound is attained since the rank of $A$ is the number of nonzero singular values.
+\ssn{e}
+We have $\|A\|_F=\sqrt{\sigma_1^2+\cdots+\sigma_r^2}\leq\sqrt{r\sigma_1^2}=\sqrt{r}\sigma_1=\sqrt{r}\|A\|_2$
+\ssn{f}
+The nuclear norm is $\|A\|_*=\sigma_1+\cdots+\sigma_r\leq r\sigma_1=r\|A\|_2$.
+\subsection*{4}
+Let $X_*$ be a minimum-rank matrix subject to the entry-wise constraints. Let $\rank(X_*)=k$, so $X_*$ has $k$ nonzero singular values. Thus, $f_r(X_*)=0$ iff $r\geq k$. 
+
+Now, let $X_r$ be a minimizer of (4.9). If $r\geq k$, then we have that $X_*$ satisfies the constraints. Since $f_r(X_*)=0$, any mimimizer of (4.9) must also satisfy $f_r(X_r)=0$. Conversely, if the minimum value of $f_r$ subject to the constraints is $0$, then $X_r$ can have no more than $r$ nonzero singular values, implying that the rank of $X_r$ is at most $r$. However, since $X_r$ satisfies the constraints in (4.8), we must have $\rank(X_*)\leq\rank(X_r)\leq r$.
+
+With this, we can now solve (4.8) by solving (4.9) for increasing $r$ (which we presumably know how to do since it's a continuous problem), and stopping when we get a min value of zero. However, since there are iterative algorithms involved, it's a bit difficult to determine when the min value is actually zero, so I assume that's the reason for the parenthetical ``in principle'' in the problem statement
+\subsection*{5}
+\ssn{a}
+We have $\|A\|_F^2=\tr(A^*A)$, so
+\begin{align*}
+    \left\|A\left(I-\frac{xx^*}{x^*x}\right)\right\|_F^2&=\tr\left(\left(I-\frac{xx^*}{x^*x}\right)A^*A\left(I-\frac{xx^*}{x^*x}\right)\right)\\
+                                                    &=\tr(A^*A)-2\frac{\tr(A^*Axx^*)}{x^*x}+\frac{\tr(xx^*A^*Axx^*)}{(x^*x)^2}\\
+\end{align*}
+We recognize the first term as $\|A\|_F^2$. The numerator in the last term is $\tr((Axx^*)^*(Axx^*))=\|Axx^*\|_F^2$, which by (3a) is $\|Ax\|_2^2\|x\|_2^2$. Canceling with the denominator gives the last term as $\frac{\|Ax\|_2^2}{\|x\|_2^2}$.
+
+Since trace is invariant under cyclic permutation, the numerator of the second term can be written as $\tr(Axx^*A^*)=\tr((Ax)(Ax)^*)=\|Ax\|_F^2=\|Ax\|_2^2$. Putting it all together, we have that the expression is equal to $\|A\|_F^2-\frac{\|Ax\|_2^2}{\|x\|_2^2}$.
+\ssn{b}
+Suppose $(A+E)x=b$. Then $Ex=b-Ax$ implying $\|Ex\|_2=\|b-Ax\|_2$. By the defn of the $2$-norm, $\|E\|_2\geq\frac{\|b-Ax\|_2}{\|x\|_2}$. 
+
+Now consider $E^*=\frac{(b-Ax)x^*}{x^*x}$. By (3a), $\|E^*\|_2=\frac{\|b-Ax\|_2\|x\|_2}{\|x\|_2^2}=\frac{\|b-Ax\|_2}{\|x\|_2}$, which attains the lower bound shown above. 
+\ssn{c}
+
+
 \end{document}
