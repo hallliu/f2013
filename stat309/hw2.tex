@@ -93,6 +93,24 @@ For $\det(A)=0$, just let $X=A$. Otherwise, $A$ is invertible, and thus has a SV
 
 We have $\norm{A-X}_F^2=\norm{U\Sigma V^*-X}_F^2=\norm{\Sigma-U^*XV}_F^2=\norm{\Sigma-D}_F^2$, where $D$ is defined appropriately. If we let $\det(U)=u$ and $\det(V)=v$, then we must have $\det(X)=\frac{u}{v}\det(D)$, or $\det(D)=\frac{v}{u}|\det(A)|$. The problem now becomes finding such a $D$ that minimizes $\norm{\Sigma-D}_F^2$. 
 
+Let $WDT^*$ be the SVD of any matrix $X$ with the correct determinant. Then, we must have $\det(D)=\det(X)$ 
+\subsection*{3}
+\ssn{a}
+Suppose $\rank(A)=1$. Then the image of $x$ as a function $\cn\to\cn^m$ must have dimension $1$, so $x$ is nonzero. Further, if $y$ is zero, $xy^*$ would be zero, which would mean that the rank of $A$ is zero. Now suppose $x$ and $y$ are nonzero. Then $y^*$ as a function $\cn^n\to\cn$ is surjective, so the image of $A$ is the image of $x$, which has dimension $1$ since $x$ is nonzero.
+\ssn{b}
+We have $A^*A=yx^*xy^*=\|x\|_2^2yy^*$. Since $yy^*$ has rank $1$, it has only one nonzero eigenvalue, which conveniently happens to be when it's applied to $y$ with value $\|y\|_2^2$. Thus, the $2$-norm of $A$ is the square root of $\|x\|^2_2\|y\|_2^2$, or $\|x\|\|y\|$. 
 
-Let $WDT^*$ be the SVD of any matrix $X$ with the correct determinant. Then, we must have $\det(D)=\det(X)$
+The Frobenius norm squared of $A$ is $\sum_i\sum_j|x_i\conj{y}_j|^2=\sum_i\sum_j|x_i|^2|y_j|^2=\|x\|^2\|y\|^2$, so this is equal to the above as well after taking a sqrt.
+
+The infinity norm of $A$ is the max row-sum, or $\max_i\left(\sum_j|x_i||\conj{y}_j|\right)\leq\|x\|_\infty\max_i\left(\sum_j|y_j|\right)=\|x\|_\infty\|y\|_1$.
+
+By a similar argument with the indices flipped around, $\|A\|_1\leq\|x\|_1\|y\|_\infty$.
+\ssn{c}
+Let $X$ be a $m\times r$ matrix with columns consisting of the $x_i$, and construct $Y$ similarly. Let $X=QR$ and $Y=ST$ using the reduced QR decomposition. Since all the $x_i$ and $y_i$ are independent, $R$ and $T$ are invertible. Thus, we have $x_i=Rq_i$ and $y_i=Ts_i$. Subsituting into the expression for $A$, we have $A=R(q_1s_1^*+\cdots+q_rs_r^*)T^*$. Since $R$ and $T$ are invertible, the rank of $A$ is the rank of the inner sum. Denote it by $K$. 
+
+Now, note that for any $i$ and $v\in\cn^n$, $q_is_i^*v$ is a scalar multiple of $q_i$. Due to the independence of the $q_i$, if not all of the $s_i^*v$ are zero, then the sum cannot be zero. Now suppose that $s_i^*v=0$ for all $i$. This is equivalent to $\langle s_i,v\rangle=0$ for all $i$, or $v\in\bigcap_is_i^\perp$. Since the $s_i$ are orthogonal, their orthogonal complements are also orthogonal, so the intersection of $r$ of those should have dimension $n-r$. Thus, the kernel of $K$ has dimension $n-r$, which means that the rank of $K$ is $r$. (Yes, I'm aware I didn't need to do the orthogonality thing)
+
+For specific counterexamples, consider $\openm0\\1\closem\openm1&1\closem+\openm0\\2\closem\openm1&-1\closem=\openm0&0\\1&1\closem+\openm0&0\\2&-2\closem$, which cannot be rank $2$ because the first row is all zero. Also consider $\openm1\\-1\closem\openm0&1\closem+\openm1\\1\closem\openm0&2\closem=\openm0&1\\0&-1\closem+\openm0&2\\0&2\closem$, which is again not rank $2$.
+\ssn{d}
+Suppose $A$ can be written as a sum of $k$ rank-1 matrices. Let $A=x_1y_1^*+\cdots+x_ky_k^*$. Then $\im(A)\subset\bigcup\Span(x_1,\ldots,x_k)$ by the same argument as (c), which implies $\rank(A)\leq k$. Now, since $A$ can always be written as $\sum_i\sigma_iu_iv_i^*$ where $u_i$ and $v_i$ are the left- and right- singular vectors of $A$, the lower bound is attained since the rank of $A$ is the number of nonzero singular values.
 \end{document}
