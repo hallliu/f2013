@@ -93,7 +93,18 @@ For $\det(A)=0$, just let $X=A$. Otherwise, $A$ is invertible, and thus has a SV
 
 We have $\norm{A-X}_F^2=\norm{U\Sigma V^*-X}_F^2=\norm{\Sigma-U^*XV}_F^2=\norm{\Sigma-D}_F^2$, where $D$ is defined appropriately. If we let $\det(U)=u$ and $\det(V)=v$, then we must have $\det(X)=\frac{u}{v}\det(D)$, or $\det(D)=\frac{v}{u}|\det(A)|$. The problem now becomes finding such a $D$ that minimizes $\norm{\Sigma-D}_F^2$. 
 
-Let $WDT^*$ be the SVD of any matrix $X$ with the correct determinant. Then, we must have $\det(D)=\det(X)$ 
+Expand this expression: 
+\begin{align*}
+    \norm{D-\Sigma}_F^2&=\sum_i(d_{ii}-\sigma_i)^2+\sum_{i\neq j}d_{ij}^2\\
+                       &=\sum_i(d_{ii}^2-2d_{ii}\sigma_i+\sigma_i^2)+\sum_{i\neq j}d_{ij}^2\\
+                       &=\sum_i(\sigma_i^2-2d_{ii}\sigma_i)+\norm{D}_F^2
+\end{align*}
+If we want to minimize the expression found above for $\norm{D-\Sigma}_F^2$, for any fixed $\norm{D}_F^2$, we need to have the $d_{ii}$ maximized. The best way to do this is simply to make $D$ diagonal, so we have $X=UDV^*$ as the SVD of $X$ now. Now we need to find some $D$ that makes $X$ have the correct determinant.
+
+Ideally, we'd want the entries of $D$ to be the same as $\Sigma$, but we need to have the product of the entries of $D$ equal $\frac{v}{u}|\det(A)|$. Instead, we can just have most of $D$ be the same as $\Sigma$, but change the smallest entry to get the appropriate multiplier of $\frac{v}{u}$ in there.
+
+The problem now becomes to find some appropriate $\Delta$. Evidently, we must have $\product_i\delta_{ii}=|\det(A)|$
+Let $W\Delta T^*$ be the SVD of any matrix $X$ with the correct determinant. Then, $D=U^*W\Delta T^*V$, so $\norm{D}_F^2=\norm{\Delta}_F^2$.
 \subsection*{3}
 \ssn{a}
 Suppose $\rank(A)=1$. Then the image of $x$ as a function $\cn\to\cn^m$ must have dimension $1$, so $x$ is nonzero. Further, if $y$ is zero, $xy^*$ would be zero, which would mean that the rank of $A$ is zero. Now suppose $x$ and $y$ are nonzero. Then $y^*$ as a function $\cn^n\to\cn$ is surjective, so the image of $A$ is the image of $x$, which has dimension $1$ since $x$ is nonzero.
@@ -138,6 +149,26 @@ Suppose $(A+E)x=b$. Then $Ex=b-Ax$ implying $\|Ex\|_2=\|b-Ax\|_2$. By the defn o
 
 Now consider $E^*=\frac{(b-Ax)x^*}{x^*x}$. By (3a), $\|E^*\|_2=\frac{\|b-Ax\|_2\|x\|_2}{\|x\|_2^2}=\frac{\|b-Ax\|_2}{\|x\|_2}$, which attains the lower bound shown above. 
 \ssn{c}
+By (b), any pair $x,E$ where $E=\frac{(b-Ax)x^*}{\|x\|_2^2}$ is consistent. Further, this $E$ has the minimum $2$-norm of all possible $E$ that make the system consistent with $x$. Thus, to minimize over all pairs $x,E$, we just need to find some $x$ such that the $2$-norm of $\frac{(b-Ax)x^*}{\|x\|_2^2}$ is minimized. We found the $2$-norm to be $\frac{\|b-Ax\|_2}{\|x\|_2}$ above. 
+
+At this point, we need to assume that $A$ is injective, for otherwise we could just take $x\in\ker(A)$ and multiply it by some huge scalar, which will make the $2$-norm arbitrarily close to zero. 
+%TODO: solve this.
+
+As for the Frobenius norm, the $E$ from (b) was a rank-1 matrix, which means that its $2$-norm is the same as its Frobenius norm. Since the Frobenius norm of any matrix is always bounded below by the $2$-norm, the solution to the $2$-norm minimization is the same as that of the Frobenius norm minimization.
 \ssn{d}
+Minimum: let $E'=\frac{ba^*}{\|a\|_2^2}$. Then $E'a=\frac{ba^*a}{\|a\|_2^2}=b$, so if $\|E'\|_F\leq\delta$, we can just take $E'$ to be the minimizer. Evaluating $\|E'\|_F$, we have by (3a) that it's $\frac{\|b\|_2\|a\|_2}{\|a\|_2^2}=\frac{\|b\|_2}{\|a\|_2}$. Thus, let us restrict our attention to the case where $\frac{\|b\|_2}{\|a\|_2}>\delta$, since otherwise we can just take $E'$ to be our solution.
+
+Now consider any matrix $E$ with $\|E\|_F\leq\delta$. Then, $\|Ea\|_2\leq\|E\|_2\|a\|_2\leq\|E\|_F\|a\|_2\leq\delta\|a\|_2<\|b\|_2$ by the above consideration. Then, we have by the triangle inequality $\|Ea-b\|_2\geq\left|\|Ea\|_2-\|b\|_2\right|=\|b\|_2-\|Ea\|_2\geq\|b\|_2-\delta\|a\|_2$. Now, let $E'=\delta\frac{ba^*}{\|b\|_2\|a\|_2}$. We have $\|E'\|_F=\delta\frac{\|b\|_2\|a\|_2}{\|b\|_2\|a\|_2}=\delta$, and
+\begin{align*}
+    \|E'a-b\|_2&=\left\|\delta\frac{ba^*a}{\|b\|_2\|a\|_2}-b\right\|_2\\
+              &=\left\|\delta b\frac{\|a\|_2}{\|b\|_2}-b\right\|_2\\
+              &=\|b\|_2\left|\delta\frac{\|a\|_2}{\|b\|_2}-1\right|\\
+              &=\left|\delta\|a\|_2-\|b\|_2\right|
+\end{align*}
+which attains the lower bound found above.
+
+For the maximum, for any $E$ which satisfies the constraints, we have $\|Ea-b\|_2\leq\|Ea\|_2+\|b\|_2\leq\delta\|a\|_2+\|b\|_2$. If we let $E'=-\delta\frac{ba^*}{\|b\|_2\|a\|_2}$ and follow the calculation through from above, we get $\|E'a-b\|_2=\delta\|a\|_2+\|b\|_2$, which attains the upper bound.
+\subsection*{6}
+
 
 \end{document}
