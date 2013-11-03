@@ -169,6 +169,9 @@ which attains the lower bound found above.
 
 For the maximum, for any $E$ which satisfies the constraints, we have $\|Ea-b\|_2\leq\|Ea\|_2+\|b\|_2\leq\delta\|a\|_2+\|b\|_2$. If we let $E'=-\delta\frac{ba^*}{\|b\|_2\|a\|_2}$ and follow the calculation through from above, we get $\|E'a-b\|_2=\delta\|a\|_2+\|b\|_2$, which attains the upper bound.
 \subsection*{6}
+\ssn{a}
+Projecting a vector onto another vector is just calculating $\frac{a^Tb}{\|b\|}$. If we have the SVD of $A$, $A=U\Sigma V^*$, then $AV=U\Sigma$. The inner product of the $i$th row of $A$ with the $j$th right-singular vector is then just $(U\Sigma)_{ij}$, or $\sigma_ju_{ij}$, and the inner product of the $j$th column of $A$ with the $i$th left-singular vector is similarly $(\Sigma V^*)_{ij}=\sigma_i \conj{v_{ji}}$. 
 
+Projecting onto the first two right-singular vectors as the $x$ and $y$ axes respectively, we have that the $x$-value of the $i$th row is $\sigma_1u_{i1}$ and the $y$-value is $\sigma_1v_{1i}$. The plot follows.
 
 \end{document}
