@@ -28,7 +28,7 @@ def make_labeled_plot (xs, ys, labels, savename):
     plt.figure(figsize=(8,8))
     plt.scatter(xs, ys)
     for (ind, label) in enumerate(labels):
-        plt.annotate(label, xy=(xs[ind], ys[ind]), size='x-small')
+        plt.annotate(label, xy=(xs[ind], ys[ind]), size='xx-small')
     plt.savefig(savename+'.png', format='png', dpi=150, bbox_inches='tight')
 
 def make_overlay_plot(xs1, xs2, ys1, ys2, label1, label2):
@@ -36,12 +36,12 @@ def make_overlay_plot(xs1, xs2, ys1, ys2, label1, label2):
     plt.axes()
     plt.scatter(xs1, ys1, c='b', marker='.')
     for (ind, label) in enumerate(label1):
-        plt.annotate(label, xy=(xs1[ind], ys1[ind]), size='x-small', color='b')
+        plt.annotate(label, xy=(xs1[ind], ys1[ind]), size='xx-small', color='b')
 
     plt.axes()
     plt.scatter(xs2, ys2, c='g', marker='.')
     for (ind, label) in enumerate(label2):
-        plt.annotate(label, xy=(xs2[ind], ys2[ind]), size='x-small', color='g')
+        plt.annotate(label, xy=(xs2[ind], ys2[ind]), size='xx-small', color='g')
 
     plt.savefig('overlay.png', format='png', dpi=150, bbox_inches='tight')
 
