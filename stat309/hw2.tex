@@ -103,7 +103,7 @@ If we want to minimize the expression found above for $\norm{D-\Sigma}_F^2$, for
 
 Ideally, we'd want the entries of $D$ to be the same as $\Sigma$, but we need to have the product of the entries of $D$ equal $\frac{v}{u}|\det(A)|$. Instead, we can just have most of $D$ be the same as $\Sigma$, but change the smallest entry to get the appropriate multiplier of $\frac{v}{u}$ in there.
 
-The problem now becomes to find some appropriate $\Delta$. Evidently, we must have $\product_i\delta_{ii}=|\det(A)|$
+The problem now becomes to find some appropriate $\Delta$. Evidently, we must have $\prod_i\delta_{ii}=|\det(A)|$
 Let $W\Delta T^*$ be the SVD of any matrix $X$ with the correct determinant. Then, $D=U^*W\Delta T^*V$, so $\norm{D}_F^2=\norm{\Delta}_F^2$.
 \subsection*{3}
 \ssn{a}
@@ -174,4 +174,23 @@ Projecting a vector onto another vector is just calculating $\frac{a^Tb}{\|b\|}$
 
 Projecting onto the first two right-singular vectors as the $x$ and $y$ axes respectively, we have that the $x$-value of the $i$th row is $\sigma_1u_{i1}$ and the $y$-value is $\sigma_1v_{1i}$. The plot follows.
 
+\includegraphics[width=0.9\textwidth]{hw2_files/countries.png}
+
+Hong Kong and Singapore are the two obvious outliers.
+\ssn{b}
+Using the same technique as above, we have
+
+\includegraphics[width=0.9\textwidth]{hw2_files/features.png}
+
+where the two points stacked in the lower half are \verb|Population/sq.km| and \verb|Population/1000HectarAgri|.
+\ssn{c}
+The overlaid plot is below:
+
+\includegraphics[width=0.9\textwidth]{hw2_files/overlay.png}
+
+We can see that the two demographic variables \verb|Population/sq.km| and \verb|Population/1000HectarAgri| are located near the two outliers from before. We can interpret this as follows: Write $\hat{A}$ as $\sigma_1u_1v_1^T+\sigma_2u_2v_2^T$, where $\hat{A}$ represents the rank 2 approximation to $A$. The $ij$th entry of $A$ is approximated by the $ij$th entry of $\hat{A}$, which is in turn $\sigma_1u_{i1}v_{1j}^T+\sigma_2u_{i2}v_{2j}$. Note that this is very similar to the inner product of the $i$th country point with the $j$th feature point in the biplot (and would be exactly the same had we used $\sqrt{\sigma_i}$ to do scaling). The fact that HK and Singapore are so close to the population metrics so far out indicates that those two stats are responsible for the two countries being outliers, since their dot product is likely to have extreme values.
+\ssn{d}
+I removed USA as well because it was making Japan's name unreadable. From this reduced plot, it looks like the countries most similar to Japan are Austria and Poland. 
+
+\includegraphics[width=0.8\textwidth]{hw2_files/countries_no_outliers.png}
 \end{document}
