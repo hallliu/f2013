@@ -3,16 +3,66 @@
 \usepackage[namelimits,sumlimits]{amsmath}
 \usepackage{amssymb,amsfonts}
 \usepackage{multicol}
+\usepackage{graphicx}
 \newcommand{\nc}{\newcommand}
 \newcommand{\tab}{\hspace*{5em}}
 \newcommand{\conj}{\overline}
 \newcommand{\dd}{\partial}
 \newcommand{\openm}{\begin{pmatrix}}
 \newcommand{\closem}{\end{pmatrix}}
-\nc{\pd}{\partial}
-\nc{\del}{\nabla}
 \nc{\ep}{\epsilon}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\tr}{tr}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[1]{\langle #1\rangle}
+\nc{\hbeta}{\h{\beta}}
 \begin{document}
 \small
+Useful matrix facts: let $x$ be a r.v., $A$ be a constant matrix. Then $E(Ax)=AE(x)$ and $\var(Ax)=A\var{x}A^T$.
+
+Random distributional interlude: If $u\sim N_p(\mu,\Sigma)$, then $(u-\mu)^T\Sigma^{-1}(u-\mu)\sim\chi^2_p$. Pf using Cholesky decomp of $\Sigma=AA^T$: Turns into $\|A^{-1}(u-\mu)\|^2$, and by above this is chisq.
+
+Assumptions for OLS multivariate: $y=X\beta+\ep$, $E(\ep|X)=0$, $\var(\ep|X)=\sigma^2I$, $\ep\sim N(0,\sigma^2I)$. Want to minimize $\|y-X\h{\beta}\|^2$. Solution is $\h{\beta}=(X^TX)^{-1}X^Ty$. Then the RSS is the norm of the residual vector, or $\h{\ep}=y-X\h{\beta}$. For simple regression this becomes $\h{\beta}_0=\conj{y}-\h{\beta}_1\conj{x}$ and $\h{\beta}_1=\frac{SXY}{SXX}$. 
+
+Define $H=X(X^TX)^{-1}X^T$. Then $\h{y}=X\hbeta=Hy$, and the residuals are $\h{\ep}=(I-H)y$. Properties are Hermitian, projection ($I-H$ as well), $HX=X$, $H\h{e}=0$, $\langle Ha, (I-H)a\rangle=0$ for all $a$. 
+
+Define $\h{\sigma}^2=\frac{\|\h{e}\|^2}{n-p}$. This is an unbiased estimator of $\sigma^2$: $\h{e}^T\h{e}=(X\beta+e)^T(I-H)(I-H)(X\beta+e)$, expand to get $e^T(I-H)e$. This is a scalar, but taking trace under cyclic permutation gives $\tr(ee^T(I-H))$. Taking expectation, this becomes $\tr(E(ee^T)(I-H))$. Do out the matrix for $ee^T$ and see that $E(ee^T)=\sigma^2I$, so we get $\sigma^2\tr(I-H)=(n-p)\sigma^2$.
+
+Variance of $\hbeta$ is $\sigma^2(X^TX)^{-1}$. To show this write $\hbeta=\beta+(X^TX)^{-1}X^Te$ and calculate covariance of this with self.
+
+Gauss-Markov -- if $a^Ty$ is an unbiased estimator of $c^T\beta$, then $\var(c^T\hbeta)\leq\var(a^Ty)$. We have $c^T\beta=E(a^Ty)=a^TX\beta$ so $a^TX=c^T$. Then $\var(a^Ty)=\var(a^Te)$ (taking out the const part) and equals $a^T\var(e)a=\sigma^2\|a\|^2$. Finally $\var(c^T\hbeta)=\var(c^T(X^TX)^{-1}X^Ty)=\var(c^T(X^TX)^{-1}X^Te)=\var(a^THe)=Ha\sigma^2Ia^TH=\sigma^2\|Ha\|^2$. Now $\|a\|\geq\|Ha\|$ so done.
+
+Let $w_1=y-\conj{y}\cdot1$, $w_2=\h{y}-\conj{y}\cdot1$, $w_3=y-\h{y}=e$. Then $\|w_1\|^2=SYY$, $\|w_2\|^2=SS_\text{reg}$, $\|e\|^2=RSS$. Then $\inner{w_2,w_3}=\inner{\h{y}-\conj{y}\cdot1,y-\h{y}}$. Use $y-\h{y}=(I-H)y$ so the inner prod becomes $\inner{(I-H)(\h{y}-\conj{y}\cdot1, y}$. Now note that since $\h{y}$ and $1$ are in the image of $H$, the inner prod is zero, so we have $w_2\perp w_3$ which means $SS_\text{reg}+RSS=SYY$.
+
+We can define $R^2=\frac{SS_\text{reg}}{SYY}$, which is the correlation between $\h{y}$ and $y$. Start by showing that $\conj{\h{y}}=\conj{y}$, then just use defn of correlation ($\frac{\inner{x-\conj{x},y-\conj{y}}}{\|x-\conj{x}\|\cdot\|y-\conj{y}\|}$). 
+
+Something something QR decomposition -- $X=QR$ (reduced QR), then we can use to get $\h{\beta}$ and $H=QQ^T$.
+
+Inference: two basic distributional properties: $\hbeta\sim N(\beta,\sigma^2(X^TX)^{-1}$ and $\frac{\h{\sigma}^2}{\sigma^2}(n-p)\sim\chi^2_{n-p}$. The first is easy to show (use the normality of $e$) and that $\h{y}^T\h{e}=0$ (so they're indep b/c they're both normal). 
+
+For the second, consider first $X=\openm Z\\0\closem$ where $Z$ is full-rank. Then $\h{y}$ is the projection of $y$ onto the colspace of $X$, which in this case is just the span of the first $p$ std basis vectors, so $\h{y}=\openm y_1,\hdots,y_p,0,\hdots0\closem^T$ and the residuals are the rest of it. Now since $y_i\sim N(0,\sigma^2)$ for $i>p$, $RSS=\sum y_i^2=\sigma^2\sum\left(\frac{y_i}{\sigma}\right)^2$, which is obviously chisq of df $n-p$.
+
+Otherwise, apply full $QR$ to $X$ so that $R=\openm Z\\0\closem$. Then apply above to $Q^Ty\sim N(Q^TX\beta,Q\sigma^2IQ^T)=N(R\beta,\sigma^2I)$ and use unitary invariance of 2-norm.
+
+The $t$-test for individual $\hbeta_i$ is $\frac{\hbeta_i-\beta_i}{\text{se}(\beta_j)}$. It has $n-p$ df. A confidence interval is given by $\hbeta_j\pm t_\text{crit}\cdot\text{se}(\hbeta_i)$. 
+
+Prediction: given new data point $x$, mean of predicted value is $x^T\hbeta$. Variance of this is $\var(x^T\hbeta)=x^T\var(\hbeta)x$. Can estimate this as $\h{\sigma}^2x^T(X^TX)^{-1}x$, sqrt for se. If we wanted variance/se of actual predicted value, we'd want to add in an error term. Fortunately $\hbeta$ and $e$ are indep so we can just stick it in there as a $+1$. Also follows a $t$-distro.
+
+Use $F$-test for comparing big model versus sub-model (or to test linear hypotheses). If $M$ is a subspace of the colspace of $X$ given by $\{X\beta|\beta\in\ker(A)\}$ for some $A$, then the $F$-stat is $\frac{\frac{1}{p-q}(\|\pi_{M^\perp}(y)\|^2-\|\pi_{L^\perp}(y)\|^2)}{\frac{1}{n-p}\|\pi_{L^\perp}(y)\|^2}\sim F_{p-q,n-p}$. Note that the norms are just RSSs of the big and small models, resp.
+
+\includegraphics[width=0.5\textwidth]{f_geometry.png}
+
+For canonical case where $L$ and $M$ are spans of std basis vectors, the $F$-ness of it is fairly obvious. Otherwise orthogonalize the basis of $L$ and proceed.
+
+By random distributional fact, $\hbeta\sim N(\beta,\sigma^2(X^TX)^{-1})$ implies that $\frac{1}{\sigma^2}(\hbeta-\beta)^T(X^TX)(\hbeta-\beta)\sim\chi^2_p$, so we can assemble the $F$-statistic $\frac{\frac{1}{p}(\hbeta-\beta)^T(X^TX)(\hbeta-\beta)}{\h{\sigma}^2}\sim F_{p,n-p}$. We can use this for any linear transform of the $\hbeta$ too.
+
+Permutation test: If NH is that parameter has no effect on response, then permuting the parameter randomly among the data points should produce roughly the same $t$-statistic. 
+
+
+
 \end{document}
