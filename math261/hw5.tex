@@ -85,6 +85,17 @@ The reps of $\zn_3$ are constant on the normal subgroup and take on their usual 
 
 As found on the last HW, the last two must be dimension $3$. Let's try inducing a rep from the normal subgroup $H\equiv\zn_7$, since that'd give the right dimension. Choose the rep that sends $x+1=1\in\zn_7$ to $\xi=e^{2i\pi/7}$. The cosets are the functions with $\alpha=1$, $\alpha=2$, and $\alpha=4$. Write these as $H$, $2H$, and $4H$. For the elements in $\beta_0=1,2,4$, they fix all the cosets. Conjugating $x+1$ by $x$, conjugating by $2x$ gives $x+2$, and by $4x$ gives $x+4$, so the value of the character is $\xi+\xi^2+\xi^4$. For $x+3\in\beta_0=3,5,6$, we similarly get $\xi^3+\xi^5+\xi^6$. The other conjugacy classes don't fix any cosets, so the character is zero.
 
-Now, to show that this is an irrep, take the self-inner-product. We have $9+3(\xi+\xi^2+\xi^4)(\xi^6+\xi^5+\xi^3)+3(\xi^6+\xi^5+\xi^3)(\xi+\xi^2+\xi^4)=9+6+6=21$, so it's an irrep. Note that we can build another irrep simply by taking $x+1\mapsto e^{12i\pi/7}$ as a rep of $H$ and inducing. This gives the same character except with the values switched on the two nontrivial conjugacy classes making up $H$. 
+Now, to show that this is an irrep, take the self-inner-product. We have $9+3(\xi+\xi^2+\xi^4)(\xi^6+\xi^5+\xi^3)+3(\xi^6+\xi^5+\xi^3)(\xi+\xi^2+\xi^4)=9+6+6=21$, so it's an irrep. Note that we can build another irrep simply by taking $x+1\mapsto e^{12i\pi/7}$ as a rep of $H$ and inducing. This gives the same character except with the values switched on the two nontrivial conjugacy classes making up $H$. We get a final character table of
+
+\begin{tabular}{c|ccccc}
+$G$&1&$\beta_0=1,2,4$&$\beta_0=3,5,6$&$\alpha_0=2$&$\alpha_0=4$\\
+\hline
+$V_1$&1&1&1&1&1\\
+$V_2$&1&1&1&$e^{2i\pi/3}$&$e^{-2i\pi/3}$\\
+$V_3$&1&1&1&$e^{-2i\pi/3}$&$e^{2i\pi/3}$\\
+$V_4$&3&$(\xi+\xi^2+\xi^4)$&$(\xi^6+\xi^5+\xi^3)$&0&0\\
+$V_5$&3&$(\xi^6+\xi^5+\xi^3)$&$(\xi+\xi^2+\xi^4)$&0&0\\
+\end{tabular}
+
 \end{document}
 
