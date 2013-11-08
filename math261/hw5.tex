@@ -63,6 +63,28 @@ Irreps of $S_4$ restricted to $\inner{(123)}$ are
 
 The representation defined has character $1,e^{2\pi i/3},e^{4\pi i/3}$ in the same order. Successively taking inner-products, we get one copy each of $\Res V$, $\Res V'$, and $\Res W$, so the induced rep is $V\oplus V'\oplus W$.
 \subsection*{3.24}
-For any rep $X$ of $A_5$, we have that $\Ind X=X\oplus (12)X$, where a permutation $\sigma$ from $S_5$ acts on $\Ind X$ by acting directly on $X$ if $\sigma$ is even, and by $\sigma(x+y)=\sigma(12)\cdot x+(12)\sigma\cdot y$ if $\sigma$ is odd.
+For the reps $U,V,W$ of $A_5$, calculate the character of each induced irrep from (3.18). Denote the two cosets as $A_5$ and $(12)A_5$. If $g$ is even, then $g$ fixes both cosets, and so $\chi_{\Ind X}(g)=\chi_X(g)+\chi_X((12)g(12))=2\chi_X(g)$ since $(12)g(12)$ is in the same conjugacy class as $g$ (in $S_5$, but note that the three reps we're looking at have the same character on the conjugacy class of $S_5$ which splits in $A_5$). If $g$ is odd, then $g$ fixes no cosets, and the character is zero. Then, from this, we can readily compute the characters of $\Ind U$, $\Ind V$, and $\Ind W$ and find them to be what they are. 
+
+As for $Y$ and $Z$, note that conjugating a $5$-cycle by $(12)$ takes it to the other conjugacy class in $A_5$. Thus, if $X=Y$ or $Z$ and $g$ is a $5$-cycle, we have $\chi_{\Ind X}=1$, and the formula above holds for the other conjugacy classes since they don't split. Calculating the character this way gives us $\bigwedge^2 V$.
+\subsection*{3.26}
+From last week's homework, we know that this group has a normal subgroup of order $7$, which means that three of its irreps are lifted from the quotient isomorphic to $\zn_3$. To figure out the conjugacy classes, first note that the cube roots of unity are $1, 2, 4$, and the normal subgroup is the set of functions $f(x)=x+\beta_0$ for $\beta_0\in[0..6]$. To see this, note that if $g=\alpha x+\beta$, then $g(f(g^{-1}(x)))=g(f((x-\beta)/\alpha))=g((x-\beta)/\alpha+\beta_0)=x+\alpha\beta_0$, which is in the subgroup. Coincidentally, this also tells us what conjugacy classes compose the normal subgroup by looking at the possibilities for $\alpha$ -- we have the identity, the one corresponding to $\beta_0=1,2,4$, and another corresponding to $\beta_0=3,5,6$.
+
+Since we found last time that there are $5$ conjugacy classes, we only need two more. Note that if we conjugate $f(x)=\alpha_0x+\beta_0$ for $\alpha_0=2$ or $4$ by $\alpha x+\beta$, we get $\alpha_0x+(\alpha_0-1)\beta_0-\beta$. Since the non-$x$ part of this can be set to anything by varying $\beta$, we get that the last two conjugacy classes are given by $\alpha_0=2$ and $\alpha_0=4$, each with $7$ elements.
+
+The reps of $\zn_3$ are constant on the normal subgroup and take on their usual values on the other two conjugacy classes, so we have 
+
+\begin{tabular}{c|ccccc}
+    $G$&1&$\beta_0=1,2,4$&$\beta_0=3,5,6$&$\alpha_0=2$&$\alpha_0=4$\\
+    \hline
+    $V_1$&1&1&1&1&1\\
+    $V_2$&1&1&1&$e^{2i\pi/3}$&$e^{-2i\pi/3}$\\
+    $V_3$&1&1&1&$e^{-2i\pi/3}$&$e^{2i\pi/3}$\\
+    $V_4$&3\\
+    $V_5$&3\\
+\end{tabular}
+
+As found on the last HW, the last two must be dimension $3$. Let's try inducing a rep from the normal subgroup $H\equiv\zn_7$, since that'd give the right dimension. Choose the rep that sends $x+1=1\in\zn_7$ to $\xi=e^{2i\pi/7}$. The cosets are the functions with $\alpha=1$, $\alpha=2$, and $\alpha=4$. Write these as $H$, $2H$, and $4H$. For the elements in $\beta_0=1,2,4$, they fix all the cosets. Conjugating $x+1$ by $x$, conjugating by $2x$ gives $x+2$, and by $4x$ gives $x+4$, so the value of the character is $\xi+\xi^2+\xi^4$. For $x+3\in\beta_0=3,5,6$, we similarly get $\xi^3+\xi^5+\xi^6$. The other conjugacy classes don't fix any cosets, so the character is zero.
+
+Now, to show that this is an irrep, take the self-inner-product. We have $9+3(\xi+\xi^2+\xi^4)(\xi^6+\xi^5+\xi^3)+3(\xi^6+\xi^5+\xi^3)(\xi+\xi^2+\xi^4)=9+6+6=21$, so it's an irrep. Note that we can build another irrep simply by taking $x+1\mapsto e^{12i\pi/7}$ as a rep of $H$ and inducing. This gives the same character except with the values switched on the two nontrivial conjugacy classes making up $H$. 
 \end{document}
 
