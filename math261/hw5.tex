@@ -27,6 +27,7 @@
 \DeclareMathOperator{\Ind}{Ind}
 \nc{\ssn}[1]{\subsubsection*{#1}}
 \nc{\inner}[1]{{\langle #1\rangle}}
+\nc{\h}[1]{\widehat{#1}}
 \begin{document}
 Name: Hall Liu
 
@@ -96,6 +97,19 @@ $V_3$&1&1&1&$e^{-2i\pi/3}$&$e^{2i\pi/3}$\\
 $V_4$&3&$(\xi+\xi^2+\xi^4)$&$(\xi^6+\xi^5+\xi^3)$&0&0\\
 $V_5$&3&$(\xi^6+\xi^5+\xi^3)$&$(\xi+\xi^2+\xi^4)$&0&0\\
 \end{tabular}
+\subsection*{3.31}
+Let the two functions be $\phi$ and $\psi$. The product of $\phi$ and $\psi$ in $\cn G$ is $\sum_{g\in G}\sum_{h\in H}\phi(g)\psi(h)e_{gh}=\sum_{k\in G}e_k\left(\sum_{gh=k}\phi(g)\psi(h)\right)$. Note that if we fix $g$, then $h=g^{-1}k$, so this becomes $\sum_{k\in G}e_k\left(\sum_{g\in G}\phi(g)\psi(g^{-1}k)\right)$, which is the element of $\cn G$ that corresponds to the convolution of $\phi$ and $\psi$.
+\subsection*{3.32}
+\ssn{a}
+We have 
+\[
+    \h{\phi}(\rho)\cdot\h{\psi}(\rho)=\left(\sum_{g\in G}\phi(g)\rho(g)\right)\left(\sum_{h\in G}\psi(h)\rho(h)\right)=\sum_{k\in G}\left(\sum_{g\in G}\phi(g)\psi(g^{-1}k)\right)\rho(k)
+\]
+On the other hand, if we let $f=\phi*\psi$, then $f(k)=\sum_{g\in G}\phi(g)\psi(g^{-1}k)$, so $\h{f}$ is the same expression as above.
+\ssn{b}
+For any irrep $\rho$, we have $\rho(g^{-1})\cdot\h{\phi}(\rho)=\sum_{h\in G}\phi(h)\rho(g^{-1}h)$. Taking the trace, we have $\sum_{h\in H}\phi(h)\chi_\rho(g^{-1}h)$, or the convolution $\phi*\chi_\rho$. Then we can write the RHS as $\frac{1}{|G|}\sum_\rho\phi*(\dim(V_\rho)\chi_\rho=\frac{1}{|G|}\phi*\left(\sum_\rho\dim(V_\rho)\chi_\rho\right)$. By (2.20) and (2.19), the term in the parens is a function on $G$ that takes on the value $|G|$ at $e$ and zero elsewhere. Thus, the convolution's value on a particular element $g$ can be written as $\phi(g)|G|$, which results in $\phi(g)$ after dividing by that factor of $|G|$.
+\ssn{c}
+Define $\phi_g$ such that $\phi_g(g^{-1})=1$ and $\phi_g=0$ elsewhere. Then, the formula we're asked to prove reduces to the Fourier inversion formula in (b) which is known to be true. Thus, since the $\phi_g$ span $\cn G$, we just need to show that the RHS is linear in $\phi$. Since trace and summation are known to be linear, we just have to show that the hat operator is linear, which is easy beacuse the hat operator is itself a sum.
 
 \end{document}
 
