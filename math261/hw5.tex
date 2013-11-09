@@ -116,8 +116,7 @@ If $f$ is a class function, then for any $g,h\in G$, $f(g)=f(hgh^{-1})$, which i
 \ssn{b}
 Suppose $g,h\in G$. Then $\Ind f(hgh^{-1})=\frac{1}{|H|}\sum_{x\in G}\tilde{f}(x^{-1}hgh^{-1}x)=\frac{1}{|H|}\sum_{y\in G}\tilde{f}(y^{-1}gy)=\Ind f(g)$, where we set $y=h^{-1}x$. To show that it's a linear map, note that the extension to the big group is linear and the summation is also linear.
 \subsection*{4}
-%TODO: figure out how to finish
-Since $\rho$ is an irrep of an abelian group, it must be one-dimensional. Then, we can write $\Ind W_\rho=\bigoplus_i e_{t_i}$, where $t_i$ are a set of coset representatives of $Z(G)$. 
+Compute the character of $\Ind_{Z(G)}^GW$ for some irrep $W$ of $Z=Z(G)$. For any coset $aZ$ and any group element $g$, we have that $g$ fixes $aZ$ iff $gaZ=aZ\iff gaz_1=az_2$ for $z_1,z_2\in Z$. This is equivalent to $ga=z_1^{-1}z_2a\iff g\in Z$. Thus, group elements outside of $Z$ fix no cosets, which means that the character on them is zero. For group elements in the center, they fix all cosets, so the character is $[G:Z]\chi_W(g)$ (since $g$ can commute out of the conjugacy). Now, taking the inner product of this character with itself, we have $[G:Z]\sum_{z\in Z}|\chi_W(g)|^2=[G:Z]\inner{\chi_W,\chi_W}=[G:Z]>1$, since $G$ is non-abelian. Thus the character must be reducible.
 \subsection*{5}
 A representation is faithful iff its character takes on the value $\dim W$ only at the identity. Further, the value of a character is always the sum of $\dim W$ roots of unity. Then, looking at the formula for the character of the induced rep, we see that it's a sum of the values of at most $[G:H]$ characters of $W$, which corresponds to at most $[G:H]\dim W=\dim\Ind W$ roots of unity. This is equal to $\dim\Ind W$ iff all the roots of unity are $1$, but that would violate the faithfulness of $W$.
 \subsection*{6}
