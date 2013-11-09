@@ -110,6 +110,17 @@ On the other hand, if we let $f=\phi*\psi$, then $f(k)=\sum_{g\in G}\phi(g)\psi(
 For any irrep $\rho$, we have $\rho(g^{-1})\cdot\h{\phi}(\rho)=\sum_{h\in G}\phi(h)\rho(g^{-1}h)$. Taking the trace, we have $\sum_{h\in H}\phi(h)\chi_\rho(g^{-1}h)$, or the convolution $\phi*\chi_\rho$. Then we can write the RHS as $\frac{1}{|G|}\sum_\rho\phi*(\dim(V_\rho)\chi_\rho=\frac{1}{|G|}\phi*\left(\sum_\rho\dim(V_\rho)\chi_\rho\right)$. By (2.20) and (2.19), the term in the parens is a function on $G$ that takes on the value $|G|$ at $e$ and zero elsewhere. Thus, the convolution's value on a particular element $g$ can be written as $\phi(g)|G|$, which results in $\phi(g)$ after dividing by that factor of $|G|$.
 \ssn{c}
 Define $\phi_g$ such that $\phi_g(g^{-1})=1$ and $\phi_g=0$ elsewhere. Then, the formula we're asked to prove reduces to the Fourier inversion formula in (b) which is known to be true. Thus, since the $\phi_g$ span $\cn G$, we just need to show that the RHS is linear in $\phi$. Since trace and summation are known to be linear, we just have to show that the hat operator is linear, which is easy beacuse the hat operator is itself a sum.
-
+\subsection*{3}
+\ssn{a}
+If $f$ is a class function, then for any $g,h\in G$, $f(g)=f(hgh^{-1})$, which implies the same for any $g,h\in H$. Thus $\Res f$ is also a class function
+\ssn{b}
+Suppose $g,h\in G$. Then $\Ind f(hgh^{-1})=\frac{1}{|H|}\sum_{x\in G}\tilde{f}(x^{-1}hgh^{-1}x)=\frac{1}{|H|}\sum_{y\in G}\tilde{f}(y^{-1}gy)=\Ind f(g)$, where we set $y=h^{-1}x$. To show that it's a linear map, note that the extension to the big group is linear and the summation is also linear.
+\subsection*{4}
+%TODO: figure out how to finish
+Since $\rho$ is an irrep of an abelian group, it must be one-dimensional. Then, we can write $\Ind W_\rho=\bigoplus_i e_{t_i}$, where $t_i$ are a set of coset representatives of $Z(G)$. 
+\subsection*{5}
+A representation is faithful iff its character takes on the value $\dim W$ only at the identity. Further, the value of a character is always the sum of $\dim W$ roots of unity. Then, looking at the formula for the character of the induced rep, we see that it's a sum of the values of at most $[G:H]$ characters of $W$, which corresponds to at most $[G:H]\dim W=\dim\Ind W$ roots of unity. This is equal to $\dim\Ind W$ iff all the roots of unity are $1$, but that would violate the faithfulness of $W$.
+\subsection*{6}
+Consider the trivial subgroup of $G$ and the trivial representation on it. Inducing this to $G$ produces the permutation rep on the cosets of the trivial subgroup, which is just the regular rep. Now, if $W$ is an irrep of $G$, then $\inner{W,V_\text{reg}}_G=\inner{W,\Ind_{\{e\}}^GV_\text{triv}}_G=\inner{Res_{\{e\}}^GW,V_\text{triv}}_{\{e\}}$. The restriction of $W$ to $\{e\}$ has the value $\dim W$, so this inner product ends up being $\dim W$, which is the multiplicity of $W$ in $V_\text{reg}$.
 \end{document}
 
