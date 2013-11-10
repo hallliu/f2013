@@ -20,8 +20,9 @@
 \newcommand{\rn}{\mathbb{R}}
 \nc{\cn}{\mathbb{C}}
 \nc{\ssn}[1]{\subsubsection*{#1}}
-\nc{\inner}[2]{\langle #1,#2\rangle}
+\nc{\inner}[1]{\langle #1\rangle}
 \nc{\h}[1]{\widehat{#1}}
+\nc{\tl}[1]{\widetilde{#1}}
 \nc{\norm}[1]{\left\|{#1}\right\|}
 \begin{document}
 
@@ -29,6 +30,77 @@ Name: Hall Liu
 
 Date: \today 
 \vspace{1.5cm}
+\subsection*{1}
+\ssn{a}
+By defn of pseudoinverse, $AA^+A=A\implies\norm{A}^2\norm{A^+}\geq\norm{A}\implies\norm{A}\norm{A^+}\geq1$
+\ssn{b}
+Taking the SVD of $A$ to be $U\Sigma V^*$, we have $A^*A=V\Sigma^*\Sigma V^*$, so the $2$-norm of $A^*A$ is $|\sigma_1(A)|^2$. Since $V\Sigma^*\Sigma V^*$ is the SVD of $A^*A$, the 2-norm of $(A^*A)^+$ is just $|\sigma_r(A)|^{-2}$ where $\sigma_r$ is the smallest nonzero singular value of $A$. Thus $\kappa_2(A^*A)=\frac{|\sigma_1(A)|^2}{|\sigma_r(A)|^2}$. On the other hand, $\norm{A}_2=|\sigma_1(A)|$ and $\norm{A^+}=|\sigma_r(A)|^{-1}$, so the condition number of $A$ is $\frac{|\sigma_1(A)|}{|\sigma_r(A)|}$, which is the sqrt of the condition number of $A^*A$.
 
-1. blah blah blah
+
+However, if we use $A=\openm1&2\\0&1\closem$, then $A^{-1}=\openm1&-2\\0&1\closem$, so $\kappa_1(A)=3\cdot3=9$. We have $A^TA=\openm1&2\\2&5\closem$, and $(A^TA)^{-1}=\openm5&-1\\-2&1\closem$, giving us $\kappa_1(A^TA)=49\neq9^2$.
+\ssn{c}
+Expanding the LHS, we get $\|B^{-1}A^{-1}\|\|AB\|$. By consistency, this is $\leq\|B^{-1}\|\|A^{-1}\|\|A\|\|B\|=\kappa(A)\kappa(B)$. In general, if we have pseudoinverses instead of inverses, this does not hold: if we let $A=\openm1&2&3\\3&2&1\\5&5&5\closem$ and $B=\openm1&1&1\\2&2&3\\3&3&4\closem$, then $\kappa_2(A)=4.975$, $\kappa_2(B)=22$, and $\kappa_2(AB)=196.79$.
+\ssn{d}
+If $Q$ has orthonormal columns, then $Q^*Q$ is the identity, so $\kappa_2(Q^*Q)=1$, which implies $\kappa_2(Q)=1$. It works if $Q$ has orthonormal rows too: we then have $QQ^*$ is the identity, and the proof in (b) works for $AA^*$ as well since $AA^*=U\Sigma\Sigma^*U^*$ which has the same singular values. 
+
+For other norms, it doesn't work. Let $A=\openm\sqrt{2}&0\\\sqrt{2}&0\\0&1\closem$. Then $\kappa_1(A)=\sqrt{2}$.
+\ssn{e}
+For any upper-triangular matrix $R$, its inverse is also upper-triangular, and the entries on its diagonal must be the reciprocal of the diagonal entries of $R$ (only way this'll work out to be the identity). Then, we have that the inf-norm of $R$ (or the max row-sum) must be greater than the magnitude of the largest magnitude diagonal entry, and the inf-norm of $R^{-1}$ must be greater than the reciprocal of the magnitude of the least-magnitude diagonal entry of $R$. Multiplication gives the desired formula.
+\ssn{f}
+Might as well minimize the square of the Frobenius norm. In that case, if we write the columns of $X$ as $x_1,\ldots,x_m$, we have $\norm{AX-I_m}_F^2=\sum_{i=1}^m\norm{Ax_i-e_i}_2^2$, so now we can minimize the norm by adjusting each column of $X$ separately. If $A$ is full-col-rank, we know that there's always a unique solution to $\min_{x_i\in\cn^m}\|Ax_i-e_i\|_2^2$, so by extension there's a unique solution for $X$ as well. If $A$ is not full-col-rank, we know that the min length solution to $\min_{x_i\in\cn^m}\|Ax_i-e_i\|_2^2$ is given by $A^+e_i$, so we can just stick these columns together to form a min-F-norm solution for $X$.
+\ssn{g}
+$p=1$: Minimize $\sum_i|b_i-\beta|$. The solution is the median of the $b_i$, but the proof is a lot of nasty casework, so I'm skipping it.
+
+\noindent $p=2$: Minimize $\sum_i(b_i-\beta)^2$. Differentiating wrt $\beta$, we get $\sum_i(b_i-\beta)=0\implies\beta=\frac{\sum b_i}{n}$, which is the mean.
+
+\noindent $p=\infty$: Minimize the max deviation of any component of $b$ from $\beta$. Take the average of the largest and smallest components in $b$ to $\beta$. Then the max deviation is half the range of $b$ (using range in the statistical sense, not the linalg sense). For any other value $\beta'$, if $\beta'>\beta$, then $|\beta'-b_\text{min}|>|\beta-b_\text{min}|$, and same in the other case.
+\subsection*{2}
+\ssn{a}
+We have $H_u^*=I-\frac{2(uu^*)^*}{\|u\|_2^2}=H_u$, and $H_uH_u=(I-\frac{2uu^*}{\|u\|_2^2})(I-\frac{2uu^*}{\|u\|_2^2})=I-2\frac{2uu^*}{\|u\|_2^2}+\frac{4uu^*uu^*}{\|u\|^2}=I$.
+\ssn{b}
+$H_{\alpha u}=I-\frac{2\alpha^2uu^*}{\alpha^2\|u\|_2^2}=H_u$
+\ssn{c}
+$H_uv=Iv-\frac{2uu^*v}{\|u\|_2^2}=v-\frac{2u\inner{u,v}}{\inner{u,u}}$ 
+\ssn{d}
+We want $a-\frac{2\inner{u,a}}{\inner{u,u}}u=b$, which means that $u$ must be a scalar multiple of $a-b$. Since $H_u$ is invariant under scaling of $u$, we might as well just take $u=a-b$. In order for this to work, we must have $\frac{2\inner{a-b,a}}{\inner{a-b,a-b}}=1$, or $2\inner{a-b,a}=\inner{a-b,a}-\inner{a-b,b}$, or $\inner{a-b,a}+\inner{a-b,b}=0$, or $\|a\|=\|b\|$. 
+\ssn{e}
+$H_uu=u-\frac{2u\|u\|_2^2}{\|u\|_2^2}=u-2u=-u$, so the eigenvalue is $-1$.
+\ssn{f}
+Supp. $\inner{u,v}=0$. Then $H_uv=v-\frac{2u\inner{u,v}}{\|u\|_2^2}=v$, so the eigenvalue is $1$. The dimension of this space is $n-1$
+\ssn{g}
+Take the first column of $U$ to be $u$ normalized to have norm $1$, and all the other columns to form an orthonormal basis of $u^\perp$. Then, each column is an eigenvector of $H_u$ with corresponding eigenvalue $-1$ for the first column and $1$ for all other columns. The diagonal matrix has $-1$ in the top entry and $1$s elsewhere along the diagonal.
+\subsection*{3}
+\ssn{a}
+Let $\tl{L}$ denote the proper padding of $L$ with zeros, and let $\tl{L^{-1}}=\openm L^{-1}&Y\\0&0\closem$. Then, we have
+\begin{align*}
+    AA^{-}A&=Q_1\tl{L}Q_2^TQ_2\tl{L^{-1}}Q_1^TQ_1\tl{L}Q_2^T=Q_1\tl{L}\tl{L^{-1}}\tl{L}Q_2^T=Q_1\openm I&LY\\0&0\closem\openm L&0\\0&0\closem Q_2^T=A\\
+    A^{-}AA^{-}&=Q_2\tl{L^{-1}}Q_1^TQ_1\tl{L}Q_2^TQ_2\tl{L^{-1}}Q_1^T=Q_2\tl{L^{-1}}\tl{L}\tl{L^{-1}}Q_1^T=Q_2\openm I&0\\0&0\closem\openm L^{-1}&Y\\0&0\closem Q_1^T=A^{-}\\
+\end{align*}
+However, the symmetry conditions do not hold, as $AA^{-}=Q_1\openm L&0\\0&0\closem\openm L^{-1}&Y\\0&0\closem Q_1^T=Q_1\openm I&LY\\0&0\closem Q_1^T$, and the matrix being conjugated is not symmetric because $Y$ is nonzero and $L$ is nonsingular. On the other hand, $A^{-}A=Q_2\tl{L^{-1}}\tl{L}Q_2^T=Q_2\openm I&0\\0&0\closem Q_2^T$, which is symmetric. In conclusion, only (iii) failed to hold.
+\ssn{b}
+Let $A^+=Q_2\openm X_{11}&X_{12}\\X_{21}&X_{22}\closem Q_1^T$. By (i), we must have $AA^+A=A$, or \\
+$Q_1\openm L&0\\0&0\closem\openm X_{11}&X_{12}\\X_{21}&X_{22}\closem\openm L&0\\0&0\closem Q_2^T=Q_1\openm LX_{11}L&0\\0&0\closem Q_2^T=A$. Thus, we need $LX_{11}L=L$, but since $L$ is invertible, we must have $X_{11}L=I$, or $X_{11}=L^{-1}$.
+
+We must have $AA^+$ is symmetric, or $\openm L&0\\0&0\closem\openm X_{11}&X_{12}\\X_{21}&X_{22}\closem=\openm LX_{11}&LX_{12}\\0&0\closem$ is symmetric. In order for this to be symmetric, $LX_{12}$ must be the zero matrix. However, since $L$ is bijective, if $X_{12}$ has any nonzero vector in its image, $LX_{12}$ will have a nonzero vector in its image, which means $X_{12}=0$.
+
+We must have $A^+A$ is symmetric, or $\openm X_{11}&X_{12}\\X_{21}&X_{22}\closem\openm L&0\\0&0\closem=\openm LX_{11}&0\\LX_{21}&0\closem$ is symmetric. In order for this to be symmetric, $LX_{21}$ must be the zero matrix. By the same argument, $X_{21}$ must be zero.
+
+Finally, we have $A^+AA^+=Q_2\openm L^{-1}&0\\0&Y\closem\openm L&0\\0&0\closem\openm L^{-1}&0\\0&Y\closem Q_1^T=Q_2\openm I&0\\0&0\closem\openm L^{-1}&0\\0&Y\closem Q_1^T=Q_2\openm L^{-1}&0\\0&0\closem Q_1^T=A^+$, which implies that $Y=0$.
+\subsection*{4}
+\ssn{a}
+$x,r$ is a solution to the augmented system iff $Ax+r=b$ and $A^Tr=0$, which implies that $A^TAx=A^Tb$, which is exactly the normal equation corresponding to (4.1). Conversely, if $x$ is a solution to (4.1), then let $r=Ax-b$, so we have $Ax+r=b$ and $A^Tr=A^TAx-A^Tb=0$ because $x$ is a solution to the normal equation.
+\ssn{b}
+If $A$ does not have full column rank, then there is a linear dependency in the columns of $A$, which means that there's a linear dependency in the last $n$ columns of the augmented matrix, so it's singular. Conversely, if $A$ has full column rank, then $(A^TA)^{-1}$ exists. Let $Y=\openm I_m-A(A^TA)^{-1}A^T&A(A^TA)^{-1}\\(A^TA)^{-1}A^T&-(A^TA)^{-1}\closem$. Then, 
+\[
+    \openm I_m&A\\A^T&0\closem Y=\openm I_m-A(A^TA)^{-1}A^T+A(A^TA)^{-1}A^T&A(A^TA)^{-1}-A(A^TA)^{-1}\\A^T-(A^TA)(A^TA)^{-1}A^T&A^TA(A^TA)^{-1}\closem=I_{m+n}
+\]
+so we have an inverse, and therefore it's nonsingular.
+\ssn{c}
+From the augmented system, we have $y+Ax=b$ and $A^Ty=c$. From the second equation, plugging in the $QR$ decomposition gives $\openm R^T&0\closem Q^Ty=c$. If we let $Q^Ty=\openm z_1\\z_2\closem$, then we have $z_1=R^{-T}c$. From the first equation, plugging in the $QR$ factorization gives $Q^Ty+\openm R\\0\closem x=Q^Tb$. Define $\openm d_1\\d_2\closem=Q^Tb$, so we have $\openm z_1\\z_2\closem+\openm R\\0\closem x=\openm d_1\\d_2\closem$, which gives $z_1+Rx=d_1\implies x=R^{-1}(d_1-z_1)$ and $z_2+0=d_2$. This is the same as the thing we're asked to prove, only with the variables renamed.
+\ssn{d}
+If $A$ has full column rank, then there is a unique solution to the minimization problem, which means that the unique solution must also be the min norm solution. Thus, we must have that the $x$ found above satisfies $x=A^+b$. Here, $c=0$, so $x=R^{-1}d_1=R^{-1}Q_1^Tb$, so $A^+=Q^{-1}Q_1^T$. From (6.3) in lecture notes 10, $A^+=H^T(HH^T)^{-1}(G^TG)^{-1}G^T$. Substituting in $Q_1$ and $R$ here, we have $A^+=R^TR^{-T}R^{-1}Q_1^T=R^{-1}Q_1^T$, so it's consistent.
+\subsection*{5}
+%See notes, need to finish
+\subsection*{6}
+Suppose that $r=Ax-b$. We're looking for some $E$ such that $(A-E)x=b$, or $Ex=Ax-b=r$. If we take the QR decomposition given in the notes, we have $(Q^TEQ)(Q^Tx)=Q^TEx=Q^Tr$.
 \end{document}
