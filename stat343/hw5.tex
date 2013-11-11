@@ -1,0 +1,78 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\im}{im}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[2]{\langle #1,#2\rangle}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+
+\subsection*{4.2}
+\ssn{a}
+\includegraphics[width=0.5\textwidth]{hw5_files/1_resids.png}
+\includegraphics[width=0.5\textwidth]{hw5_files/1_resids_fixed.png}
+
+The plot on the left is of the residuals versus the fitted values. It looks pretty bad, with a case of nonconstant variance as well as maybe a linear trend. The book uses a square root transform to deal with this sort of things, so if we try that, we get the plot on the right. It looks a lot better, so we'll be sticking with that model from now on.
+
+Doing a plot of the most significant predictor (income) with residuals in the corrected model, we get on the left
+
+\includegraphics[width=0.5\textwidth]{hw5_files/1a_income_resids.png}
+\includegraphics[width=0.5\textwidth]{hw5_files/1a_resids_null.png}
+
+which looks pretty good in comparison to the null plot on the right.
+\ssn{b}
+\includegraphics[width=0.5\textwidth]{hw5_files/1b_resid_qq.png}
+\includegraphics[width=0.5\textwidth]{hw5_files/1b_null_qq.png}
+
+The QQ plot for the residuals (again, in the fixed model) to the left looks good. To the right is a null plot for comparison. We don't have any problems with normality.
+\ssn{c}
+Looking at the half-normal plot of the leverages, we see that cases 35 and 42 have the most extreme leverages, with a leverage of $0.312$ and $0.302$, respectively. Twice the ``average'' leverage is $2\cdot5/47=0.213$, which indicates that these points deserve some consideration.
+
+\includegraphics[width=0.5\textwidth]{hw5_files/1c_leverages.png}
+\ssn{d}
+Computing the jackknife residuals to check for outliers, we have that the most extreme case is case 24 with a value of $3.037$. The Bonferroni threshold can be computed with \verb|qt(0.05/(47*2), 42)| which results in $3.516$, indicating that this outlier isn't significant.
+\ssn{e}
+\includegraphics[width=0.5\textwidth]{hw5_files/1e_cooks.png}
+
+The half-normal plot of the Cook's distances shows case 24 as a very influential point. In fact, if we look at the actual data point, we see that the \verb|gamble| value is entered as $156.0$. This is far outside the range of the other values for \verb|gamble|. 
+\ssn{f}
+Here is a partial regression plot for income, the most significant predictor. The regression was performed against the square root of gamble, as for all previous parts, due to the nonconstant variance discovered in part (a). There aren't any egregious outliers and it seems to be a linear trend, which is good. 
+
+\includegraphics[width=0.6\textwidth]{hw5_files/1f_partial_reg.png}
+
+\subsection*{4.5}
+Looking at the following plot of residuals versus year on the left (which is really the same as residuals versus index), we see that there are some pretty outstanding runs present, which suggests that there's serial correlation between the errors. On the right is a plot of successive residuals against each other. This shows a clear linear trend, lending further evidence to the presence of serially correlated errors.
+
+\includegraphics[width=0.5\textwidth]{hw5_files/2_resid_year.png}
+\includegraphics[width=0.5\textwidth]{hw5_files/2_resid_resid.png}
+
+We can run a Durbin-Watson test, which gives us 
+\begin{verbatim}
+    Durbin-Watson test
+
+    data:  divorce ~ unemployed + femlab + marriage + birth + military
+    DW = 0.2999, p-value < 2.2e-16
+    alternative hypothesis: true autocorrelation is greater than 0
+\end{verbatim}
+This tells formally what we can see from the plots: there is significant autocorrelation in the errors.
+
+\end{document}
