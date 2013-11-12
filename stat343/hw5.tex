@@ -98,5 +98,13 @@ Since we only have to prove that (A37) holds and not derive it, we can just mult
 \end{align*}
 where we define $A=x_ix_i^T(X^TX)^{-1}$. Note that the numerator of the fraction is in fact equal to $Ah_{ii}-A^2$. Using $h_{ii}=x_i^T(X^TX)^{-1}x_i$, we have $A^2=x_ix_i^T(X^TX)^{-1}x_ix_i^T(X^TX)^{-1}=x_ih_{ii}x_i^T(X^TX)^{-1}=Ah_{ii}$. Thus the numerator in that fraction is zero, and the product is the identity.
 \ssn{b}
+We have $\h{\beta}_{(i)}=(\xsi^T\xsi)^{-1}\xsi^Ty_{(i)}$. Note that $\xsi^Ty_{(i)}$ is $X^T$ missing the $i$th column multiplied by $y$ missing the $i$th component, so it's actually just $X^Ty-x_iy_i$. Then, by the above, we have 
 
+\begin{align*}
+    \h{\beta}_{(i)}&=(X^TX)^{-1}X^Ty-(X^TX)^{-1}x_iy_i+\frac{(X^TX)^{-1}x_ix_i^T(X^TX)^{-1}X^Ty}{1-h_{ii}}-\frac{(X^TX)^{-1}x_ix_i^T(X^TX)^{-1}x_iy_i}{1-h_{ii}}\\
+             &=\h{\beta}-(X^TX)^{-1}x_iy_i+\frac{(X^TX)^{-1}x_ix_i^T\h{\beta}-(X^TX)^{-1}x_ix_i^T(X^TX)^{-1}x_iy_i}{1-h_{ii}}\\
+             &=\h{\beta}-\frac{(X^TX)^{-1}x_iy_i-(X^TX)^{-1}x_iy_ih_{ii}+(X^TX)^{-1}x_ix_i^T\h{\beta}-(X^TX)^{-1}x_ix_i^T(X^TX)^{-1}x_iy_i}{1-h_{ii}}\\
+             &=\h{\beta}-\frac{(X^TX)^{-1}x_i\left(y_i-h_{ii}y_i+x_i^T\h{\beta}-x_i^T(X^TX)^{-1}x_iy_i\right)}{1-h_{ii}}\\
+\end{align*}
+Now, note that $x_i^T(X^TX)^{-1}x_iy_i=h_{ii}y_i$, so those two terms cancel out. We're left with $y_i-x_i^T\h{\beta}$, which is just $\h{e}_i$. Thus the formula follows. This formula allows us to perform only one regression calculation (and thus only one matrix factorization) to calculate all the leave-one-out residuals.
 \end{document}
