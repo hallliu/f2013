@@ -100,7 +100,9 @@ From the augmented system, we have $y+Ax=b$ and $A^Ty=c$. From the second equati
 \ssn{d}
 If $A$ has full column rank, then there is a unique solution to the minimization problem, which means that the unique solution must also be the min norm solution. Thus, we must have that the $x$ found above satisfies $x=A^+b$. Here, $c=0$, so $x=R^{-1}d_1=R^{-1}Q_1^Tb$, so $A^+=Q^{-1}Q_1^T$. From (6.3) in lecture notes 10, $A^+=H^T(HH^T)^{-1}(G^TG)^{-1}G^T$. Substituting in $Q_1$ and $R$ here, we have $A^+=R^TR^{-T}R^{-1}Q_1^T=R^{-1}Q_1^T$, so it's consistent.
 \subsection*{5}
-%See notes, need to finish
+Consider the min-norm least-squares solution to $Ax=b$. Expressing $A$ as $Q\openm R&S\\0&0\closem\Pi^T$, we then want the solution to $\openm R&S\\0&0\closem\Pi^Tx=Q^Tb$. If $R$ is $r\times r$ and $S$ is $r\times(n-r)$, then note that the closest we can hope to get to $Q^Tb$ is if $Ru+Sv=c$, where $u$ forms the first $r$ components of $\Pi^Tx$, $v$ forms the rest of it, and $c$ is the first $r$ components of $Q^Tb$. Thus, the min-norm least squares solution is minimizing $\|x\|^2=\|\Pi^Tx\|^2=\|u\|^2+\|v\|^2$ subject to the constraint $Ru+Sv=c$. 
+
+We can re-write this constraint as $u=R^{-1}c-R^{-1}Sv$. 
 \subsection*{6}
-Suppose that $r=Ax-b$. We're looking for some $E$ such that $(A-E)x=b$, or $Ex=Ax-b=r$. If we take the QR decomposition given in the notes, we have $(Q^TEQ)(Q^Tx)=Q^TEx=Q^Tr$.
+Suppose that $r=Ax-b$. We're looking for some $E$ such that $(A-E)x=b$, or $Ex=Ax-b=r$. If we take the QR decomposition given in the notes, we have $(Q^TEQ)(Q^Tx)=Q^TEx=Q^Tr$. Now, note that due to the upper-triangular form of $R=\openm Q^Tx&Q^Tr\closem$, we must have that $Q^Tx=r_{11}e_1$ and $Q^Tr=r_{12}e_1+r_{22}e_2$. Then, we want $Q^TEQ$ to map $r_{11}e_1$ to $r_{12}e_1+r_{22}e_2$. This forcse the first column of $Q^TEQ$ to be $\frac{1}{r_{11}}\openm r_{12}\\r_{22}\\0\\\vdots\closem$. By symmetry of $Q^TEQ$, the first entry of the second column must therefore be $\frac{r_{22}}{r_{11}}$. If we want to minimize the Frobenius norm of $E$ (and therefore $Q^TEQ$), we might as well just set the rest of it to zero, so we have that $Q^TEQ=\frac{1}{r_{11}}\openm r_{12}&r_{22}&0&\hdots&0\\r_{22}&0&\hdots&0\\0&\hdots&0\\\vdots&\vdots\closem$.
 \end{document}
