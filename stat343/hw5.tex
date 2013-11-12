@@ -20,6 +20,7 @@
 \nc{\h}[1]{\widehat{#1}}
 \nc{\ssn}[1]{\subsubsection*{#1}}
 \nc{\inner}[2]{\langle #1,#2\rangle}
+\nc{\xsi}{X_{(i)}}
 \begin{document}
 Name: Hall Liu
 
@@ -74,5 +75,28 @@ We can run a Durbin-Watson test, which gives us
     alternative hypothesis: true autocorrelation is greater than 0
 \end{verbatim}
 This tells formally what we can see from the plots: there is significant autocorrelation in the errors.
+\subsection*{9.8}
+Drawing the scatterplot for the Bush vs. Buchanan votes, we see two potential outliers: one at Palm Beach and another at Dade. We compute the jackknife residuals for these two points to be $24.08$ and $-3.28$, respectively. The Bonferroni-corrected threshold at the $0.05$ level is $3.540$, which indicates that the Palm Beach point is definitely an outlier.
+
+\includegraphics[width=0.6\textwidth]{hw5_files/3_bush_buch.png}
+
+Even though Palm Beach is an outlier for the Bush/Buchanan vote relationship, we cannot conclude anything about the effect of the butterfly ballot from this. For all we know, Palm Beach could contain some interesting demographic that vastly prefers Buchanan for some reason. 
+
+If we look at the residual vs fitted plot for this model (left) however, we see that there's definite hints of non-constant variance. Trying the square root transformation on Buchanan, the residual plot becomes the one on the right. This looks a lot better and could plausibly be from a null plot.
+
+\includegraphics[width=0.5\textwidth]{hw5_files/3_resids.png}
+\includegraphics[width=0.5\textwidth]{hw5_files/3_resids_fixed.png}
+
+Now, using this transformed model, the jackknife residual for Palm Beach becomes $8.631$, which is a good deal lower, but still significant under the previously computed threshold. Again, we cannot draw any conclusions about the butterfly ballot from this due to possible unknown confounding factors.
+\subsection*{9.3}
+\ssn{a}
+Since we only have to prove that (A37) holds and not derive it, we can just multiply the matrices together and verify that it's the identity. We thus have
+\begin{align*}
+    (\xsi^T\xsi)(\xsi^T\xsi)^{-1}&=(X^TX-x_ix_i^T)\left((X^TX)^{-1}+\frac{(X^TX)^{-1}x_ix_i^T(X^TX)^{-1}}{1-h_{ii}}\right)\\
+                                 &=I-x_ix_i^T(X^TX)^{-1}+\frac{x_ix_i^T(X^TX)^{-1}}{1-h_{ii}}-\frac{x_ix_i^T(X^TX)^{-1}x_ix_i^T(X^TX)^{-1}}{1-h_{ii}}\\
+                                 &=I-\frac{A-A^2-A(1-h_{ii})}{1-h_{ii}}\\
+\end{align*}
+where we define $A=x_ix_i^T(X^TX)^{-1}$. Note that the numerator of the fraction is in fact equal to $Ah_{ii}-A^2$. Using $h_{ii}=x_i^T(X^TX)^{-1}x_i$, we have $A^2=x_ix_i^T(X^TX)^{-1}x_ix_i^T(X^TX)^{-1}=x_ih_{ii}x_i^T(X^TX)^{-1}=Ah_{ii}$. Thus the numerator in that fraction is zero, and the product is the identity.
+\ssn{b}
 
 \end{document}
