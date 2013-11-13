@@ -14,6 +14,7 @@ module qr_householder
             dimA = ubound(A)
 
             do k = 1, minval(dimA)
+        end subroutine h_qr
         
 
         subroutine h_multiply(u, v)

@@ -50,7 +50,7 @@ Looking at the half-normal plot of the leverages, we see that cases 35 and 42 ha
 
 \includegraphics[width=0.5\textwidth]{hw5_files/1c_leverages.png}
 \ssn{d}
-Computing the jackknife residuals to check for outliers, we have that the most extreme case is case 24 with a value of $3.037$. The Bonferroni threshold can be computed with \verb|qt(0.05/(47*2), 42)| which results in $3.516$, indicating that this outlier isn't significant.
+Computing the jackknife residuals to check for outliers, we have that the most extreme case is case 24 with a value of $3.037$. The Bonferroni threshold can be computed with \verb|qt(0.05/(47*2), 41)| which results in $3.522$, indicating that this outlier isn't significant.
 \ssn{e}
 \includegraphics[width=0.5\textwidth]{hw5_files/1e_cooks.png}
 
@@ -76,7 +76,7 @@ We can run a Durbin-Watson test, which gives us
 \end{verbatim}
 This tells formally what we can see from the plots: there is significant autocorrelation in the errors.
 \subsection*{9.8}
-Drawing the scatterplot for the Bush vs. Buchanan votes, we see two potential outliers: one at Palm Beach and another at Dade. We compute the jackknife residuals for these two points to be $24.08$ and $-3.28$, respectively. The Bonferroni-corrected threshold at the $0.05$ level is $3.540$, which indicates that the Palm Beach point is definitely an outlier.
+Drawing the scatterplot for the Bush vs. Buchanan votes, we see two potential outliers: one at Palm Beach and another at Dade. We compute the jackknife residuals for these two points to be $24.08$ and $-3.28$, respectively. The Bonferroni-corrected threshold at the $0.05$ level is $3.542$, which indicates that the Palm Beach point is definitely an outlier.
 
 \includegraphics[width=0.6\textwidth]{hw5_files/3_bush_buch.png}
 
