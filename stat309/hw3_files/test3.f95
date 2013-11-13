@@ -1,24 +1,28 @@
 program test3
 
     implicit none
-    real :: a(5,5), b(5), c(5)
+    real, dimension(7,5) :: a
+    real :: b(5), c(7)
     integer :: n, m
     character, parameter :: trans = 'n'
+    integer :: dima(2)
 
-    do n = 1, 5
-        b(n) = n
+    do n = 1, 7
+        if (n <= 5) then
+            b(n) = n
+        end if
         inner: do m = 1, 5
             a(n,m) = n + m
         end do inner
     end do
 
-    write (*,'(5f5.2)') b
+    write (*,*) a(:,3)
 
-    write (*,'(5f6.3)') a
-
-    call sgemv (trans, 5, 5, 1.0, a, 5, b, 1, 0, c, 1)
+    call sgemv (trans, 7, 5, 1.0, a, 7, b, 1, 0, c, 1)
 
     write (*, '(5f10.0)') c
-    write (*,*) c(5)
+
+    dima = ubound(a)
+    write (*,*) dima
 
 end program
