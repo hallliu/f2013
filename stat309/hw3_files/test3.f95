@@ -12,7 +12,7 @@ program test3
             b(n) = n
         end if
         inner: do m = 1, 5
-            a(n,m) = n + m
+            a(n,m) = n - m
         end do inner
     end do
 
@@ -20,7 +20,7 @@ program test3
 
     call sgemv (trans, 7, 5, 1.0, a, 7, b, 1, 0, c, 1)
 
-    write (*, '(5f10.0)') c
+    write (*, '(7f10.0)') a
 
     dima = ubound(a)
     write (*,*) dima
