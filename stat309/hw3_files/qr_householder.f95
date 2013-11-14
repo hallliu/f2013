@@ -80,6 +80,19 @@ module qr_householder
             end do
         end subroutine apply_Q_T
 
+        ! This subroutine extracts Q from its implicit form in A and puts it
+        ! into the Q passed in as an argument.
+        subroutine extract_Q(A, Q)
+            double precision, dimension (:, :) :: A, Q
+            integer :: k
+
+            ! Q is assumed to be square with size equal to num rows of A
+            ! Fill it in with a std basis vector and apply Q.
+            do k = 1, size(A, 1)
+                Q(k, k) = 1
+                call apply_Q (A, Q(:, k))
+            end do
+        end subroutine extract_Q
 
         ! This subroutine calculates the vector H_u*v and stores it back into v. 
         ! u is expected to have one less dimension than v, under the assumption
