@@ -102,7 +102,25 @@ If $A$ has full column rank, then there is a unique solution to the minimization
 \subsection*{5}
 Consider the min-norm least-squares solution to $Ax=b$. Expressing $A$ as $Q\openm R&S\\0&0\closem\Pi^T$, we then want the solution to $\openm R&S\\0&0\closem\Pi^Tx=Q^Tb$. If $R$ is $r\times r$ and $S$ is $r\times(n-r)$, then note that the closest we can hope to get to $Q^Tb$ is if $Ru+Sv=c$, where $u$ forms the first $r$ components of $\Pi^Tx$, $v$ forms the rest of it, and $c$ is the first $r$ components of $Q^Tb$. Thus, the min-norm least squares solution is minimizing $\|x\|^2=\|\Pi^Tx\|^2=\|u\|^2+\|v\|^2$ subject to the constraint $Ru+Sv=c$. 
 
-We can re-write this constraint as $u=R^{-1}c-R^{-1}Sv$. 
+Since $\h{x}$ is constructed with the pseudoinverse, we know that $\Pi^T\h{x}$ is a solution to this new minimization problem. If we let $\Pi^Tx=\openm\h{u}\\\h{v}\closem$, then $R\h{u}+S\h{v}=c\implies \h{u}-R^{-1}c=R^{-1}S\h{v}$
+
+On the other hand, if we work out the expression for $x_B$, we get 
+\[x_B=\Pi\openm R^{-1}&0\\0&0\closem Q^Tb\implies\Pi^Tx_B=\openm R^{-1}c\\0\closem\]
+Thus, if we examine $\|\h{x}-x_B\|^2$, we have that it's equal to $\|\Pi^T\h{x}-\Pi^Tx_B\|^2=\|\h{u}-R^{-1}c\|^2+\|\h{v}\|^2$ by splitting it into the upper and lower blocks. In turn, the first term is equal to $\|R^{-1}S\h{v}\|^2\leq\|R^{-1}S\|^2\|\h{v}\|^2$, so overall, we have the bound $\|\h{x}-x_B\|^2\leq\|R^{-1}S\|^2\|\h{v}\|^2+\|\h{v}\|^2$.
+
+Now, let's examine the relation between $\h{v}$ and $\h{u}$. Note that if we let $Q_1$ be the first $r$ columns of $Q$, then $Q_1\openm R&S\closem$ is a rank-revealing factorization of $A\Pi$. By something from the lecture notes, we can then write $(A\Pi)^+$ as 
+\[\openm R^T\\S^T\closem\left(\openm R&S\closem\openm R^T\\S^T\closem\right)^{-1}(Q_1^TQ_1)^{-1}Q_1^T\]
+Since $Q_1$ has orthonormal columns, that term goes away and we're left with
+\[\openm R^T\\S^T\closem(RR^T+SS^T)^{-1}Q_1^T\]
+Then, since $\Pi$ has orthonormal rows and columns, we have $\Pi(A\Pi)^+=A^+$, so $(A\Pi)^+b=\Pi^TA^+b=\Pi^T\h{x}=\openm\h{u}\\\h{v}\closem$. Applying the above expression to $b$, we obtain
+\[\openm R^T\\S^T\closem(RR^T+SS^T)^{-1}Q_1^Tb=\openm R^T(RR^T+SS^T)^{-1}\\S^T(RR^T+SS^T)^{-1}\closem c\]
+so we have $\h{u}=R^T(RR^T+SS^T)^{-1}c$ and $\h{v}=S^T(RR^T+SS^T)^{-1}c$, which gives us
+\[c=(RR^T+SS^T)R^{-T}\h{u}\implies\h{v}=S^T(RR^T+SS^T)^{-1}(RR^T+SS^T)R^{-T}\h{u}=(R^{-1}S)^T\h{u}\]
+
+Substituting this into the earlier bound, we have 
+\[\|\h{x}-x_B\|^2\leq\|R^{-1}S\|^2\|\h{v}\|^2+\|\h{v}\|^2=\|R^{-1}S\|^2\|\h{v}\|^2+\|(R^{-1}S)^T\h{u}\|^2\leq\|R^{-1}S\|^2(\|\h{u}\|^2+\|\h{v}\|^2)\]
+Since $\|\h{u}\|^2+\|\h{v}\|^2=\|\h{x}\|^2$, we have our desired bound by dividing on both sides.
+
 \subsection*{6}
 Suppose that $r=Ax-b$. We're looking for some $E$ such that $(A-E)x=b$, or $Ex=Ax-b=r$. If we take the QR decomposition given in the notes, we have $(Q^TEQ)(Q^Tx)=Q^TEx=Q^Tr$. Now, note that due to the upper-triangular form of $R=\openm Q^Tx&Q^Tr\closem$, we must have that $Q^Tx=r_{11}e_1$ and $Q^Tr=r_{12}e_1+r_{22}e_2$. Then, we want $Q^TEQ$ to map $r_{11}e_1$ to $r_{12}e_1+r_{22}e_2$. This forcse the first column of $Q^TEQ$ to be $\frac{1}{r_{11}}\openm r_{12}\\r_{22}\\0\\\vdots\closem$. By symmetry of $Q^TEQ$, the first entry of the second column must therefore be $\frac{r_{22}}{r_{11}}$. If we want to minimize the Frobenius norm of $E$ (and therefore $Q^TEQ$), we might as well just set the rest of it to zero, so we have that $Q^TEQ=\frac{1}{r_{11}}\openm r_{12}&r_{22}&0&\hdots&0\\r_{22}&0&\hdots&0\\0&\hdots&0\\\vdots&\vdots\closem$.
 \end{document}
