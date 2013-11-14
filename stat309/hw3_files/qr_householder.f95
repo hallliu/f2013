@@ -11,10 +11,17 @@ module qr_householder
 
             ! We're operating on the first column of A, called x. Thus
             ! x_1=A(1,1). Calculate alpha=(+/-) ||x||
-            if (A(1,1) > 0) then
-                alpha = -sqrt (dot_product (A(:, 1), A(:, 1)))
+            ! Of course, if we're at the last entry of a square matrix, we don't
+            ! want to mess with anything because we have nowhere to store that
+            ! shit.
+            if (size(A, 1) == 1 .and. size(A, 2) == 1) then
+                alpha = A(1,1)
             else
-                alpha = sqrt (dot_product (A(:, 1), A(:, 1)))
+                if (A(1,1) > 0) then
+                    alpha = -sqrt (dot_product (A(:, 1), A(:, 1)))
+                else
+                    alpha = sqrt (dot_product (A(:, 1), A(:, 1)))
+                end if
             end if
 
             ! Calculate the vector used in the Householder transform and store
@@ -44,24 +51,6 @@ module qr_householder
         end subroutine h_qr
         
 
-        ! This subroutine applies the Q stored in the lower part of A to x and
-        ! stores the result in x.
-        subroutine apply_Q (A, x)
-            double precision, dimension (:, :) :: A
-            double precision, dimension (:) :: x
-            double precision :: aNorm2
-            integer :: k
-
-            ! Loop through the columns of A, extract the proper refl vector from
-            ! them, and multiply. Edge case handling for square matrices is
-            ! taken care of in h_multiply.
-
-            do k = 1, size (A, 2)
-                aNorm2 = dot_product (A(k + 1:, k), A(k + 1:, k))
-                call h_multiply (A(k + 1:, k), x(k:), aNorm2)
-            end do
-        end subroutine apply_Q
-
         ! This subroutine applies Q^T to x, where Q is derived from the lower
         ! part of A
         subroutine apply_Q_T(A, x)
@@ -74,11 +63,29 @@ module qr_householder
             ! them, and multiply. Edge case handling for square matrices is
             ! taken care of in h_multiply.
 
-            do k = size(A, 2), 1, -1
-                aNorm2 = dot_product (A(k + 1:, k), A(k + 1:, k))
+            do k = 1, size (A, 2)
+                aNorm2 = dot_product (A(k + 1:, k), A(k + 1:, k)) + 1
                 call h_multiply (A(k + 1:, k), x(k:), aNorm2)
             end do
         end subroutine apply_Q_T
+
+        ! This subroutine applies the Q stored in the lower part of A to x and
+        ! stores the result in x.
+        subroutine apply_Q (A, x)
+            double precision, dimension (:, :) :: A
+            double precision, dimension (:) :: x
+            double precision :: aNorm2
+            integer :: k
+
+            ! Loop through the columns of A, extract the proper refl vector from
+            ! them, and multiply. Edge case handling for square matrices is
+            ! taken care of in h_multiply.
+
+            do k = size(A, 2), 1, -1
+                aNorm2 = dot_product (A(k + 1:, k), A(k + 1:, k)) + 1
+                call h_multiply (A(k + 1:, k), x(k:), aNorm2)
+            end do
+        end subroutine apply_Q
 
         ! This subroutine extracts Q from its implicit form in A and puts it
         ! into the Q passed in as an argument.
@@ -109,8 +116,10 @@ module qr_householder
 
             ! we take the dot product of the tail entries of u, v, then add in
             ! the contribution from u_1v_1=v_1
-            Umult = 2 / uNorm2 * (dot_product (u, v(2:)) + v(1))
+            Umult = 2 * (dot_product (u, v(2:)) + v(1)) / uNorm2
+            write (*,*) Umult
 
-            v = -Umult * u + v
+            v(2:) = v(2:) - Umult * u
+            v(1) = v(1) - Umult
         end subroutine h_multiply
 end module qr_householder
