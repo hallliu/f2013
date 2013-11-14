@@ -2,38 +2,42 @@ module qr_gram_schmidt
     implicit none
 
     contains
+        ! This only works on square matrices. The plan is to kludge something
+        ! together on the python side that appends random crap to A's columns
+        ! and discards the piece of R we don't give a shit about later.
         subroutine gram_qr (A, Q)
             
             double precision, dimension(:, :) :: A
             double precision, dimension(:, :) :: Q
 
-            integer :: op_col, n
+            integer :: k, j
     
             ! We will store R inside A and put Q into its place.
     
-            do op_col = 1, size(A, 2)
+            do k = 1, size(A, 2)
                 ! Copy a_k into the appropriate column of Q
-                Q(:, op_col) = A(:, op_col)
+                Q(:, k) = A(:, k)
 
                 ! Fill in the other r_{jk} by taking inner products
-                do n = 1, (op_col - 1)
-                    ! Q(:, op_col) currently contains a_k
-                    A(n, op_col) = dot_product (Q(:, n), Q(:, op_col))
+                do j = 1, (k - 1)
+                    ! Q(:, k) currently contains a_k
+                    A(j, k) = dot_product (Q(:, j), Q(:, k))
                 end do
 
-                ! Subtract the linear combination of r_{ij}a_j.
-                do n = 1, (op_col - 1)
-                    Q(:, op_col) = Q(:, op_col) - A(n, op_col) * Q(:, n)
+                ! Subtract the linear combination of r_{jk}q_j.
+                do j = 1, (k - 1)
+                    call daxpy(size(A, 1), -A(j, k), Q(:, j), 1, Q(:, k), 1)
+!                    Q(:, k) = Q(:, k) - A(j, k) * Q(:, j)
                 end do
                 
                 ! Gets r_{kk}
-                A(op_col, op_col) = sqrt (dot_product (Q(:, op_col), Q(:, op_col)))
+                A(k, k) = sqrt (dot_product (Q(:, k), Q(:, k)))
     
                 ! Produces the finalized column of Q by dividing by r_{kk}
-                Q(:, op_col) = Q(:, op_col) / A(op_col, op_col)
+                Q(:, k) = Q(:, k) / A(k, k)
     
                 ! Zero out the rest of them
-                A(op_col + 1:, op_col) = 0
+                A(k + 1:, k) = 0
             end do
 
             return

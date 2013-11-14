@@ -131,6 +131,20 @@ For both methods, the backward error in $\h{Q}\h{R}$ was remarkably low for all 
 \includegraphics[width=0.5\textwidth]{hw3_files/gram_errs.png}
 
 Now, we compare the backward error in $\h{Q}\h{R}$ for Gram-Schmidt and for Householder. The plot below is of the ratio of backward errors (Gram-Schmidt / Householder) for increasing dimension. This shows that for larger $n$, the Householder algorithm gives far less backwards error than Gram-Schmidt.
-\ssn{e}
 
+\includegraphics[width=0.7\textwidth]{hw3_files/backward_errs.png}
+\ssn{e}
+For (i), we have from the lecture notes that the proper solution is given by backsolving $Rx=c$, where $c$ is the first $n$ rows of $Q^Tb$. For (ii), if we take $\openm A&b\closem=Q\openm R&r\closem$, then 
+\[Ax-b=\openm A&b\closem\openm x\\-1\closem=Q\openm R&r\closem\openm x\\-1\closem=Q(Rx-r)\]
+Thus, minimizing the norm of $Ax-b$ is equivalent to minimizing the norm of $Rx-r$. If we restrict to the first $n$ rows of $R, r$, we can backsolve for $x$.
+
+The results are as follows:
+\begin{verbatim}
+H Ax=B value: 2006.7876366822477
+G Ax=B value: 1.2668623686083995
+H aug value: 2006.7876366822477
+G aug value: 1.26686236860843
+nml value: -403.992156011595
+\end{verbatim}
+Householder performed exactly as well in both the instances, while Gram-Schmidt and solving the normal equations failed horribly whereever they were used. This is hardly surprising, as in the course of testing, I found that the $Q^TQ$ from the $Q$ produced by Gram-Schmidt was definitely nowhere near the identity. The later rows had really bad orthogonality properties.
 \end{document}
