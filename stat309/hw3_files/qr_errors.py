@@ -43,6 +43,7 @@ def compute_errs(n):
 
     g_Aerr = sp.norm(Ahat_g - A, 'fro') / sp.norm(A, 'fro') 
     h_Aerr = sp.norm(Ahat_h - A, 'fro') / sp.norm(A, 'fro') 
+    import ipdb;ipdb.set_trace()
 
     return [g_Rerr, g_Qerr, g_Aerr, h_Rerr, h_Qerr, h_Aerr]
 
@@ -84,3 +85,8 @@ def plot_points(g_Rerrs, g_Qerrs, g_Aerrs, h_Rerrs, h_Qerrs, h_Aerrs, sizes):
     plt.scatter(sizes, h_Aerrs, c='b', marker='.')
     plt.xscale('log')
     plt.savefig('householder_errs.png', dpi=200, bbox_inches='tight')
+
+    plt.figure()
+    plt.scatter(sizes, g_Aerrs / h_Aerrs, c='g', marker='.')
+    plt.xscale('log')
+    plt.savefig('backward_errs.png', dpi=200, bbox_inches='tight')

@@ -123,4 +123,14 @@ Since $\|\h{u}\|^2+\|\h{v}\|^2=\|\h{x}\|^2$, we have our desired bound by dividi
 
 \subsection*{6}
 Suppose that $r=Ax-b$. We're looking for some $E$ such that $(A-E)x=b$, or $Ex=Ax-b=r$. If we take the QR decomposition given in the notes, we have $(Q^TEQ)(Q^Tx)=Q^TEx=Q^Tr$. Now, note that due to the upper-triangular form of $R=\openm Q^Tx&Q^Tr\closem$, we must have that $Q^Tx=r_{11}e_1$ and $Q^Tr=r_{12}e_1+r_{22}e_2$. Then, we want $Q^TEQ$ to map $r_{11}e_1$ to $r_{12}e_1+r_{22}e_2$. This forcse the first column of $Q^TEQ$ to be $\frac{1}{r_{11}}\openm r_{12}\\r_{22}\\0\\\vdots\closem$. By symmetry of $Q^TEQ$, the first entry of the second column must therefore be $\frac{r_{22}}{r_{11}}$. If we want to minimize the Frobenius norm of $E$ (and therefore $Q^TEQ$), we might as well just set the rest of it to zero, so we have that $Q^TEQ=\frac{1}{r_{11}}\openm r_{12}&r_{22}&0&\hdots&0\\r_{22}&0&\hdots&0\\0&\hdots&0\\\vdots&\vdots\closem$.
+\subsection*{7}
+\ssn{d}
+For both methods, the backward error in $\h{Q}\h{R}$ was remarkably low for all sizes, going up to something on the order of $10^{-14}$ at most. However, the forward error in $\h{Q}$ increased as some $<1$ power of dimension in both instances, while the forward error in $\h{R}$ increased this way for Gram-Schmidt but stayed low for Householder. This reflects the orthogonal nature of the Householder reflections -- they are more stable than applying the arbitrary triangular matrices in Gram-Schmidt. Below are the two plots. To the right is Gram-Schmidt, to the left is Householder. Error in $A$ is in blue, $Q$ in green, and $R$ in red.
+
+\includegraphics[width=0.5\textwidth]{hw3_files/householder_errs.png}
+\includegraphics[width=0.5\textwidth]{hw3_files/gram_errs.png}
+
+Now, we compare the backward error in $\h{Q}\h{R}$ for Gram-Schmidt and for Householder. The plot below is of the ratio of backward errors (Gram-Schmidt / Householder) for increasing dimension. This shows that for larger $n$, the Householder algorithm gives far less backwards error than Gram-Schmidt.
+\ssn{e}
+
 \end{document}
