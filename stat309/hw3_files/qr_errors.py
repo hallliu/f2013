@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.linalg as sp
+import matplotlib.pyplot as plt
 
 # These two are the QR algorithms I wrote, imported with f2py
 import gram_qr
@@ -16,10 +17,10 @@ def compute_errs(n):
     positivize_QR(Q, R)
     A = np.dot(Q, R)
 
-    Rhat_gram = A.copy('F')
-    Qhat_gram = np.empty((n, n), dtype='float64', order='F')
+    Rhat_g = A.copy('F')
+    Qhat_g = np.empty((n, n), dtype='float64', order='F')
 
-    gram_qr.qr_gram_schmidt.gram_rq(Rhat_gram, Qhat_gram)
+    gram_qr.qr_gram_schmidt.gram_qr(Rhat_g, Qhat_g)
 
     Rhat_h = A.copy('F')
     Qhat_h = np.zeros((n, n), dtype='float64', order='F')
@@ -29,21 +30,21 @@ def compute_errs(n):
     for i in range(n):
         Rhat_h[i+1:,i] = 0
 
-    positivize_QR(Qhat_gram, Rhat_gram)
+    positivize_QR(Qhat_g, Rhat_g)
     positivize_QR(Qhat_h, Rhat_h)
-    Ahat_gram = np.dot(Qhat_gram, Rhat_gram)
+    Ahat_g = np.dot(Qhat_g, Rhat_g)
     Ahat_h = np.dot(Qhat_h, Rhat_h)
 
-    gram_Rerr = sp.norm(Rhat_gram - R, 'fro') / sp.norm(R, 'fro') 
+    g_Rerr = sp.norm(Rhat_g - R, 'fro') / sp.norm(R, 'fro') 
     h_Rerr = sp.norm(Rhat_h - R, 'fro') / sp.norm(R, 'fro') 
 
-    gram_Qerr = sp.norm(Qhat_gram - Q, 'fro')
+    g_Qerr = sp.norm(Qhat_g - Q, 'fro')
     h_Qerr = sp.norm(Qhat_h - Q, 'fro')
 
-    gram_Aerr = sp.norm(Ahat_gram - A, 'fro') / sp.norm(A, 'fro') 
+    g_Aerr = sp.norm(Ahat_g - A, 'fro') / sp.norm(A, 'fro') 
     h_Aerr = sp.norm(Ahat_h - A, 'fro') / sp.norm(A, 'fro') 
 
-    return [gram_Rerr, h_Rerr, gram_Qerr, h_Qerr, gram_Aerr, h_Aerr]
+    return [g_Rerr, g_Qerr, g_Aerr, h_Rerr, h_Qerr, h_Aerr]
 
 
 # Change signs on Q and R to make all the diagonal entries positive.
@@ -53,3 +54,33 @@ def positivize_QR(Q, R):
         if R[i, i] < 0:
             R[i, :] *= -1
             Q[:, i] *= -1
+
+def collect_stats():
+    sizes = np.concatenate((np.arange(5,100,5), np.arange(100,1000,50), np.arange(1000, 2001, 500)))
+    g_Qerrs = np.empty(sizes.shape[0], dtype='float64')
+    g_Rerrs = np.empty(sizes.shape[0], dtype='float64')
+    g_Aerrs = np.empty(sizes.shape[0], dtype='float64')
+    h_Qerrs = np.empty(sizes.shape[0], dtype='float64')
+    h_Rerrs = np.empty(sizes.shape[0], dtype='float64')
+    h_Aerrs = np.empty(sizes.shape[0], dtype='float64')
+    
+    for i in range(sizes.shape[0]):
+        print("Size {0}".format(sizes[i]))
+        g_Rerrs[i], g_Qerrs[i], g_Aerrs[i], h_Rerrs[i], h_Qerrs[i], h_Aerrs[i] = compute_errs(sizes[i])
+
+    return (g_Rerrs, g_Qerrs, g_Aerrs, h_Rerrs, h_Qerrs, h_Aerrs)
+
+def plot_points(g_Rerrs, g_Qerrs, g_Aerrs, h_Rerrs, h_Qerrs, h_Aerrs, sizes):
+    plt.figure()
+    plt.scatter(sizes, g_Rerrs, c='r', marker='.')
+    plt.scatter(sizes, g_Qerrs, c='g', marker='.')
+    plt.scatter(sizes, g_Aerrs, c='b', marker='.')
+    plt.xscale('log')
+    plt.savefig('gram_errs.png', dpi=200, bbox_inches='tight')
+
+    plt.figure()
+    plt.scatter(sizes, h_Rerrs, c='r', marker='.')
+    plt.scatter(sizes, h_Qerrs, c='g', marker='.')
+    plt.scatter(sizes, h_Aerrs, c='b', marker='.')
+    plt.xscale('log')
+    plt.savefig('householder_errs.png', dpi=200, bbox_inches='tight')

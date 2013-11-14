@@ -117,7 +117,6 @@ module qr_householder
             ! we take the dot product of the tail entries of u, v, then add in
             ! the contribution from u_1v_1=v_1
             Umult = 2 * (dot_product (u, v(2:)) + v(1)) / uNorm2
-            write (*,*) Umult
 
             v(2:) = v(2:) - Umult * u
             v(1) = v(1) - Umult
