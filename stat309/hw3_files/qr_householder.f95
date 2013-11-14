@@ -4,7 +4,7 @@ module qr_householder
     contains
         recursive subroutine h_qr (A)
 
-            double precision, dimension(:, :) A
+            double precision, dimension(:, :) :: A
             double precision :: alpha, uNorm2
 
             integer :: k
@@ -12,9 +12,9 @@ module qr_householder
             ! We're operating on the first column of A, called x. Thus
             ! x_1=A(1,1). Calculate alpha=(+/-) ||x||
             if (A(1,1) > 0) then
-                alpha = -sqrt (dot_product (A(:, 1)))
+                alpha = -sqrt (dot_product (A(:, 1), A(:, 1)))
             else
-                alpha = sqrt (dot_product (A(:, 1)))
+                alpha = sqrt (dot_product (A(:, 1), A(:, 1)))
             end if
 
             ! Calculate the vector used in the Householder transform and store
@@ -30,8 +30,8 @@ module qr_householder
             ! first which we treat specially.
             A(1,1) = alpha
 
-            do k = 2, dimA(2)
-                h_multiply (A(2:, 1), A(:, k), uNorm2)
+            do k = 2, size(A, 2)
+                call h_multiply (A(2:, 1), A(:, k), uNorm2)
             end do
 
             ! Recurse down into the sub-block of A if there's anywhere left to
@@ -58,7 +58,7 @@ module qr_householder
 
             do k = 1, size (A, 2)
                 aNorm2 = dot_product (A(k + 1:, k), A(k + 1:, k))
-                h_multiply (A(k + 1:, k), x(k:), aNorm2)
+                call h_multiply (A(k + 1:, k), x(k:), aNorm2)
             end do
         end subroutine apply_Q
 
@@ -76,7 +76,7 @@ module qr_householder
 
             do k = size(A, 2), 1, -1
                 aNorm2 = dot_product (A(k + 1:, k), A(k + 1:, k))
-                h_multiply (A(k + 1:, k), x(k:), aNorm2)
+                call h_multiply (A(k + 1:, k), x(k:), aNorm2)
             end do
         end subroutine apply_Q_T
 
@@ -86,7 +86,7 @@ module qr_householder
         ! that its first entry is 1. Takes the norm of u squared in uNorm2
         subroutine h_multiply(u, v, uNorm2)
             double precision, dimension(:) :: u, v
-            double precision :: Umult
+            double precision :: Umult, uNorm2
 
             ! Edge case: if u is empty, then it's just scalar multiplication by
             ! 1, so we do nothing and return
