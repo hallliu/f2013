@@ -1,0 +1,105 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\im}{im}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[2]{\langle #1,#2\rangle}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+
+\subsection*{5.1}
+Since the measurement error is known to be $30$s or $0.5$min, we tack on random uniform errors taking on values from $(-0.1,0.1)$min to $(-0.5,0.5)$min, $1000$ each. We then have
+\begin{verbatim}
+> ranges = rep((1:5)/10, each=1000)
+> for (i in 1:5000) {
+    slopes[i] = lm(eruptions ~ I(waiting + runif(272, max=0.5, min=(-0.5))), data=faithful)$coef[2] 
+  }
+> orig = lm(eruptions ~ waiting, data=faithful)$coef[2]
+> betas = c(orig, colMeans(matrix(slopes, nrow=1000)))
+> vars = c(0:5/10)+0.5
+> a = lm(betas ~ vars)
+\end{verbatim}
+Running this and taking the means of the $\beta$s for each level of added error, we can regress against the amount of error (which has a baseline of $0.5$min as we assumed previously). We obtain that the extrapolation to zero error is $0.07566$, whereas the original coefficient was $0.07563$. A plot of beta versus error range follows: 
+
+\includegraphics[width=0.6\textwidth]{hw6_files/1_plot.png}
+\subsection*{5.4}
+\ssn{a}
+The condition number of the $X$ matrix in this case is $22219266$. There is an extremely small singular value, $3.42\times10^{-4}$, which indicates that the matrix is close to being not full-rank.
+\ssn{b}
+Computing correlations with \verb|round(cor(model.matrix(a)[,-1])))|, we obtain
+\begin{verbatim}
+                          GNP.deflator  GNP Unemployed Armed.Forces Population Year
+             GNP.deflator         1.00 0.99       0.62         0.46       0.98 0.99
+             GNP                  0.99 1.00       0.60         0.45       0.99 1.00
+             Unemployed           0.62 0.60       1.00        -0.18       0.69 0.67
+             Armed.Forces         0.46 0.45      -0.18         1.00       0.36 0.42
+             Population           0.98 0.99       0.69         0.36       1.00 0.99
+             Year                 0.99 1.00       0.67         0.42       0.99 1.00
+\end{verbatim}             
+We see the following variables are mutually highly correlated: GNP, GNP deflator, population, and year.
+\ssn{c}
+Computing the variance inflation factors, we obtain
+\begin{verbatim}
+GNP.deflator          GNP   Unemployed Armed.Forces   Population         Year 
+   135.53244   1788.51348     33.61889      3.58893    399.15102    758.98060 
+\end{verbatim}
+This confirms what we saw with the correlations: the four predictors which are highly correlated also have high variance inflation factors.
+\subsection*{6.2}
+\ssn{a}
+First, we make a plot of residuals versus index (left). There are highly visible runs apparent, which suggests that successive residuals are correlated. Next, if we plot successive residuals against each other, we see a clear linear trend, which further indicates correlation between the residuals.
+
+\includegraphics[width=0.5\textwidth]{hw6_files/3_resid_plot.png}
+\includegraphics[width=0.5\textwidth]{hw6_files/3_succ_resids.png}
+\ssn{b}
+Using the command \verb|b=gls(divorce ~ . - year, correlation=corAR1(form= ~ year), data=divusa, method="ML")|, we have that the estimated correlation is $0.971$, which is significant, as the reported confidence interval for the correlation is $(0.653, 0.998)$. 
+
+This is the coefficient data for the OLS model:
+\begin{verbatim}
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  2.48784    3.39378   0.733   0.4659    
+unemployed  -0.11125    0.05592  -1.989   0.0505 .  
+femlab       0.38365    0.03059  12.543  < 2e-16 ***
+marriage     0.11867    0.02441   4.861 6.77e-06 ***
+birth       -0.12996    0.01560  -8.333 4.03e-12 ***
+military    -0.02673    0.01425  -1.876   0.0647 .  
+\end{verbatim}
+and here is the coefficient data for the GLS model, accounting for correlation:
+\begin{verbatim}
+                Value Std.Error   t-value p-value
+(Intercept) -7.059682  5.547193 -1.272658  0.2073
+unemployed   0.107643  0.045915  2.344395  0.0219
+femlab       0.312085  0.095151  3.279878  0.0016
+marriage     0.164326  0.022897  7.176766  0.0000
+birth       -0.049909  0.022012 -2.267345  0.0264
+military     0.017946  0.014271  1.257544  0.2127
+\end{verbatim}
+We see that the unemployment rate's significance goes up beyond the $5\%$ level, while the $p$-values for females in the labor force, marriage rate, and birth rate all increase but stay significant. However, the military participation rate, which was fairly close to significant before, is now insignificant.
+\ssn{c}
+Divorce rates are probably highly associated with prevailing social trends, which generally tend to last longer than a year. The change in the significance of military participation has something to do with this: military participation is also somewhat of a mirror for social trends, and since in the OLS model the divorce rate couldn't depend on what its previous value was, the model instead attributed some of that variation to the military participation rate.
+\subsection*{4}
+Since $H$ is positive definite and symmetric, it is guaranteed to be invertible. Then, the Schur complement of $H$ is $s=f-e^TH^{-1}e$. This is guaranteed to be nonzero because $M$ is invertible. Thus, we have 
+\[M^{-1}=\openm H^{-1}+H^{-1}es^{-1}e^TH^{-1}&-H^{-1}es^{-1}\\-s^{-1}e^TH^{-1}&s^{-1}\closem\]
+\subsection*{5}
+The correlation between $x$ and $y$ can be expressed as $\sum x_iy_i$, so its square is $\inner{x,y}$. Then, $\inner{x,y}=1$ iff the correlation is $\pm 1$. Additionally, we have $\|x\|^2=\|y\|^2=1$, so by Cauchy-Schwarz, equality implies that $x$ and $y$ are linearly dependent, so the matrix with $x$ and $y$ as columns has rank 1. 
+
+
+\end{document}
