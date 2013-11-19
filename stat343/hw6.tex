@@ -13,13 +13,14 @@
 \newcommand{\openm}{\begin{pmatrix}}
 \newcommand{\closem}{\end{pmatrix}}
 \DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\rk}{rk}
 \DeclareMathOperator{\im}{im}
 \newcommand{\nc}{\newcommand}
 \newcommand{\rn}{\mathbb{R}}
 \nc{\h}[1]{\widehat{#1}}
 \nc{\ssn}[1]{\subsubsection*{#1}}
-\nc{\inner}[2]{\langle #1,#2\rangle}
+\nc{\inner}[1]{\langle #1\rangle}
 \begin{document}
 Name: Hall Liu
 
@@ -99,7 +100,9 @@ Divorce rates are probably highly associated with prevailing social trends, whic
 Since $H$ is positive definite and symmetric, it is guaranteed to be invertible. Then, the Schur complement of $H$ is $s=f-e^TH^{-1}e$. This is guaranteed to be nonzero because $M$ is invertible. Thus, we have 
 \[M^{-1}=\openm H^{-1}+H^{-1}es^{-1}e^TH^{-1}&-H^{-1}es^{-1}\\-s^{-1}e^TH^{-1}&s^{-1}\closem\]
 \subsection*{5}
-The correlation between $x$ and $y$ can be expressed as $\sum x_iy_i$, so its square is $\inner{x,y}$. Then, $\inner{x,y}=1$ iff the correlation is $\pm 1$. Additionally, we have $\|x\|^2=\|y\|^2=1$, so by Cauchy-Schwarz, equality implies that $x$ and $y$ are linearly dependent, so the matrix with $x$ and $y$ as columns has rank 1. 
+The correlation between $x$ and $y$ can be expressed as $\sum x_iy_i$, so it's equal to $\inner{x,y}$. Then, $|\inner{x,y}|=1$ iff the correlation is $\pm 1$. Additionally, we have $\|x\|^2=\|y\|^2=1$, so by Cauchy-Schwarz, equality implies that $x$ and $y$ are linearly dependent, so the matrix with $x$ and $y$ as columns has rank 1. 
 
+The covariance matrix of $\openm a\\b\closem$ is $(X^TX)^{-1}$, where $X$ has $u$ and $v$ as columns. Then, we have $X^TX=\openm u^Tu&u^Tv\\v^Tu&v^Tv\closem$, which by the above is $\openm1&r\\r&1\closem$. Its inverse is then $\Sigma=\frac{1}{1-r^2}\openm1&-r\\-r&1\closem$, so we have that $\var(\h{a})=\var(\h{b})=\frac{1}{1-r^2}$. We have that $\h{a}+\h{b}=\openm1&1\closem\openm\h{a}\\\h{b}\closem$ and $\h{a}-\h{b}=\openm1&-1\closem\openm\h{a}\\\h{b}\closem$, so their variances are $\var(\h{a}+\h{b})=\openm1&1\closem\Sigma\openm1\\1\closem=\frac{2}{1+r}$ and $\var(\h{a}-\h{b})=\openm1&-1\closem\Sigma\openm1\\-1\closem=\frac{2}{1-r}$. If $r=-0.99$, then $\var(\h{a})=50.25=\var(\h{b})$,  $\var(\h{a}+\h{b})=200$, and $\var(\h{a}-\h{b})=1.005$. 
 
+The parameters themselves become harder and harder to estimate as we get close to either positive or negative collinearity, their sum becomes harder to estimate with negative collinearity, and their differerence becomes harder to estimate with positive collinearity.
 \end{document}
