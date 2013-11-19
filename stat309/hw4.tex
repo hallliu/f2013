@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Null}{null}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\cn}{\mathbb{C}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[2]{\langle #1,#2\rangle}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\tl}[1]{\widetilde{#1}}
+\nc{\norm}[1]{\left\|{#1}\right\|}
+\begin{document}
+
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+\subsection*{1}
+\ssn{a}
+Suppose $U$ were singular. Then, its image would have dimension $<n$, which means that the image of $LU$ would have dimension $<n$. However, since $A$ is full rank, the image of $\Pi_1A\Pi_2$ must have dimension $n$, contradiction. We also know that $L_1$ is nonsingular because it is lower triangular and all of its diagonal entries are $1$s, giving it a determinant of $1$.
+\ssn{b}
+Starting with $\|Ax-b\|$, left-multiply by $\Pi_1$ to obtain $\|\Pi_1Ax-\tl{b}\|$. Note that since $LU=\Pi_1A\Pi_2$, we have $\Pi_1A=LU\Pi_2^T$, so the quantity to be minimized is then $\|LU\tl{x}-\tl{b}\|$. Let $y=U\tl{x}$. Then, we want to minimize $\|Ly-\tl{b}\|$, which we can do by solving the normal equation $L^TLy=L^Tb$. We can then find $\tl{x}$ by backsolving $y=U\tl{x}$ (where a unique solution is guaranteed because $U$ is invertible).
+
+We can solve the normal equation quickly by backsolving twice: let $\tl{y}=Ly$, and backsolve $L^T\tl{y}=L^Tb$ for $\tl{y}$. Then backsolve $\tl{y}=Ly$ for $y$.
+\subsection*{2}
+\ssn{a}
+If we form $A^TA$, we obtain $\openm3&3\\3&3+2\ep^2\closem$, which is really, really close to being singular if $\ep$ is small. In addition, $\ep^2$ may fall below machine precision (at least compared to the other entries), which would actually make the matrix singular.
+\ssn{b}
+Multiply them together, get $A$. $L$ and $U$ are easily recognized to be in the correct form.
+\ssn{c}
+The $L$ matrix found has no $\ep$ terms: none of its terms have small perturbations, and the columns are much further away from being linearly dependent than the columns of $A$. Thus, it's a better conditioned problem than solving the normal equation directly.
+\ssn{d, e}
+Since the rank of $A$ is 2, the $LU$ factorization above is a rank-retaining factorization. Thus, from the formula we have for pseudoinverse from a rank-retaining factorization, we have $A^+=U^T(UU^T)^{-1}(L^TL)^{-1}L^T$. Computing each of them, we have $UU^T=\openm2&\ep\\\ep&\ep^2\closem$, so its inverse is $\openm1&-\ep^{-1}\\-\ep^{-1}&2\ep^{-2}\closem$. $L^TL=\openm3&0\\0&2\closem$ so $(L^TL)^{-1}=\openm1/3&0\\0&1/2\closem$. Forming the big product, 
+\begin{align*}
+    A^+&=\openm1&0\\1&\ep\closem\openm1&-\ep^{-1}\\-\ep^{-1}&2\ep^{-2}\closem\openm1/3&0\\0&1/2\closem\openm1&1&1\\0&1&-1\closem\\
+       &=\openm1&-\ep^{-1}\\0&\ep^{-1}\closem\openm1/3&0\\0&1/2\closem\openm1&1&1\\0&1&-1\closem\\
+       &=\openm1/3&-\ep^{-1}/2\\0&\ep^{-1}/2\closem\openm1&1&1\\0&1&-1\closem\\
+       &=\openm1/3&1/3-\ep^{-1}/2&1/3+\ep^{-1}/2\\0&\ep^{-1}/2&-\ep^{-1}/2\closem\\
+\end{align*}
+which gives us the expression desired after factoring out a $\frac{1}{6}$.
+\ssn{3}
+\ssn{a}
+Using what we had in (1a), the least squares problem is equivalent to minimizing $\|LU\tl{x}-\tl{b}\|=\|Ly-\tl{b}\|$. If we write $L=\openm L_1\\L_2\closem$, then $Ly=\openm L_1y\\L_2y\closem=\openm z\\L_2L_1^{-1}z\closem=\openm I_n\\S\closem z$, so the original problem is then equivalent to 
+
+\end{document}
