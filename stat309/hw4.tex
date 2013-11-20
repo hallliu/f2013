@@ -55,6 +55,19 @@ Since the rank of $A$ is 2, the $LU$ factorization above is a rank-retaining fac
 which gives us the expression desired after factoring out a $\frac{1}{6}$.
 \ssn{3}
 \ssn{a}
-Using what we had in (1a), the least squares problem is equivalent to minimizing $\|LU\tl{x}-\tl{b}\|=\|Ly-\tl{b}\|$. If we write $L=\openm L_1\\L_2\closem$, then $Ly=\openm L_1y\\L_2y\closem=\openm z\\L_2L_1^{-1}z\closem=\openm I_n\\S\closem z$, so the original problem is then equivalent to 
+Using what we had in (1a), the least squares problem is equivalent to minimizing $\|LU\tl{x}-\tl{b}\|=\|Ly-\tl{b}\|$. If we write $L=\openm L_1\\L_2\closem$, then $Ly=\openm L_1y\\L_2y\closem=\openm z\\L_2L_1^{-1}z\closem=\openm I_n\\S\closem z$, so the original problem is then equivalent to $\norm{\openm I_n\\S\closem z-\tl{b}}$. 
+\ssn{b}
+Note that the given solution for $z$ corresponds to $\openm I_n-S^T(I_{m-n}+SS^T)^{-1}S&S^T(I_{m-n}+SS^T)^{-1}\closem b$. Denote this matrix by $K$. Now, note that since the matrix $A=\openm I_n\\S\closem$ is full rank, its pseudoinverse is $(A^TA)^{-1}A^T=(I_n-S^TS)^{-1}\openm I_n&S^T\closem=\openm(I_n+S^TS)^{-1}&(I_n-S^TS)^{-1}S^T\closem$.
+
+We want to show that $A^+=K$. Go block by block. We want to show that $I_n-S^T(I_{m-n}+SS^T)^{-1}S=(I_n-S^TS)^{-1}$, or that $(I_n-S^TS)(I_n-S^T(I_{m-n}+SS^T)^{-1}S)=I_n$. Multiplying it out, we have
+\[I_n+S^TS-S^T(I_{m-n}+SS^T)^{-1}S-S^TSS^T(I_{m-n}+SS^T)^{-1}S=I_n+S^TS-S^T(I_{m-n}+SS^T)(I_{m-n}+SS^T)^{-1}S=I_n\]
+For the second block, we want to show that $(I_n+S^TS)^{-1}S^T=S^T(I_{m-n}+SS^T)^{-1}$. Multiplying out the inverses, we get $S^T(I_{m-n}+SS^T)=(I_n+S^TS)S^T$, or $S^T+S^TSS^T=S^T+S^TSS^T$, which is true.
+
+Since $z$ is given by $A^+b$, we know that $z$ must be the min-norm least squares solution.
+\ssn{c}
+Let $\tl{z}=z-\tl{b}_1$, and let $c=\tl{b}_2-S\tl{b}_1$. Then, we want to obtain $\tl{z}=S^T(I_{m-n}+SS^T)^{-1}c$. $S^T$ is a $(m-n)\times n$ matrix, and $(I_{m-n}+SS^T)$ is a $(m-n)\times(m-n)$ matrix. If $m-n$ is small, then these matrices will be small, and consequently it will be easier to obtain $\tl{z}$.
+\subsection*{4}
+
+
 
 \end{document}
