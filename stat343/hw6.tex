@@ -32,11 +32,11 @@ Since the measurement error is known to be $30$s or $0.5$min, we tack on random 
 \begin{verbatim}
 > ranges = rep((1:5)/10, each=1000)
 > for (i in 1:5000) {
-    slopes[i] = lm(eruptions ~ I(waiting + runif(272, max=0.5, min=(-0.5))), data=faithful)$coef[2] 
+     slopes[i] = lm(eruptions ~ I(waiting + runif(272, max=ranges[i], min=-ranges[i])), data=faithful)$coef[2]
   }
 > orig = lm(eruptions ~ waiting, data=faithful)$coef[2]
 > betas = c(orig, colMeans(matrix(slopes, nrow=1000)))
-> vars = c(0:5/10)+0.5
+> vars = (c(0:5/10)*2)^2/12 + 1/12
 > a = lm(betas ~ vars)
 \end{verbatim}
 Running this and taking the means of the $\beta$s for each level of added error, we can regress against the amount of error (which has a baseline of $0.5$min as we assumed previously). We obtain that the extrapolation to zero error is $0.07566$, whereas the original coefficient was $0.07563$. A plot of beta versus error range follows: 
