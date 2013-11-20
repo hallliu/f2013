@@ -44,7 +44,7 @@ Running this and taking the means of the $\beta$s for each level of added error,
 \includegraphics[width=0.6\textwidth]{hw6_files/1_plot.png}
 \subsection*{5.4}
 \ssn{a}
-The condition number of the $X$ matrix in this case is $22219266$. There is an extremely small singular value, $3.42\times10^{-4}$, which indicates that the matrix is close to being not full-rank.
+The condition number of the $X$ matrix in this case is $2.38\times10^7$, computed by first taking the SVD of the model matrix then dividing the largest SV by the smallest. There is an extremely small singular value, $3.42\times10^{-4}$, which indicates that the matrix is close to being not full-rank. This is leaving the intercept column in $X$.
 \ssn{b}
 Computing correlations with \verb|round(cor(model.matrix(a)[,-1])))|, we obtain
 \begin{verbatim}
@@ -99,6 +99,15 @@ Divorce rates are probably highly associated with prevailing social trends, whic
 \subsection*{4}
 Since $H$ is positive definite and symmetric, it is guaranteed to be invertible. Then, the Schur complement of $H$ is $s=f-e^TH^{-1}e$. This is guaranteed to be nonzero because $M$ is invertible. Thus, we have 
 \[M^{-1}=\openm H^{-1}+H^{-1}es^{-1}e^TH^{-1}&-H^{-1}es^{-1}\\-s^{-1}e^TH^{-1}&s^{-1}\closem\]
+by the formula giving us the Schur complement.
+Multiplying this by $M$ on the right, we have
+\begin{align*}
+    M^{1}M&=\openm H^{-1}+H^{-1}es^{-1}e^TH^{-1}&-H^{-1}es^{-1}\\-s^{-1}e^TH^{-1}&s^{-1}\closem\\
+          &=\openm I+H^{-1}es^{-1}e^T-H^{-1}es^{-1}e^T&H^{-1}e+H^{-1}es^{-1}e^TH^{-1}e-H^{-1}es^{-1}f\\-s^{-1}e^T+s^{-1}e^T&-s^{-1}e^TH^{-1}e+s^{-1}f\closem\\
+          &=\openm I&H^{-1}e+H^{-1}es^{-1}(e^TH^{-1}e-f)\\0&s^{-1}(f-e^TH^{-1}e)\closem\\
+          &=\openm I&0\\0&1\closem
+\end{align*}
+by using the definition of $s$.
 \subsection*{5}
 The correlation between $x$ and $y$ can be expressed as $\sum x_iy_i$, so it's equal to $\inner{x,y}$. Then, $|\inner{x,y}|=1$ iff the correlation is $\pm 1$. Additionally, we have $\|x\|^2=\|y\|^2=1$, so by Cauchy-Schwarz, equality implies that $x$ and $y$ are linearly dependent, so the matrix with $x$ and $y$ as columns has rank 1. 
 
