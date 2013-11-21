@@ -67,7 +67,43 @@ Since $z$ is given by $A^+b$, we know that $z$ must be the min-norm least square
 \ssn{c}
 Let $\tl{z}=z-\tl{b}_1$, and let $c=\tl{b}_2-S\tl{b}_1$. Then, we want to obtain $\tl{z}=S^T(I_{m-n}+SS^T)^{-1}c$. $S^T$ is a $(m-n)\times n$ matrix, and $(I_{m-n}+SS^T)$ is a $(m-n)\times(m-n)$ matrix. If $m-n$ is small, then these matrices will be small, and consequently it will be easier to obtain $\tl{z}$.
 \subsection*{4}
+\ssn{a}
+We have $\Pi_1A\Pi_2=LU$, so transposing both sides gives $\Pi_2^TA^T\Pi_1^T=U^TL^T$. If we let $\tl{w}=\Pi_1w$, then $A^Tw=c$ is equivalent to $A^T\Pi_1^T\tl{w}=c$. Left-multiplying by $\Pi_2^T$ on both sides gives that this is equivalent to $U^TL^T\tl{w}=\tl{c}$, since $\Pi_2$ is bijective.
 
+Minimizing $\norm{\tl{w}}$ is equivalent to minimizing $\|w\|$ due to $\Pi_1$ being orthogonal. We are guaranteed that some $\tl{w}$ exists that satisfies this constraint, since $A^T$ has rank $n$ and $\tl{c}\in\rn^n$. Thus, the minimization problem is equivalent to solving the min-norm least squares problem of $\norm{U^TL^T\tl{w}-\tl{c}}$. 
+
+To solve this, take the pseudoinverse of $U^TL^T$. Since this is already in rank-retaining form, we use the formula for pseudoinverse given in the lecture notes, $L(L^TL)^{-1}(UU^T)^{-1}U=L(L^TL)^{-1}U^{-T}U^{-1}U=L(L^TL)^{-1}U^{-T}$ since $U$ is invertible. Thus we have that the solution is given by $\tl{w}=L(L^TL)U^{-T}\tl{c}$.
+\ssn{b}
+Write the above equation as $\openm\tl{w}_1\\\tl{w}_2\closem=\openm L_1\\L_2\closem(L^TL)^{-1}U^{-T}\tl{c}$. Then, we have $\tl{w}_1=L_1(L^TL)^{-1}U^{-T}\tl{c}$ and $\tl{w}_2=L_2(L^TL)^{-1}U^{-T}\tl{c}$. Since $L_1$ is invertible, we can express $\tl{c}$ in terms of $\tl{w}_1$ as $\tl{c}=U^T(L^TL)L_1^{-1}\tl{w}_1$. Substituting this into the second equation, we have $\tl{w}_2=L_2(L^TL)^{-1}U^{-T}U^T(L^TL)L_1^{-1}\tl{w}_1=S\tl{w}_1$. 
+
+Consider $\tl{c}$ again. We have 
+\begin{align*}
+    \tl{c}&=U^T(L_1^TL_1+L_2^TL_2)L_1^{-1}\tl{w}_1\\
+    \tl{c}&=U^TL_1^T\tl{w}_1+U^TL_2^TS\tl{w}_1\\
+    L_1^{-T}U^{-T}\tl{c}&=\tl{w}_1+L_1^{-T}L_2^T\tl{w}_2\\
+    L_1^{-T}U^{-T}\tl{c}-S^T\tl{w}_2&=\tl{w}_1\\
+\end{align*}
+which is what we wanted.
+\ssn{c}
+If we expand out the thing inside the norm, we get $\openm S^T\tl{w}_2-d\\\tl{w}_2\closem$, which is the same thing as $\openm -\tl{w}_1\\\tl{w}_2\closem$. The norm of this is the same as the norm of $\tl{w}$, so minimizing one is equivalent to minimizing the other.
+
+Now, as before, the solution is given by $\tl{w}_2=\openm S^T\\I_{m-n}\closem^+\openm d\\0\closem$. Since the matrix $A=\openm S^T\\I_{m-n}\closem$ we're taking the pseudoinverse of is already full column rank, its pseudoinverse is given by
+\[(A^TA)^{-1}A^T=(SS^T+I_{m-n})^{-1}\openm S&I_{m-n}\closem\]
+Applying this to $\openm d\\0\closem$, we get $(SS^T+I_{m-n})^{-1}Sd$, as desired.
+\subsection*{5}
+\ssn{a}
+Due to $L$ being unit lower triangular, $L_1$ is nonsingular because none of its diagonal entries are zero. Further, the entries on the diagonal of $U_1$ come from the pivoted diagonal entries of the successive iterations of $A^{(i)}$. Since each $A^{(i)}$ has the same rank as $A$, failing to find $r$ nonzero entries would imply that some $A^{(i)}$ has a block of zeros in the bottom larger than $m-r$, contradicting the same-rank-ness.
+\ssn{b}
+We have $LU=\openm L_1\\L_2\closem\openm U_1&U_2\closem=\openm L_1U_1&L_1U_2\\L_2U_1&L_2U_2\closem$, and
+\[\openm I_r\\S_1\closem L_1U_1\openm I_r&S_2^T\closem=\openm L_1U_1\\S_1L_1U_1\closem\openm I_r&S_2^T\closem=\openm L_1U_1&L_1U_1S_2^T\\S_1L_1U_1&S_1L_1U_1S_2^T\closem\]
+We must have $U_1S_2^T=U_2$, or $S_2^T=U_1^{-1}U_2$. Additionally, we must have $S_1L_1=L_2$, or $S_1=L_2L_1^{-1}$. Plugging these in makes it work.
+\ssn{c}
+We have that $\openm I_r&S_2^T\closem$ is full-row-rank because of the identity in the beginning and $\openm I_r\\S_1\closem$ is full-col-rank for the same reason. Now, since $U_1$ and $L_1$ are both full rank because invertible, we have 
+\[\left(\openm I_r\\S_1\closem L_1U_1\openm I_r&S_2^T\closem\right)^+=\openm I_r&S_2^T\closem^+\left(\openm I_r\\S_1\closem L_1U_1\right)^+=\openm I_r&S_2^T\closem^+U_1^{-1}\left(\openm I_r\\S_1\closem L_1\right)^+=\openm I_r&S_2^T\closem^+U_1^{-1}L_1^{-1}\openm I_r\\S_1\closem^+\]
+This is the pseudoinverse of $\Pi_1A\Pi_2$, or $\Pi_2^TA^+\Pi_1^T$. Moving the permutation matrices to the other side gives us what we want.
+\ssn{d}
+The $LU$ given in part (a) is a rank-retaining factorization for $\Pi_1A\Pi_2$, so its pseudoinverse is $U^T(UU^T)^{-1}(L^TL)^{-1}L^T$
+\subsection*{6}
 
 
 \end{document}
