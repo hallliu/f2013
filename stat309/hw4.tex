@@ -104,6 +104,30 @@ This is the pseudoinverse of $\Pi_1A\Pi_2$, or $\Pi_2^TA^+\Pi_1^T$. Moving the p
 \ssn{d}
 The $LU$ given in part (a) is a rank-retaining factorization for $\Pi_1A\Pi_2$, so its pseudoinverse is $U^T(UU^T)^{-1}(L^TL)^{-1}L^T$
 \subsection*{6}
+\ssn{a}
+If $A$ is nonsingular, then $A^+=A^{-1}$ so $S=D-CA^{-1}B$. Multiplying $X$ by $X^{-1}$, we get
+\begin{align*}
+    \openm A&B\\C&D\closem\openm A^{-1}+A^{-1}BS^{-1}CA^{-1}&-A^{-1}BS^{-1}\\-S^{-1}CA^{-1}&S^{-1}\closem&=\openm I_p+BS^{-1}CA^{-1}-BS^{-1}CA^{-1}&-BS^{-1}+BS^{-1}\\CA^{-1}+CA^{-1}BS^{-1}CA^{-1}-DS^{-1}CA^{-1}&-CA^{-1}BS^{-1}+DS^{-1}\closem\\
+\end{align*}
+The upper left block is clearly $I_p$, and the upper right block is zero. Write the lower left block as $CA^{-1}+(CA^{-1}B-D)S^{-1}CA^{-1}=CA^{-1}-SS^{-1}CA^{-1}=0$. Similarly, the lower right block is $(D-CA^{-1}B)S^{-1}=I_{n-p}$, so the whole thing resolves to the identity.
+
+If $D$ and $T$ are nonsingular, then $XX^{-1}$ is
+\[\openm A&B\\C&D\closem\openm T^{-1}&-T^{-1}BD^{-1}\\-D^{-1}CT^{-1}&D^{-1}+D^{-1}CT^{-1}BD^{-1}\closem
+=\openm AT^{-1}-BD^{-1}CT^{-1}&-AT^{-1}BD^{-1}+BD^{-1}+BD^{-1}CT^{-1}BD^{-1}\\CT^{-1}-CT^{-1}&-CT^{-1}BD^{-1}+I_{n-p}+CT^{-1}BD^{-1}\closem\]
+Lower left block is zero, lower right block is $I_{n-p}$. Upper left block is $(A-BD^{-1}C)T^{-1}=I_p$, and upper right block is $BD^{-1}+(BD^{-1}C-A)T^{-1}BD^{-1}=0$, so we get the identity again.
+\ssn{b}
+From lecture notes, if $A$ is nonsingular, we can write $X$ as $\openm I_p&0\\CA^{-1}&I_q\closem\openm A&B\\0&S\closem$. The determinant of the first matrix is $1$, and the determinant of the second is $\det(A)\det(S)=\det(A)\det(D-CA^{-1}B)$.
+
+If $D$ is nonsingular, then we can write $X=\openm I_p&BD^{-1}\\0&I_q\closem\openm T&0\\C&D\closem$. To verify, multiplying this out gives $\openm T+BD^{-1}C&B\\C&D\closem=\openm A&B\\C&D\closem$. Then, the determinant of the first matrix is $1$, and the determinant of the second is $\det(T)\det(D)=\det(A-BD^{-1}C)\det(D)$.
+
+Let $X=\openm A&B\\C&I_q\closem$, where $A$ is nonsingular. Then, $\det(X)=\det(I_q)\det(A-BC)=\det(A)\det(I_q-CA^{-1}B)$, which gives us the formula we want
+
+First matrix: Let $A$ be the matrix with $\frac{1}{\lambda_i}$ on the diagonals. Then the matrix minus $A$ is all $1$s, so let $B$ be the column vector with all $1$s and $C$ be the row vector with all $1$s. Then, $CA^{-1}B=\openm1&\cdots&1\closem\openm\lambda_1\\\vdots\\\lambda_n\closem=\sum\lambda_i$. Determinant of $A$ is $\frac{1}{\prod\lambda_i}$, so the final determinant is $\frac{\sum\lambda_i+1}{\prod\lambda_i}$.
+
+Second matrix: Let $A$ be the identity, $B$ be the column matrix of all $1$s, and $C=\openm\lambda_1&\hdots&\lambda_n\closem$. Then, $CA^{-1}B=\sum\lambda_i$, and $\det(A)=1$, so the overall determinant is $1+\sum\lambda_i$.
+
+Third matrix: Let $A=(\lambda-\mu)I$, so subtracting $A$ from the given matrix gives a matrix full of $\mu$s. Then, let $C=\openm\sqrt{\mu}&\hdots&\sqrt{\mu}\closem$ and $B=C^T$. Then $CA^{-1}B=n\mu(\lambda-\mu)$, giving us the answer as $(\lambda-\mu)^n(n\mu(\lambda-\mu)+1)$
+\ssn{c}
 
 
 \end{document}
