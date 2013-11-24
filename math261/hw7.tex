@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage[cm]{fullpage}
+\newcommand{\nc}{\newcommand}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\nc{\cn}{\mathbb{C}}
+\nc{\rn}{\mathbb{R}}
+\nc{\qn}{\mathbb{Q}}
+\nc{\zn}{\mathbb{Z}}
+\nc{\ff}{\mathbb{F}}
+\nc{\fq}{\mathbb{F}_q}
+\nc{\fqsq}{\mathbb{F}_{q^2}}
+\nc{\aff}{\mathbb{A}}
+\nc{\proj}{\mathbb{P}}
+\nc{\vphi}{\varphi}
+\nc{\pd}[2]{\frac{\partial {#1}}{\partial {#2}}}
+\nc{\ep}{\epsilon}
+\nc{\topo}{\mathscr{T}}
+\nc{\basis}{\mathscr{B}}
+\nc{\nullset}{\varnothing}
+\nc{\openm}{\begin{pmatrix}}
+\nc{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Ind}{Ind}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[1]{{\langle #1\rangle}}
+\nc{\h}[1]{\widehat{#1}}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\subsection*{5.7}
+First, the conjugacy classes of $PGL(2,q)$. The conjugacy classes originating from the scalar matrices $\openm x&0\\0&x\closem$ all collapse down to one class, the one containing only the identity. The conjugacy classes containing matrices which have a Jordan block of size $2$ also all collapse down to one class: that containing $\openm 1&1\\0&1\closem$, and its size is still $q^2-1$. If the original matrix has two distinct eigenvalues over $\fq$, then by moving into $PGL$, we can set one of those eigenvalues to $1$ and the other to any of $q-1$ choices, making for $(q-1)/2$ conjugacy classes (accounting for order). The size of thse conjugacy classes stays the same ($q(q+1)$) unless the other eigenvalue is $-1$, in which multiplying by the scalar matrix $\openm -1&0\\0&-1\closem$ takes an element of the conjugacy class to another element of the conjugacy class, which halves the size of the conjugacy class in $PGL$. Similarly, if the original matrix has two distinct eigenvalues over $\fq(\sqrt{\ep})$, then we can apply a scalar matrix so that the $\sqrt{\ep}$-part of the eigenvalues is $1$. The same issue with negatives arises when the $\fq$-part is zero, making for $(q-1)/2$ classes with $q(q-1)$ elements and one class with $q(q-1)/2$ elements. 
+
+Now, to find the characters, we look at characters of $GL(2,q)$ that take on the same value mod a scalar matrix. In the $U_\alpha$ type, the only such ones are the trivial rep and the alternating rep, since for all other choices of $\alpha$, $U_\alpha$ will vary on the scalar matrices themselves. The same holds for the $V_\alpha$ type, for $\alpha(g)=1$ and $\alpha(g)=-1$, where $g$ is a generator.
+
+For the $W_{\alpha,\beta}$ type, we need for $\alpha(x)\beta(x)$ to be constant no matter what the value of $x$ is. This works if $\alpha$ is the inverse of $\beta$ (in the sense of pointwise multiplication in $\cn$), so we have $(q-1)/2$ choices here. However, this won't work if $\alpha$ is the alternating rep because it's its own inverse, so we take away one and get $(q-3)/2$ choices.
+
+For the $X_\vphi$ type, we need $\vphi(x)$ to be constant, which corresponds to the reps of $\fqsq^\times$ that remain constant on $\fq^\times$. There are $q(q-1)/2$ choices for $\vphi$ to begin with, and adding this restriction divides the number by $q$, so we get $(q-1)/2$ irreps of this type. 
+
+%A table summarizing this stuff follows:
+%
+%\begin{tabular}{c|c|c|c|c|c|c|c}
+%    &1&$q^2-1$&$q(q+1)$&$q(q+1)/2$&$q(q-1)$&$q(q-1)/2$\\
+%    &Identity&$\openm 1&1\\0&1\closem$&$\openm1&0\\0&x\closem$&$\openm1&0\\0&-1\closem$&$\openm x&\ep\\1&x\closem$&$\openm0&\ep\\1&0\closem$\\
+%    \hline
+%    $U_+$&1&1&1&1&1&1&1\\
+%    $U_-$&1&1&$\alpha(y)$&$\alpha(-1)$&$
+%         
+%\end{tabular}
+\subsection*{5.8}
+In general, $\proj^1(\fq)$ has $q+1$ points. The action of $SL(2,2)$ on $\proj^1(\ff_2)$ gives a map to $S_3$ which will be an isomorphism if it's injective, since $SL(2,2)$ also has six elements. Manually checking the elements, none of them act trivially, so we have an isomorphism.
+
+Look at $PSL(2,3)$. We know that $SL(2,3)$ has order $3(3^2-1)=24$, so quotienting by the center (with 2 elements) will just produce a group of order $12$. Since $\proj^1(\ff_3)$ is invariant under scalar multiplication anyway, we can define the action by matrix multiplication. Once again, this produces a map from $PSL(2,3)$ to $S_4$. We know that it's injective, since a matrix acting trivially on $\proj^1(\ff_3)$ means that it's a scalar multiple of the identity, which doesn't happen because we modded out by all the scalar matrices. Thus, since $A_4$ is the only subgroup of $S_4$ of order $12$, $PSL(2,3)$ is isomorphic to $A_4$.
+
+$SL(2,4)$ has order $4(4^2-1)=60$ and it acts on $\proj^1(\ff_4)$ (5 elements) by matrix multiplication. Here, the only scalar matrix producing determinant $1$ in the group is the identity, so the map's still injective. $A_5$ is the only subgroup of $S_5$ of order $60$, so there we have it.
+\subsection*{5.9}
+From looking at the character table for $GL(2,q)$, we see that the magnitude of all the character values outside of the scalar matrices is bounded above by $2$, since the functions $\alpha,\beta$, and $\vphi$ all take values on the unit circle. Further, they're all of dimension $>2$ for the $q$s we're concerned with. Thus, since all but $4$ of the irreps of $SL(2,q)$ arise from restrictions of the irreps of $GL(2,q)$, those $q$ irreps of $SL(2,q)$ cannot have any normal subgroup between $\{\pm1\}$ and $SL(2,q)$ as its kernel.
+
+As for the other four, the discussion in the book gives their dimensions as $(q\pm1)/2$. The value of their characters is also half of the value of the characters for the irreps with twice the dimension on all but $4$ conjugacy classes, so that bound is still good. Finally, the book gives values for the characters on the last $4$ conjugacy classes as being bounded somewhere in the ballpark of $\frac{1}{2}\sqrt{q}$, so that'll be less than $(q\pm1)/2$ too, at least for large $q$. We can check manually that it holds for a few low values, so that's good too.
+\subsection*{5.11}
+
+\end{document}
