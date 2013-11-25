@@ -128,6 +128,17 @@ Second matrix: Let $A$ be the identity, $B$ be the column matrix of all $1$s, an
 
 Third matrix: Let $A=(\lambda-\mu)I$, so subtracting $A$ from the given matrix gives a matrix full of $\mu$s. Then, let $C=\openm\sqrt{\mu}&\hdots&\sqrt{\mu}\closem$ and $B=C^T$. Then $CA^{-1}B=n\mu(\lambda-\mu)$, giving us the answer as $(\lambda-\mu)^n(n\mu(\lambda-\mu)+1)$
 \ssn{c}
+Applying the first $p$ steps of Gaussian elimination gives $p$ lower triangular matrices which multiply up to give something with the first $p$ columns of the lower triangle nonzero. This is the first matrix in the decomposition given. As for the stuff left over, we may write it as $\openm U_{11}&U_{12}\\0&S\closem$, where $U_{11}$ is the $U$ matrix in the $LU$ decomposition of $A$ and $U_{12}$ contains some number of arbitrary entries. We want to show now that $S$ is in fact the Schur complement of $A$, and we can do this by multiplying together the matrices and seeing what $S$ has to be.
 
+We have 
+\[\openm L_{11}&0\\L_{21}&I_q\closem\openm I_p&0\\0&S\closem\openm U_{11}&U_{12}\\0&I_q\closem=\openm L_{11}&0\\L_{21}&I_q\closem\openm U_{11}&U_{12}\\0&S\closem=\openm L_{11}U_{11}&L_{11}U_{12}\\L_{21}U_{11}&L_{21}U_{12}+S\closem\]
+
+$L_{11}$ and $U_{11}$ are both invertible because $A$ is. Then, $L_{11}U_{12}=B$ gives us $U_{12}=U_{11}A^{-1}B$, and similarly $L_{21}=CA^{-1}L_{11}$. This gives us $L_{21}U_{12}=CA^{-1}L_{11}U_{11}A^{-1}B=CA^{-1}B$, and $S+L_{21}U_{12}=D$ indeed gives us the correct expression for $S$ in terms of the original blocks.
+\ssn{d}
+If we apply $p$ steps of the Cholesky factorization, we get a rank-$p$ symmetric matrix (made of the sum of $p$ rank-$1$ matrices) plus a matrix with the first $p$ rows and columns zero. We can write this rank-$p$ matrix as $\openm f_1&f_2&\hdots&f_p\closem\openm f_1^T\\f_2^T\\\vdots\\f_p^T\closem$, and write these in blocks. This gives us the desired form.
+
+Multiplying out the blocks, we get $\openm R_{11}^TR_{11}&R_{11}^TR_{12}\\R_{12}^TR_{11}&R_{12}^TR_{12}\closem$. Since the Cholesky factorization is unique, we must have that $R_{11}^TR_{11}$ is $A$. In addition, since the other blocks of the matrix we're adding on are zero, we must have $R_{11}^TR_{12}=B$ and $R_{12}^TR_{11}=C$. This gives us $R_{12}=R_{11}^{-T}C^T=R_{11}^{-T}B$. Then, if we compute $R_{12}^TR_{12}$, we get $CR_{11}^{-1}R_{11}^{-T}B=CA^{-1}B$, so we see from $R_{12}^TR^{12}+S=D$ that $S$ is the Schur complement.
+\ssn{e}
+Using the Sherman-Morrison formula from the notes, this pops right out, just with different names for things.
 
 \end{document}
