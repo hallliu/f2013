@@ -66,5 +66,41 @@ From looking at the character table for $GL(2,q)$, we see that the magnitude of 
 
 As for the other four, the discussion in the book gives their dimensions as $(q\pm1)/2$. The value of their characters is also half of the value of the characters for the irreps with twice the dimension on all but $4$ conjugacy classes, so that bound is still good. Finally, the book gives values for the characters on the last $4$ conjugacy classes as being bounded somewhere in the ballpark of $\frac{1}{2}\sqrt{q}$, so that'll be less than $(q\pm1)/2$ too, at least for large $q$. We can check manually that it holds for a few low values, so that's good too.
 \subsection*{5.11}
+Pretty sure there's something wrong with this problem -- nontrivial permutation reps are never irreducible because they contain a copy of the trivial rep, and $GL(3,q)$ definitely doesn't act trivially on the projective plane.
+\subsection*{3}
+%The value of $\chi_V(A)$ for some $A\in GL(2,q)$ is the number of distinct eigenvectors that $A$ has over $\fq$, since each eigenvector corresponds to a line in $\fq^2$ that $A$ fixes. We can use this to calculate the character of $V$. 
+%
+%$\proj^1(\fq)$ has $q+1$ points, and that's the value of the character on all of the scalar matrix conjugacy classes, as all they do is multiply by a scalar, which corresponds to no action at all.
+%
+%For the classes with representative $\openm x&1\\0&x\closem$, they have two eigenvectors, $[-x/(1-x):1]$ and $[1:0]$ when $x\neq1$, and only $[1:0]$ when $x=1$.
+%
+%For the classes with representative $\openm x&0\\0&y\closem$ with $x\neq y$, they have two eigenvectors, $[0:1]$ and $[1:0]$.
+%
+%For the classes with representative $\openm x&\ep y\\y&x\closem$ with $y\neq0$, they have no eigenvectors because all their eigenvalues are not in $\fq$.
+%
+%Thus, we have the character of this thing. Taking the inner product with itself, we get the numerator as $(q-1)\cdot(q+1)^2+(q^2-1)\cdot4\cdot(q-2)+(q^2-1)+(q^2+q)\cdot4\cdot\frac{(q-1)(q-2)}{2}=(q^2-1)(q^2+3q-6)$. If we divide by the order of the group, we get 
+This is in the book.
+\subsection*{4}
+\ssn{a}
+For any matrix in $GL(2,q)$, we can write it as $sIB$, where $B\in SL(2,q)$ and $s=\det(A)$ by taking $B=\frac{1}{s}A$. This shows that $GL(2,q)=Z\cdot SL(2,q)$. It is also evident that the intersection of the two subgroups is trivial, since the only matrix in $Z$ having unit determinant is the identity. $Z$ is normal in $GL(2,q)$ since it's the center, and $SL(2,q)$ is a normal subgroup because conjugating preserves the determinant. Thus we have all the criteria required for a group to be the internal direct product of two subgroups.
+\ssn{b}
+For the conjugacy classes, online sources tell me that the conjugacy classes don't split when restricting if $q$ is even. Thus, the scalar matrices represent one conjugacy class, the identity (since $-1=1$). Similarly, the size-2-Jordan-block matrices go to one class, the one containing $\openm 1&1\\0&1\closem$ still with $q^2-1$ elements. The matrices with two distinct eigenvalues must have their eigenvalues as $\lambda$ and $\lambda^{-1}$, but $\lambda$ can't be $0$ or $1$, so there are $(q-2)/2$ of these classes (dividing by two to account for switching them). These classes have size $q(q+1)$. Finally, for the matrices of the form $\openm x&\ep y\\y&x\closem$, we must have $\|x+y\sqrt{\ep}\|=1$, and there are $q/2$ of these up to conjugacy (note: $\ep$ might be something funky if $q$ is even, since there aren't any non-square elements. I'm just going to hope that this doesn't break anything). This gives a total of $q+1$ conjugacy classes. The beginning of the char table thus looks like
 
+\begin{tabular}{c|c|c|c|c}
+    &1&$q^2-1$&$q(q+1)$&$q(q-1)$\\
+    &Id&$\openm 1&1\\0&1\closem$&$\openm\lambda&0\\0&\lambda^{-1}\closem$($(q-2)/2$ of these)&$\openm x&\ep y\\y&x\closem$($q/2$ of these)\\
+    \hline
+\end{tabular}
+
+If we restrict the $U_\alpha$ irreps, we get the trivial rep. $q$ more to go.
+
+If we restrict the $V_\alpha$ irreps, we get an irrep with character $q, 0, 1, -1$. Working out the inner product of this with itself gives $1$, so this is another irrep. $q-1$ more to go.
+
+If we restrict the $W_{\alpha, 1}$ irreps, we get irreps if $\alpha^2\neq 1$ (but $\alpha^2=1$ implies $\alpha=1$ b/c $q$ even, so that case goes away). The character is $q+1, 1, \alpha(x)+\alpha(x^{-1}), 0$. There are $q-1$ irreps $\alpha$ of $\fq^\times$, but we can't have $\alpha$ be the identity, so there are $q-2$ choices. In addition, picking $\beta=\alpha^{-1}$ results in the same irrep, so we actually have $\frac{q-2}{2}$ irreps of this type.
+
+If we restrict the $X_\vphi$ irreps, following the discussion in the book gives $q/2$ irreps in $SL(2,q)$, since there are no $\vphi$s such that $\vphi^2=1$.
+
+Adding these together, we get $q+1$ reps, so we're done.
+\ssn{c}
+If we look at all the non-identity conjugacy classes and the non-trivial irreps, the magnitude of all the characters is bounded above by $2$. Since if $q>2$ the dimensions are $\geq3$, we can't have any normal subgroups, which means $SL(2,q)$ is simple.
 \end{document}
