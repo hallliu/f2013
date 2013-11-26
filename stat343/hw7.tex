@@ -1,0 +1,145 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\im}{im}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[2]{\langle #1,#2\rangle}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+
+\subsection*{6.3}
+We fit the desired combination of variables by creating a new data set, \verb|sal1|, and assigning its \verb|dose| field to be the log of \verb|salmonella$dose + 1|. The results are as follows:
+\begin{verbatim}
+Call:
+lm(formula = colonies ~ dose, data = sal1)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-16.376  -6.882  -1.509   5.400  29.119 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)   19.823      5.064   3.915  0.00123 **
+dose           2.396      1.128   2.125  0.04955 * 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 10.84 on 16 degrees of freedom
+Multiple R-squared:  0.2201,    Adjusted R-squared:  0.1713 
+F-statistic: 4.514 on 1 and 16 DF,  p-value: 0.04955
+\end{verbatim}
+and the plot is
+
+\includegraphics[width=0.6\textwidth]{hw7_files/6_3_plot1.png}
+
+As seen from the low $R^2$ value and the poor appearance of the plot, it may be a good idea to check for lack of fit. If we do so by fitting a model with parameters for each level of dose with
+\begin{verbatim}
+> a_alt = lm(colonies ~ factor(dose), sal1)
+> points(sal1$dose, fitted(a_alt), pch=18)
+> anova(a, a_alt)
+Analysis of Variance Table
+
+Model 1: colonies ~ dose
+Model 2: colonies ~ factor(dose)
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1     16 1881.1                           
+2     12 1091.3  4    789.73 2.1709 0.1342
+\end{verbatim}
+Since the $p$-value is high enough, we should accept the null hypothesis that the fit is good. Instead, the low $R^2$ value can be attributed to the naturally high variance in the observations.
+\subsection*{6.5}
+Least squares:
+\begin{verbatim}
+> a = lm(stack.loss ~ ., data=stackloss)
+> summary(a)
+
+Call:
+lm(formula = stack.loss ~ ., data = stackloss)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.2377 -1.7117 -0.4551  2.3614  5.6978 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -39.9197    11.8960  -3.356  0.00375 ** 
+Air.Flow      0.7156     0.1349   5.307  5.8e-05 ***
+Water.Temp    1.2953     0.3680   3.520  0.00263 ** 
+Acid.Conc.   -0.1521     0.1563  -0.973  0.34405    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.243 on 17 degrees of freedom
+Multiple R-squared:  0.9136,    Adjusted R-squared:  0.8983 
+F-statistic:  59.9 on 3 and 17 DF,  p-value: 3.016e-09
+\end{verbatim}
+LAD:
+\begin{verbatim}
+> b = rq(stack.loss ~ ., data=stackloss)
+> summary(b)
+
+Call: rq(formula = stack.loss ~ ., data = stackloss)
+
+tau: [1] 0.5
+
+Coefficients:
+             coefficients lower bd  upper bd 
+(Intercept) -39.68986    -41.61973 -29.67754
+Air.Flow      0.83188      0.51278   1.14117
+Water.Temp    0.57391      0.32182   1.41090
+Acid.Conc.   -0.06087     -0.21348  -0.02891
+\end{verbatim}
+Huber's:
+\begin{verbatim}
+> c = rlm(stack.loss ~ ., data=stackloss)
+> summary(c)
+
+Call: rlm(formula = stack.loss ~ ., data = stackloss)
+Residuals:
+Min       1Q   Median       3Q      Max 
+-8.91753 -1.73127  0.06187  1.54306  6.50163 
+
+Coefficients:
+               Value    Std. Error t value 
+(Intercept) -41.0265   9.8073    -4.1832
+Air.Flow      0.8294   0.1112     7.4597
+Water.Temp    0.9261   0.3034     3.0524
+Acid.Conc.   -0.1278   0.1289    -0.9922
+
+Residual standard error: 2.441 on 17 degrees of freedom
+\end{verbatim}
+Trimmed least squares:
+\begin{verbatim}
+> d = ltsreg(stack.loss ~ ., data=stackloss, nsamp="exact")
+> d
+Call:
+lqs.formula(formula = stack.loss ~ ., data = stackloss, nsamp = "exact", 
+    method = "lts")
+
+Coefficients:
+(Intercept)     Air.Flow   Water.Temp   Acid.Conc.  
+ -3.581e+01    7.500e-01    3.333e-01    3.489e-17  
+
+Scale estimates 0.8482 0.8645 
+\end{verbatim}
+
+\end{document}
