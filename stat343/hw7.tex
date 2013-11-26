@@ -141,5 +141,75 @@ Coefficients:
 
 Scale estimates 0.8482 0.8645 
 \end{verbatim}
+The water temperature coefficient is very high for the least-squares method compared to the LAD or the trimmed least squares model, and it's somewhere in the middle for Huber's method. This suggests that there are outliers that are affecting least squares but not the more robust models. We see a similary magnitude difference with acid concentration, which suggests that it would be good to take a look at that too. Acid concentration goes from being insignificant under least squares to significant under LAD. Let's take a look at the diagnostics.
 
+First, take a look at the jackknife residuals. We see that case $21$ has a jackknife residual of $-3.33$, while the Bonferroni threshold is $3.60$. This is pretty close, and if we take a look at the plot of stack loss versus airflow, we have the following:
+
+\includegraphics[width=0.6\textwidth]{hw7_files/6_5_airflow.png}
+
+Case 21 looks like it's quite a bit below the line. Let's remove it and see what least squares gives back:
+\begin{verbatim}
+> a1=lm(stack.loss ~ ., data=stackloss1)
+> summary(a1)
+
+Call:
+lm(formula = stack.loss ~ ., data = stackloss1)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.0449 -2.0578  0.1025  1.0709  6.3017 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -43.7040     9.4916  -4.605 0.000293 ***
+Air.Flow      0.8891     0.1188   7.481 1.31e-06 ***
+Water.Temp    0.8166     0.3250   2.512 0.023088 *  
+Acid.Conc.   -0.1071     0.1245  -0.860 0.402338    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.569 on 16 degrees of freedom
+(1 observation deleted due to missingness)
+Multiple R-squared:  0.9488,  Adjusted R-squared:  0.9392 
+F-statistic: 98.82 on 3 and 16 DF,  p-value: 1.541e-10
+\end{verbatim}
+This produces something more in line with what we got back from the more robust models.
+\subsection*{7.2}
+First, examine the raw scatterplot below. It does not seem to be a linear trend, nor does it seem to be piecewise or polynomial. Thus, transforming the response is probably our best bet, and we do so with the Box-Cox method.
+
+\includegraphics[width=0.6\textwidth]{hw7_files/7_2_raw.png}
+
+Running Box-Cox on the data gives us the following plot 
+
+\includegraphics[width=0.6\textwidth]{hw7_files/7_2_boxcox.png}
+
+which suggests that we should try transforming. Using $\lambda=3$, we transform the response and get the following scatterplot:
+
+\includegraphics[width=0.6\textwidth]{hw7_files/7_2_transformed.png}
+
+This looks more reasonable, so we fit a least-squares model to it and receive the following output
+
+\begin{verbatim}
+Call:
+lm(formula = tr_yield ~ nitro, data = tr_cornnit)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-455013 -190004    1157  175247  605739 
+
+Coefficients:
+        Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 489620.0    62248.8   7.866 8.63e-10 ***
+nitro         2425.9      450.5   5.385 3.03e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 273900 on 42 degrees of freedom
+Multiple R-squared:  0.4084,    Adjusted R-squared:  0.3943 
+F-statistic: 28.99 on 1 and 42 DF,  p-value: 3.029e-06
+\end{verbatim}
+
+The $R^2$ value is a bit low, but the plot displays a lot of variability for the response to each value of the predictor, so let's run a goodness-of-fit test on it. Creating a 
+
+% TODO: this makes no sense. lambda=8 makes for a good fit, but not otherwise.
 \end{document}
