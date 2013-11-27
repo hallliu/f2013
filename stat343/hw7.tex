@@ -183,7 +183,7 @@ Running Box-Cox on the data gives us the following plot
 
 \includegraphics[width=0.6\textwidth]{hw7_files/7_2_boxcox.png}
 
-which suggests that we should try transforming. Using $\lambda=3$, we transform the response and get the following scatterplot:
+which suggests that we should try transforming because of the apparent curvature. Using $\lambda=3$, we transform the response and get the following scatterplot:
 
 \includegraphics[width=0.6\textwidth]{hw7_files/7_2_transformed.png}
 
@@ -212,4 +212,112 @@ F-statistic: 28.99 on 1 and 42 DF,  p-value: 3.029e-06
 The $R^2$ value is a bit low, but the plot displays a lot of variability for the response to each value of the predictor, so let's run a goodness-of-fit test on it. Creating a 
 
 % TODO: this makes no sense. lambda=8 makes for a good fit, but not otherwise.
+\subsection*{7.3}
+Fitting a linear model, we get 
+\begin{verbatim}
+Call:
+lm(formula = O3 ~ temp + ibh + humidity, data = ozone)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-11.5291  -3.0137  -0.2249   2.8239  13.9303 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1.049e+01  1.616e+00  -6.492 3.16e-10 ***
+temp         3.296e-01  2.109e-02  15.626  < 2e-16 ***
+ibh         -1.004e-03  1.639e-04  -6.130 2.54e-09 ***
+humidity     7.738e-02  1.339e-02   5.777 1.77e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.524 on 326 degrees of freedom
+Multiple R-squared:  0.684,  Adjusted R-squared:  0.6811 
+F-statistic: 235.2 on 3 and 326 DF,  p-value: < 2.2e-16
+\end{verbatim}
+If we run the Box-Cox method, we get the following plot of log-likelihood, which suggests that we should use $\lambda=0.25$(corresponding to a quartic root for physical interpretability). 
+
+\includegraphics[width=0.6\textwidth]{hw7_files/7_3_boxcox.png}
+
+Then, if we apply the transformation and re-fit the model, we get 
+
+\begin{verbatim}
+Call:
+lm(formula = I((O3^(1/4) + 1) * 4) ~ temp + ibh + humidity, data = ozone)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.17305 -0.43348  0.03639  0.49897  1.97315 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  7.655e+00  2.474e-01  30.945  < 2e-16 ***
+temp         5.227e-02  3.228e-03  16.192  < 2e-16 ***
+ibh         -1.939e-04  2.508e-05  -7.734 1.31e-13 ***
+humidity     1.191e-02  2.050e-03   5.810 1.48e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.6923 on 326 degrees of freedom
+Multiple R-squared:  0.7152, Adjusted R-squared:  0.7126 
+F-statistic: 272.9 on 3 and 326 DF,  p-value: < 2.2e-16
+\end{verbatim}
+This suggests that it was a good transformation to make -- the $R^2$ value increased and the predictors became more significant.
+\subsection*{6.15}
+\ssn{1}
+\includegraphics[width=0.6\textwidth]{hw7_files/6_15_plot1.png}
+
+A linear fit seems like it wouldn't work too well here -- there seems to be a distinct downwards curve in the trend rather than a straight line.
+\ssn{2}
+If we run a goodness of fit on the linear model and plot the results, we get 
+
+\includegraphics[width=0.6\textwidth]{hw7_files/6_15_linear_fit.png}
+
+where the black dots are the level means and the line is the fitted line. The $R^2$ value for this fit was $0.78$. The $F$-test gives a $p$-value of $1.062\times10^{-7}$, indicating that this is not a good fit.
+
+If we use a quadratic model, we get the following
+
+\includegraphics[width=0.6\textwidth]{hw7_files/6_15_quadratic_fit.png}
+
+\begin{verbatim}
+Call:
+lm(formula = Gain ~ poly(A, 2), data = turk0)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-32.988 -16.542   2.193  12.788  36.059 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  705.914      3.182 221.849  < 2e-16 ***
+poly(A, 2)1  353.113     18.825  18.758  < 2e-16 ***
+poly(A, 2)2 -154.390     18.825  -8.201 2.28e-09 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 18.82 on 32 degrees of freedom
+Multiple R-squared:  0.9291,    Adjusted R-squared:  0.9246 
+F-statistic: 209.6 on 2 and 32 DF,  p-value: < 2.2e-16
+\end{verbatim}
+All of the predictors are significant, and the $R^2$ value is dramatically higher, which suggests that the quadratic model is a superior one. If we test for lack-of-fit on this, the reduction in $RSS$ is enough to make the $p$-value $0.2374$, which suggests that there is no significant lack of fit for the quadratic model.
+\ssn{3}
+The quadratic mean function seems to conform to the trend in the level means much better than the linear fit -- the downwards curve in the data is accounted for in the quadratic fit.
+\subsection*{6.16}
+For this problem, we will use the standard polynomial basis, since it's a lot harder to differentiate in the orthogonal basis than the standard. If we assume that the fitted quadratic mean function is $\h{f}(x)=\h{\beta}_0+\h{\beta}_1x+\h{\beta}_2x^2$, then the fitted function is maximized at $x=-\frac{\h{\beta}_1}{2\h{\beta}_2}$. Thus, we can bootstrap using the following code:
+
+\begin{verbatim}
+maxima = numeric(1000)
+for (i in 1:1000) {
+    sample_data = turk0[sample(35, replace=TRUE),]
+    coefs = coef(lm(Gain ~ A + A^2, data=sample_data))
+    maxima[i] = -coefs[2]/(2*coefs[3])
+}
+quantile(maxima, c(0.025, 0.975))
+\end{verbatim}
+
+This gives us a $95\%$ confidence interval of $(0.328, 0.401)$ with an estimate of $0.355$ for optimal percentage of methionine supplement, which corresponds to a standard error of $0.0183$. 
+
+Using the delta method, the variance is given by (6.31) in Weisberg, so plugging that into R and computing gives $0.00444$, which is considerably lower than that obtained from bootstraping.
+
+
 \end{document}
