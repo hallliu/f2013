@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage[cm]{fullpage}
+\newcommand{\nc}{\newcommand}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\nc{\cn}{\mathbb{C}}
+\nc{\rn}{\mathbb{R}}
+\nc{\qn}{\mathbb{Q}}
+\nc{\zn}{\mathbb{Z}}
+\nc{\aff}{\mathbb{A}}
+\nc{\proj}{\mathbb{P}}
+\nc{\vphi}{\varphi}
+\nc{\pd}[2]{\frac{\partial {#1}}{\partial {#2}}}
+\nc{\ep}{\epsilon}
+\nc{\topo}{\mathscr{T}}
+\nc{\basis}{\mathscr{B}}
+\nc{\nullset}{\varnothing}
+\nc{\openm}{\begin{pmatrix}}
+\nc{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Ind}{Ind}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[1]{{\langle #1\rangle}}
+\nc{\h}[1]{\widehat{#1}}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+\subsection*{1}
+Orthogonality: Let $V_1,V_2$ be irreps and take orthonormal bases to be $e_1,\ldots,e_n$ and $f_1,\ldots,f_m$. The inner product of two of these matrix-element functions $\rho_{1,ij}$ and $\rho_{2,kl}$ can be written as $\sum_{g\in G}\rho_1(g)_{ij}\rho_2(g)_{kl}=\sum_{g\in G}e_i^T\rho_1(g)e_jf_k^T\rho_2(g)f_l$. Since $e_i$ and $f_l$ don't depend on $G$, we can factor them out to get $e_i^TAf_l$, where $A$ is the sum of matrices in the middle. Now, since $A$ is $G$-invariant and linear, by Schur's lemma we must have that it's zero if the irreps are different. If the irreps are the same, then $A=\lambda_{jk}I$, where $\lambda_{jk}$ is a $G$-invariant bilinear function of $e_j$ and $f_k$. Thus, we must have some $B$ such that $\lambda_{jk}=e_j^TBf_k$, where $B$ is still $G$-invariant. Thus, $B$ is some $\mu I$, which makes the whole thing into $\mu e_i^Te_j^Tf_kf_l$ (now assuming that the $e$s and the $f$s are in the same vector space since the irreps are the same). 
+\end{document}
