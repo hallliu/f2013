@@ -25,6 +25,7 @@
 \nc{\closem}{\end{pmatrix}}
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\Ind}{Ind}
 \nc{\ssn}[1]{\subsubsection*{#1}}
 \nc{\inner}[1]{{\langle #1\rangle}}
@@ -35,5 +36,48 @@ Name: Hall Liu
 Date: \today 
 \vspace{1.5cm}
 \subsection*{1}
-Orthogonality: Let $V_1,V_2$ be irreps and take orthonormal bases to be $e_1,\ldots,e_n$ and $f_1,\ldots,f_m$. The inner product of two of these matrix-element functions $\rho_{1,ij}$ and $\rho_{2,kl}$ can be written as $\sum_{g\in G}\rho_1(g)_{ij}\rho_2(g)_{kl}=\sum_{g\in G}e_i^T\rho_1(g)e_jf_k^T\rho_2(g)f_l$. Since $e_i$ and $f_l$ don't depend on $G$, we can factor them out to get $e_i^TAf_l$, where $A$ is the sum of matrices in the middle. Now, since $A$ is $G$-invariant and linear, by Schur's lemma we must have that it's zero if the irreps are different. If the irreps are the same, then $A=\lambda_{jk}I$, where $\lambda_{jk}$ is a $G$-invariant bilinear function of $e_j$ and $f_k$. Thus, we must have some $B$ such that $\lambda_{jk}=e_j^TBf_k$, where $B$ is still $G$-invariant. Thus, $B$ is some $\mu I$, which makes the whole thing into $\mu e_i^Te_j^Tf_kf_l$ (now assuming that the $e$s and the $f$s are in the same vector space since the irreps are the same). 
+Orthogonality: Let $V_1,V_2$ be irreps and take orthonormal bases to be $e_1,\ldots,e_n$ and $f_1,\ldots,f_m$. The inner product of two of these matrix-element functions $\rho_{1,ij}$ and $\rho_{2,kl}$ can be written as $\sum_{g\in G}\rho_1(g)_{ij}\rho_2(g)_{kl}=\sum_{g\in G}e_i^T\rho_1(g)e_jf_k^T\rho_2(g)f_l$. Note that this expression from $V_1\times V_2$ to $\cn$ is bilinear in $e_i$ and $f_k$ and $G$-invariant, so it follows that there's some $G$-invariant matrix $A$ such that $\inner{\rho_{1,ij},\rho_{2,kl}}=e_i^TAf_k$. Now, since $A$ is $G$-invariant and linear, by Schur's lemma we must have that it's zero if the irreps are different. If the irreps are the same, then $A=\lambda_{jk}I$, where $\lambda_{jk}$ is a $G$-invariant bilinear function of $e_j$ and $f_l$. Thus, we must have some $B$ such that $\lambda_{jk}=e_j^TBf_l$, where $B$ is still $G$-invariant. Thus, $B$ is some $\mu I$, which makes the whole thing into $\mu e_i^Te_j^Tf_lf_k$ (now assuming that the $e$s and the $f$s are in the same vector space since the irreps are the same). The only way this can be nonzero is if $\inner{e_j,f_l}$ and $\inner{e_i,f_k}$ are nonzero, or when $j=l$ and $i=k$. 
+
+Since we have orthogonality, these functions must all be linearly independent. To show that they're a basis, we just have to show that there are enough of them. The dimension of $\cn[G]$ is $|G|$, and there are $d^2$ matrix element functions for each irrep of degree $d$. By previous theorem, the sum of the squared degrees of the irreps is the order of the group, so we're done.
+\subsection*{2}
+Copy-pasted from the last time this was assigned:
+
+Let the two functions be $\phi$ and $\psi$. The product of $\phi$ and $\psi$ in $\cn G$ is $\sum_{g\in G}\sum_{h\in H}\phi(g)\psi(h)e_{gh}=\sum_{k\in G}e_k\left(\sum_{gh=k}\phi(g)\psi(h)\right)$. Note that if we fix $g$, then $h=g^{-1}k$, so this becomes $\sum_{k\in G}e_k\left(\sum_{g\in G}\phi(g)\psi(g^{-1}k)\right)$, which is the element of $\cn G$ that corresponds to the convolution of $\phi$ and $\psi$.
+\subsection*{3}
+\ssn{a}
+The value of $P*Q$ at some $g$ is $\sum_{h\in G}P(h)Q(h^{-1}g)$. Summing up over all $g\in G$, we get
+\[\sum_{g\in G}\sum_{h\in H}P(h)Q(h^{-1}g)=\sum_{h\in H}P(h)\sum_{g\in G}Q(h^{-1}g)=\sum_{h\in H}P(h)=1\]
+so this is a valid probability distribution.
+\ssn{b}
+Suppose that $(P*Q)(g)\neq0$. Equivalently, for some $h\in G$, $P(h)Q(h^{-1}g)\neq0$, or that $P(h)$ and $Q(h^{-1}g)$ are both nonzero. Then $h\in\supp(P)$ and $h^{-1}g\in\supp(Q)$, which means $hh^{-1}g=g\in\supp(P)\cdot\supp(Q)$. Conversely, if $g\in\supp(P)\cdot\supp(Q)$, let $g=ab$, $h=a$, $b=a^{-1}g$, and follow the chain of deduction backwards.
+\subsection*{4}
+\ssn{a}
+If we try to maximize $|P(A)-Q(A)|$, we note a few facts about how we should select $A$. First, we can assume that $P(A)\geq Q(A)$, since otherwise we can just consider $G\backslash A$, as $P(A)-Q(A)=(1-P(G\backslash A))-(1-Q(G\backslash A))=Q(G\backslash A)-P(G\backslash A)$. Next, note that if $P(x)>Q(x)$, then $P(A\cup\{x\})>Q(A\cup\{x\})$, since the probabilities are additive. In addition, if $x\in A$ and $P(x)<Q(x)$, then $P(A\backslash \{x\})>Q(A\backslash \{x\})$. From this, we can conclude that $A$ cannot contain any elements such that $P(x)<Q(x)$ and must contain all elements such that $P(x)>Q(x)$, since otherwise we can construct another set with a greater value for $P(A)-Q(A)$. The elements for which $Q(x)=P(x)$ don't matter, since they get cancelled out. Thus the set $A$ mentioned is the correct one.
+
+From the above, we can deduce that $\|P-Q\|=\sum_{s\in A}|P(s)-Q(s)|$, where $A$ is fixed as above. Since this is also equal to $Q(G\backslash A)-P(G\backslash A)=\sum_{s\not\in A}|P(s)-Q(s)|$, adding them together and dividing by two gives the desired identity.
+\ssn{b}
+We have that $\|P-Q\|$ is actually just $\frac{1}{2}|P(f)-Q(f)|$ where $f(s)=1$ if $s\in A$ and $0$ otherwise. For arbitrary $f$, $|P(f)-Q(f)|=\left|\sum_{s\in G}f(s)(P(s)-Q(s))\right|\leq\sum_{s\in G}f(s)|P(s)-Q(s)|\leq\sum_{s\in G}|P(s)-Q(s)|$, so the above choice of $f$ attains the upper bound.
+\subsection*{5}
+Copy-pasted from the last time this was assigned (with $\phi$ and $\psi$ in place of $P$ and $Q$):
+
+We have 
+\[
+    \h{\phi}(\rho)\cdot\h{\psi}(\rho)=\left(\sum_{g\in G}\phi(g)\rho(g)\right)\left(\sum_{h\in G}\psi(h)\rho(h)\right)=\sum_{k\in G}\left(\sum_{g\in G}\phi(g)\psi(g^{-1}k)\right)\rho(k)
+\]
+On the other hand, if we let $f=\phi*\psi$, then $f(k)=\sum_{g\in G}\phi(g)\psi(g^{-1}k)$, so $\h{f}$ is the same expression as above.
+\subsection*{6}
+Trivial rep: $\h{P}=p+3(1-p)/3=1$
+
+\noindent Alternating rep: $\h{P}=p-3(1-p)/3=2p-1$
+
+\noindent Standard rep: In the basis $e_1-e_2,e_2-e_3$, the transpositions map as follows:
+\begin{align*}
+    (1\,2)&\mapsto\openm-1&1\\0&1\closem\\
+    (2\,3)&\mapsto\openm1&0\\1&-1\closem\\
+    (3\,1)&\mapsto\openm0&-1\\-1&0\closem\\
+\end{align*}
+Thus, 
+\[
+    \h{P}=\openm p&0\\0&p\closem+\frac{1-p}{3}\left(\openm-1&1\\0&1\closem+\openm1&0\\1&-1\closem+\openm0&-1\\-1&0\closem\right)=\openm p&0\\0&p\closem
+\]
 \end{document}
