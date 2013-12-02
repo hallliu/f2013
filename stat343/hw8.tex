@@ -1,0 +1,162 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\im}{im}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\tl}[1]{\widetilde{#1}}
+\nc{\mi}{{(-i)}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[2]{\langle #1,#2\rangle}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+\subsection*{1}
+\ssn{a}
+If we calculate $\tl{r}^\mi=\tl{Y}^\mi-X\h{\beta}^\mi$, each entry of the resulting vector will be the same as the corresponding entry of $r^\mi$ except for the $i$th, which will be zero because the $i$th entry of $\tl{Y}^\mi$ is $x_i^T\h{\beta}^\mi$. Now, note that since the true regression coefficient vector $\zeta^\mi$ satisfies $X^T(X\zeta^\mi-\tl{Y}^\mi)=0$, we want to show that $X^T\tl{r}^\mi=0$, for that would imply that $\h{\beta}^\mi=\zeta^\mi$ (this requires that $X$ be full-rank). 
+
+To do this, note that $(X^\mi)^Tr^\mi=0$, so we have for each $j\in[1..p]$ that $\sum_{k\neq i}X_{kj}r_k=0$. However, since $\tl{r}^\mi_i=0$, adding in that term doesn't change the sum, so $\sum_{k\in[1..n]}X_{kj}\tl{r}^\mi_k=0$ as well, which shows that $X^T\tl{r}^\mi=0$.
+\ssn{b}
+The fitted value is just the data-to-be-fitted multiplied by the regression coefficient, which we know to be $\h{\beta}^\mi$, so the fit at $x_i$ is $x_i^T\h{\beta}^\mi$.
+\subsection*{2}
+This was essentially assigned as problem 5 on HW5.
+\ssn{c}
+Since the diagonals of the hat matrix are bounded between $0$ and $1$, the denominator on the RHS must also be. Thus, the LHS must be larger than the numerator on the RHS.
+\subsection*{3(8.2)}
+%\ssn{a}
+%Under backwards selection, set the critical $p$-value to $0.1$, and regress. On the first iteration, we remove the Gleason score with $p=0.775$. On the second iteration, we remove log of capuslar penetration (\verb|lcp|) with $p=0.251$. On the third iteration, we remove \verb|pgg45| with $p$-value $0.253$. On the fourth iteration, we remove age with $p=0.170$. On the fifth iteration, we remove \verb|lbph| with $p=0.112$, and finally we arrive at a model where all predictors significant at the $0.1$ level. During the entire process, the $R^2$ value increased by about $0.01$. The final output follows.
+%\begin{verbatim}
+%Call:
+%lm(formula = lpsa ~ . - lbph - gleason - lcp - pgg45 - age, data = prostate)
+%
+%Residuals:
+%     Min       1Q   Median       3Q      Max 
+%-1.72964 -0.45764  0.02812  0.46403  1.57013 
+%
+%Coefficients:
+%            Estimate Std. Error t value Pr(>|t|)    
+%(Intercept) -0.26809    0.54350  -0.493  0.62298    
+%lcavol       0.55164    0.07467   7.388  6.3e-11 ***
+%lweight      0.50854    0.15017   3.386  0.00104 ** 
+%svi          0.66616    0.20978   3.176  0.00203 ** 
+%---
+%Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+%
+%Residual standard error: 0.7168 on 93 degrees of freedom
+%Multiple R-squared:  0.6264,   Adjusted R-squared:  0.6144 
+%F-statistic: 51.99 on 3 and 93 DF,  p-value: < 2.2e-16
+%\end{verbatim}
+%\ssn{b}
+%Calling \verb|step(a1)| removed \verb|gleason|, \verb|lcp|, and \verb|pgg45|, in that order, which is the same as that for backwards eimination. The final model looks like the following:
+%\begin{verbatim}
+%Call:
+%lm(formula = lpsa ~ . - gleason - lcp - pgg45, data = prostate)
+%
+%Residuals:
+%     Min       1Q   Median       3Q      Max 
+%-1.83505 -0.39396  0.00414  0.46336  1.57888 
+%
+%Coefficients:
+%            Estimate Std. Error t value Pr(>|t|)    
+%(Intercept)  0.95100    0.83175   1.143 0.255882    
+%lcavol       0.56561    0.07459   7.583 2.77e-11 ***
+%lweight      0.42369    0.16687   2.539 0.012814 *  
+%age         -0.01489    0.01075  -1.385 0.169528    
+%lbph         0.11184    0.05805   1.927 0.057160 .  
+%svi          0.72095    0.20902   3.449 0.000854 ***
+%---
+%Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+%
+%Residual standard error: 0.7073 on 91 degrees of freedom
+%Multiple R-squared:  0.6441,   Adjusted R-squared:  0.6245 
+%F-statistic: 32.94 on 5 and 91 DF,  p-value: < 2.2e-16
+%\end{verbatim}
+%\ssn{c}
+%Plotting the number of parameters against the $C_p$ score for the best model with that number of parameters, we have
+%
+%\includegraphics[width=0.6\textwidth]{hw8_files/8_2_cp.png}
+%
+%The model with the $5$ predictors (\verb|gleason|, \verb|lcp|, and \verb|pgg45| removed) seems to do the best, with a $C_p$ score of $5.715$
+\ssn{a}
+Under backwards selection, set the critical $p$-value to $0.1$, and regress. On the first iteration, we remove \verb|status| with $p=0.854$. On the second iteration, we remove \verb|verbal| with $p=0.140$. Having removed these two, all predictors are now significant, and the final result of the model is as follows:
+\begin{verbatim}
+Call:
+lm(formula = lpsa ~ . - gleason - lcp - pgg45, data = prostate)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.83505 -0.39396  0.00414  0.46336  1.57888 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.95100    0.83175   1.143 0.255882    
+lcavol       0.56561    0.07459   7.583 2.77e-11 ***
+lweight      0.42369    0.16687   2.539 0.012814 *  
+age         -0.01489    0.01075  -1.385 0.169528    
+lbph         0.11184    0.05805   1.927 0.057160 .  
+svi          0.72095    0.20902   3.449 0.000854 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.7073 on 91 degrees of freedom
+Multiple R-squared:  0.6441,   Adjusted R-squared:  0.6245 
+F-statistic: 32.94 on 5 and 91 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\ssn{b}
+Calling \verb|step(a1)| removes only \verb|status|, giving the final model result of
+\begin{verbatim}
+Call:
+lm(formula = lpsa ~ . - gleason - lcp - pgg45, data = prostate)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.83505 -0.39396  0.00414  0.46336  1.57888 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.95100    0.83175   1.143 0.255882    
+lcavol       0.56561    0.07459   7.583 2.77e-11 ***
+lweight      0.42369    0.16687   2.539 0.012814 *  
+age         -0.01489    0.01075  -1.385 0.169528    
+lbph         0.11184    0.05805   1.927 0.057160 .  
+svi          0.72095    0.20902   3.449 0.000854 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.7073 on 91 degrees of freedom
+Multiple R-squared:  0.6441,   Adjusted R-squared:  0.6245 
+F-statistic: 32.94 on 5 and 91 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\ssn{c}
+We can obtain a summary of which model is the best for a given size by calling \verb|b = regsubsets(gamble ~ ., data=teengamb)|, which gives us
+\begin{verbatim}
+         sex status income verbal
+1  ( 1 ) " " " "    "*"    " "   
+2  ( 1 ) "*" " "    "*"    " "   
+3  ( 1 ) "*" " "    "*"    "*"   
+4  ( 1 ) "*" "*"    "*"    "*" 
+\end{verbatim}
+To get the adjusted $R^2$ values out of this, we call \verb|summary(b)$adjr2|, which gives us that the model with $3$ parameters has the highest value, or the one excluding only \verb|status|.
+\ssn{d}
+Calling \verb|summary(b)$cp| and looking for which one best approximates $C_p=p$, we see that it's still the model with $3$ parameters.
+\subsection*{4(8.5)}
+Running all four variable selection procedures we did above on the stack loss data set tells us that we should remove only acid concentration, with a $p$-value of $0.344$. On the last homework, we found that case 21 was an outlier. If we remove this point, the result is still the same -- acid concentration should still be removed.
+\end{document}
+
