@@ -22,6 +22,7 @@
 \nc{\tl}[1]{\widetilde{#1}}
 \nc{\mi}{{(-i)}}
 \nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\xsi}{X_{(i)}}
 \nc{\inner}[2]{\langle #1,#2\rangle}
 \begin{document}
 Name: Hall Liu
@@ -32,11 +33,18 @@ Date: \today
 \ssn{a}
 If we calculate $\tl{r}^\mi=\tl{Y}^\mi-X\h{\beta}^\mi$, each entry of the resulting vector will be the same as the corresponding entry of $r^\mi$ except for the $i$th, which will be zero because the $i$th entry of $\tl{Y}^\mi$ is $x_i^T\h{\beta}^\mi$. Now, note that since the true regression coefficient vector $\zeta^\mi$ satisfies $X^T(X\zeta^\mi-\tl{Y}^\mi)=0$, we want to show that $X^T\tl{r}^\mi=0$, for that would imply that $\h{\beta}^\mi=\zeta^\mi$ (this requires that $X$ be full-rank). 
 
-To do this, note that $(X^\mi)^Tr^\mi=0$, so we have for each $j\in[1..p]$ that $\sum_{k\neq i}X_{kj}r_k=0$. However, since $\tl{r}^\mi_i=0$, adding in that term doesn't change the sum, so $\sum_{k\in[1..n]}X_{kj}\tl{r}^\mi_k=0$ as well, which shows that $X^T\tl{r}^\mi=0$.
+To do this, note that $(X^\mi)^Tr^\mi=0$ by orthogonality properties of the residual, so we have for each $j\in[1..p]$ that $\sum_{k\neq i}X_{kj}r_k=0$. However, since $\tl{r}^\mi_i=0$, adding in that term doesn't change the sum, so $\sum_{k\in[1..n]}X_{kj}\tl{r}^\mi_k=0$ as well, which shows that $X^T\tl{r}^\mi=0$.
 \ssn{b}
 The fitted value is just the data-to-be-fitted multiplied by the regression coefficient, which we know to be $\h{\beta}^\mi$, so the fit at $x_i$ is $x_i^T\h{\beta}^\mi$.
 \subsection*{2}
-This was essentially assigned as problem 5 on HW5.
+\ssn{a}
+Subtracting $\h{y}-\h{\tl{y}}^\mi$, we get $X\h{\beta}-X\h{\beta}^\mi$, using the identity from (1). Using A38 from Weisburg (proved in HW5), we have $\h{\beta}^\mi=\h{\beta}-\frac{(X^TX)^{-1}x_i\h{e}_i}{1-h_{ii}}$, where $\h{e}_i$ is the $i$th entry of the residual and $x_i$ is the $i$th row of $X$ transposed. Plugging this in, we have 
+\[X\h{\beta}-X\h{\beta}^\mi=\frac{X(X^TX)^{-1}x_i\h{e}_i}{1-h_{ii}}=\frac{He_i\h{e}_i}{1-h_{ii}}\]
+where $e_i$ (without the hat) is the $i$th standard basis vector
+
+On the other hand, we get $\h{y}-\h{\tl{y}}^\mi=Hy-H\tl{y}^\mi=H(y-\tl{y}^\mi)$. The vector that $H$ is being multiplied by is all zeros except for the $i$th entry, which is $y_i-x_i^T\h{\beta}^\mi$. Thus, we can re-write this as $(y_i-x_i^T\h{\beta}^\mi)He_i$.
+
+Equating the two expressions, we get that $y_i-x_i^T\h{\beta}^\mi=\frac{\h{e}_i}{1-h_{ii}}$, which is the desired result.
 \ssn{c}
 Since the diagonals of the hat matrix are bounded between $0$ and $1$, the denominator on the RHS must also be. Thus, the LHS must be larger than the numerator on the RHS.
 \subsection*{3(8.2)}
@@ -98,51 +106,45 @@ Since the diagonals of the hat matrix are bounded between $0$ and $1$, the denom
 Under backwards selection, set the critical $p$-value to $0.1$, and regress. On the first iteration, we remove \verb|status| with $p=0.854$. On the second iteration, we remove \verb|verbal| with $p=0.140$. Having removed these two, all predictors are now significant, and the final result of the model is as follows:
 \begin{verbatim}
 Call:
-lm(formula = lpsa ~ . - gleason - lcp - pgg45, data = prostate)
+lm(formula = gamble ~ . - verbal - status, data = teengamb)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--1.83505 -0.39396  0.00414  0.46336  1.57888 
+    Min      1Q  Median      3Q     Max 
+-49.757 -11.649   0.844   8.659 100.243 
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  0.95100    0.83175   1.143 0.255882    
-lcavol       0.56561    0.07459   7.583 2.77e-11 ***
-lweight      0.42369    0.16687   2.539 0.012814 *  
-age         -0.01489    0.01075  -1.385 0.169528    
-lbph         0.11184    0.05805   1.927 0.057160 .  
-svi          0.72095    0.20902   3.449 0.000854 ***
+(Intercept)    4.041      6.394   0.632  0.53070    
+sex          -21.634      6.809  -3.177  0.00272 ** 
+income         5.172      0.951   5.438 2.24e-06 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 0.7073 on 91 degrees of freedom
-Multiple R-squared:  0.6441,   Adjusted R-squared:  0.6245 
-F-statistic: 32.94 on 5 and 91 DF,  p-value: < 2.2e-16
+Residual standard error: 22.75 on 44 degrees of freedom
+Multiple R-squared:  0.5014,    Adjusted R-squared:  0.4787 
+F-statistic: 22.12 on 2 and 44 DF,  p-value: 2.243e-07
 \end{verbatim}
 \ssn{b}
 Calling \verb|step(a1)| removes only \verb|status|, giving the final model result of
 \begin{verbatim}
 Call:
-lm(formula = lpsa ~ . - gleason - lcp - pgg45, data = prostate)
+lm(formula = gamble ~ . - verbal - status, data = teengamb)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--1.83505 -0.39396  0.00414  0.46336  1.57888 
+    Min      1Q  Median      3Q     Max 
+-49.757 -11.649   0.844   8.659 100.243 
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  0.95100    0.83175   1.143 0.255882    
-lcavol       0.56561    0.07459   7.583 2.77e-11 ***
-lweight      0.42369    0.16687   2.539 0.012814 *  
-age         -0.01489    0.01075  -1.385 0.169528    
-lbph         0.11184    0.05805   1.927 0.057160 .  
-svi          0.72095    0.20902   3.449 0.000854 ***
+(Intercept)    4.041      6.394   0.632  0.53070    
+sex          -21.634      6.809  -3.177  0.00272 ** 
+income         5.172      0.951   5.438 2.24e-06 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 0.7073 on 91 degrees of freedom
-Multiple R-squared:  0.6441,   Adjusted R-squared:  0.6245 
-F-statistic: 32.94 on 5 and 91 DF,  p-value: < 2.2e-16
+Residual standard error: 22.75 on 44 degrees of freedom
+Multiple R-squared:  0.5014,    Adjusted R-squared:  0.4787 
+F-statistic: 22.12 on 2 and 44 DF,  p-value: 2.243e-07
 \end{verbatim}
 \ssn{c}
 We can obtain a summary of which model is the best for a given size by calling \verb|b = regsubsets(gamble ~ ., data=teengamb)|, which gives us
@@ -157,6 +159,8 @@ To get the adjusted $R^2$ values out of this, we call \verb|summary(b)$adjr2|, w
 \ssn{d}
 Calling \verb|summary(b)$cp| and looking for which one best approximates $C_p=p$, we see that it's still the model with $3$ parameters.
 \subsection*{4(8.5)}
-Running all four variable selection procedures we did above on the stack loss data set tells us that we should remove only acid concentration, with a $p$-value of $0.344$. On the last homework, we found that case 21 was an outlier. If we remove this point, the result is still the same -- acid concentration should still be removed.
+Running all four variable selection procedures we did above on the stack loss data set tells us that we should remove only acid concentration, with a $p$-value of $0.344$. Backwards elimination at the $0.1$ level removes acid concentration with $p=0.344$, Mallow's $C_p$ statistic hits its minimum value with 2 predictors at $2.947332$, and the adjusted $R^2$ is the greatest with two predictors at $0.8986233$. 
+
+On the last homework, we found that case 21 was an outlier. If we remove this point, the result is still the same -- acid concentration should still be removed. Backwards elimination removes acid concentration with $p=0.402$, Mallow's $C_p$ statistic is at its minimum at $p=2$ at $2.740094$, and the adjusted $R^2$ is still the greatest at $2$ predictors at $ 0.9401238$.
 \end{document}
 

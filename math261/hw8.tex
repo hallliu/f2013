@@ -24,6 +24,7 @@
 \nc{\openm}{\begin{pmatrix}}
 \nc{\closem}{\end{pmatrix}}
 \DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\Res}{Res}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\Ind}{Ind}
@@ -80,4 +81,8 @@ Thus,
 \[
     \h{P}=\openm p&0\\0&p\closem+\frac{1-p}{3}\left(\openm-1&1\\0&1\closem+\openm1&0\\1&-1\closem+\openm0&-1\\-1&0\closem\right)=\openm p&0\\0&p\closem
 \]
+\subsection*{7}
+We have $\|Q-U\|^2=\frac{1}{4}\left(\sum_{g\in G}|Q(g)-U(g)|\right)^2$. Since $\left(\sum a_i\right)^2\geq\sum a_i^2$ if all the $a_i$ are nonnegative, this quantity is bounded below by $\frac{1}{4}\sum|Q(g)-U(g)|^2$. In class, we showed that if $F=Q-U$, then $\sum_{g\in G}|F(g)|^2=\frac{1}{|G|}\sum d_\rho\tr(\h{F}(\rho)\h{F}(\rho)^*$, so plugging this in gives us the bound we want.
+\subsection*{8}
+Let $\rho_j$ be the rep sending $1$ to $e^{2\pi ij/d}$. The Fourier transform of $P$ at $\rho_j$ is $\frac{1}{3}\left(e^{2\pi ij/d}+e^{-2\pi ij/d}+1\right)=\frac{2}{3}\cos(2\pi ij/d)+\frac{1}{3}$. Using the upper bound lemma, we have that $\|P^{*n}-U\|^2\leq\sum_{j=1}^{d-1}\left(\frac{2}{3}\cos(2\pi ij/d)+\frac{1}{3}\right)^{2n}$
 \end{document}
