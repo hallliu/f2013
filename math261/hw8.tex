@@ -82,7 +82,15 @@ Thus,
     \h{P}=\openm p&0\\0&p\closem+\frac{1-p}{3}\left(\openm-1&1\\0&1\closem+\openm1&0\\1&-1\closem+\openm0&-1\\-1&0\closem\right)=\openm p&0\\0&p\closem
 \]
 \subsection*{7}
-We have $\|Q-U\|^2=\frac{1}{4}\left(\sum_{g\in G}|Q(g)-U(g)|\right)^2$. Since $\left(\sum a_i\right)^2\geq\sum a_i^2$ if all the $a_i$ are nonnegative, this quantity is bounded below by $\frac{1}{4}\sum|Q(g)-U(g)|^2$. In class, we showed that if $F=Q-U$, then $\sum_{g\in G}|F(g)|^2=\frac{1}{|G|}\sum d_\rho\tr(\h{F}(\rho)\h{F}(\rho)^*$, so plugging this in gives us the bound we want.
+We have $\|Q-U\|^2=\frac{1}{4}\left(\sum_{g\in G}|Q(g)-U(g)|\right)^2$. Since $\left(\sum a_i\right)^2\geq\sum a_i^2$ if all the $a_i$ are nonnegative, this quantity is bounded below by $\frac{1}{4}\sum|Q(g)-U(g)|^2$. In class, we showed that if $F=Q-U$, then $\sum_{g\in G}|F(g)|^2=\frac{1}{|G|}\sum d_\rho\tr(\h{Q}(\rho)\h{Q}(\rho)^*)$, so plugging this in gives us the bound 
+\[\|Q-U\|^2\geq\frac{1}{4|G|}\sum_{\rho\text{ nontriv.}}d_\rho\tr(\h{Q}(\rho)\h{Q}(\rho)^*)\]
+Examine the quantity $\tr(\h{Q}(\rho)\h{Q}(\rho)^*)$. This is the Frobenius norm of $\h{Q}(\rho)=\sum_{g\in G}Q(g)\rho(g)$, so we have that the trace is $\leq\|\h{Q}(\rho)\|_F^2\leq\sum_{g\in G}Q(g)\|\rho(g)\|_F^2$. Since the sum of $Q$ over all values of $g$ is one, this is in turn bounded above by the maximum value of $\|\rho(g)\|_F^2$. Since the Frobenius norm is invariant under unitary transformations and we can diagonalize $\rho(g)$, this is bounded above by $\dim(\rho)$ since all the eigenvalues are roots of unity.
+
+Thus, summing over all nontrivial $\rho$ gives something bounded above by the order of the group, so $\sum_{g\in G}|F(g)|^2\leq 1$. Now, if we take the square root on both sides, we have
+\[\|Q-U\|\geq\frac{1}{2}\sqrt{\frac{1}{|G|}\sum_{\rho\text{ nontriv.}}d_\rho\tr(\h{Q}(\rho)\h{Q}(\rho)^*)}\]
+but since the quantity under the square root is less than $1$, we can take the square root away and have the inequality still hold.
 \subsection*{8}
-Let $\rho_j$ be the rep sending $1$ to $e^{2\pi ij/d}$. The Fourier transform of $P$ at $\rho_j$ is $\frac{1}{3}\left(e^{2\pi ij/d}+e^{-2\pi ij/d}+1\right)=\frac{2}{3}\cos(2\pi ij/d)+\frac{1}{3}$. Using the upper bound lemma, we have that $\|P^{*n}-U\|^2\leq\sum_{j=1}^{d-1}\left(\frac{2}{3}\cos(2\pi ij/d)+\frac{1}{3}\right)^{2n}$
+Let $\rho_j$ be the rep sending $1$ to $e^{2\pi ij/d}$. The Fourier transform of $P$ at $\rho_j$ is $\frac{1}{3}\left(e^{2\pi ij/d}+e^{-2\pi ij/d}+1\right)=\frac{2}{3}\cos(2\pi j/d)+\frac{1}{3}$. Using the upper bound lemma, we have that $\|P^{*n}-U\|^2\leq\sum_{j=1}^{d-1}\left(\frac{2}{3}\cos(2\pi j/d)+\frac{1}{3}\right)^{2n}$. Since the cosine term takes on its greatest value when $j=1$, we can replace the bound with $(d-1)\left(\frac{2}{3}\cos(2\pi/d)+\frac{1}{3}\right)^{2n}$.
+
+Use the bound $\cos(x)\leq1-\frac{x^2}{2}+\frac{x^4}{24}$. Plugging this into the above expression gives $\frac{2}{3}-\frac{(2\pi)^2}{3d^2}+\frac{(2\pi)^4}{36d^4}+\frac{1}{3}$ inside the parens, or $1-\frac{8\pi^2}{3d^2}+\frac{4\pi^4}{9d^4}<1-\frac{8\pi^2}{3d^2}+\frac{40\pi^2}{9d^4}=1+\frac{\pi^2(40-24d^2)}{9d^4}$. For $d\geq2$, this is less than $1$, so it provides a bound when repeatedly exponentiated.
 \end{document}
