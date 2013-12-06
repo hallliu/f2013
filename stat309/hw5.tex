@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Null}{null}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\cn}{\mathbb{C}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[2]{\langle #1,#2\rangle}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\tl}[1]{\widetilde{#1}}
+\nc{\norm}[1]{\left\|{#1}\right\|}
+\nc{\ta}{\theta}
+\begin{document}
+
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+\subsection*{1}
+\ssn{a}
+For the first coordinate, multiplying the matrix by the given vector gives $\alpha\sin(j\ta)-\sin(2j\ta)=\sin(j\ta)(\alpha-2\cos(j\ta))$. For the last coordinate, we get $-\sin((n-1)j\ta)+\alpha\sin(nj\ta)=\alpha\sin(nj\ta)-\sin(nj\ta)\cos(j\ta)+\cos(nj\ta)\sin(j\ta)$, but since $\cos(nj\ta)=\cos(j\ta)$ and $\sin(nj\ta)=-\sin(j\ta)$, we have that this is $\sin(nj\ta)(\alpha-2\cos(j\ta))$.
+
+For all the other coordinates, 
+\end{document}
