@@ -35,5 +35,41 @@ Date: \today
 \ssn{a}
 For the first coordinate, multiplying the matrix by the given vector gives $\alpha\sin(j\ta)-\sin(2j\ta)=\sin(j\ta)(\alpha-2\cos(j\ta))$. For the last coordinate, we get $-\sin((n-1)j\ta)+\alpha\sin(nj\ta)=\alpha\sin(nj\ta)-\sin(nj\ta)\cos(j\ta)+\cos(nj\ta)\sin(j\ta)$, but since $\cos(nj\ta)=\cos(j\ta)$ and $\sin(nj\ta)=-\sin(j\ta)$, we have that this is $\sin(nj\ta)(\alpha-2\cos(j\ta))$.
 
-For all the other coordinates, 
+For all the other coordinates, we have that the $i$th coordinate is $\alpha\sin(ij\ta)-\sin((i-1)j\ta)-\sin((i+1)j\ta)$. Breaking up the last two terms with trig, we get 
+\[\alpha\sin(ij\ta)-\sin(ij\ta)\cos(j\ta)+\sin(j\ta)\cos(ij\ta)-\sin(ij\ta)\cos(j\ta)-\sin(j\ta)\cos(ij\ta)=\sin(ij\ta)(\alpha-2\cos(j\ta)\]
+as desired. Thus the given vector is an eigenvector for $T_\alpha$ with eigenvalue $\alpha-2\cos(j\ta)$. The requirement that $e^{j\ta}$ is conjugate to $e^{nj\ta}$ (imposed by the last coordinate) dictates that $j$ must run from $1..n$ and $\theta=\frac{\pi}{n+1}$. Thus we have a list of eigenvalues and eigenvectors.
+
+As long as $\alpha>2\cos(\frac{\pi}{n+1})$, the matrix will be positive definite because cosine takes on its greatest value for low values of its argument.
+\ssn{b}
+The iteration matrix is a matrix with zeros everywhere except the superdiagonal and the subdiagonal, whose entries are all $\frac{1}{2}$. To compute the $2$-norm, note that it has the same form as $T_\alpha$, so its eigenvalues are $\cos(j\theta)$, and so the $2$-norm is the largest one, or $\cos(\theta)$. Since this is less than $1$, the iteration will converge. Now, since this is a symmetric matrix, it's orthogonally diagonalizable, so $\|B_\alpha^m\|=\|B_\alpha\|^m$, which gives us the rate of convergence as $\lim_{m\to\infty}\frac{-\log(\cos(\theta)^m)}{m}=-\log(\cos(\theta))$.
+
+Gauss-Seidel: The matrix $T_\alpha$ satisfies property A after scaling by $\frac{1}{2}$, and this scaling term disappears once we form the iteration matrix. To find the eigenvalues of the scaled matrix, the discussion in the notes implies that the eigenvalues are either $0$ or squares of the singular values of the matrix with $-\frac{1}{2}$ on the diagonal and the subdiagonal. At the same time, the singular values of that matrix are the absolute values of the eigenvalues of the Jacobi iteration matrix, which are $\cos(j\theta)$. Thus, the greatest eigenvalue of the Gauss-Seidel iteration matrix is $\cos(\theta)^2$, which means that it converges because $\cos(\theta)<1$. In addition, this means that the rate of convergence is also squared, or $\log(\cos(\theta))^2$.
+
+SOR converges iff all solutions $\mu$ to $(1-\omega-\mu)^2-\mu\sigma_i^2\omega^2=0$ have magnitude less than $1$. Rewriting this equation, we get $1+\omega^2+\mu^2-2\omega-2\mu+2\mu\omega-\mu\sigma_i^2\omega^2=0$, or $\mu^2+(2\omega-2-\sigma_i^2\omega^2)\mu+1-2\omega=0$. Applying quadratic formula gives us 
+\[\mu=\frac{-((2\omega-2-\sigma_i^2\omega^2)\pm\sqrt{(2\omega-2-\sigma_i^2\omega^2)^2-4(1-2\omega)}}{2}\]
+Setting equal to $1$ gives
+\subsection*{2}
+\ssn{a}
+If $x^{(0)}=x$, then for all $k$, $x^{(k)}=x$, so $y^{(m)}$ can be written as $x\sum_{k=0}^m\alpha_k^{(m)}$. Since the $y^{(m)}$ are supposed to approximate the true solution $x$, it makes sense to constrain that sum to be $1$.
+\ssn{b}
+First, we note that $x^{(k)}=M^kx^{(0)}+\sum_{i=0}^{k-1}M^{i}b$. We have $x^{(0)}=e^{(0)}+x$, so substituting in gives $\sum_{i=0}^{k-1}M^{i}b+M^ke^{(0)}+M^kx$. Now, since $Mx=x-b$, we have $M^kx=x-\sum_{i=0}^{k-1}M^ib$, so substituting this back in gives $x^{(k)}=M^ke^{(0)}+x$, so $y^{(m)}=\sum_{k=0}^m\alpha_k^{(m)}(M^ke^{(0)}+x)=x+\sum_{k=0}^m\alpha_k^{(m)}M^ke^{(0)}$, and subtracting off the $x$ gives us $\ep^{(m)}$, which is now a polynomial of $M$ applied to $e^{(0)}$. The coefficients of the polynomial are the $\alpha^{(m)}$, which sum up to $1$.
+\ssn{c}
+Suppose that the limit isn't less than $1$. Then, for all $\ep>0$, there exists some arbitrarily large $m$ such that there is some associated $e_m^{(0)}$ of norm $1$ that satisfies $\|P_m(M)e_m^{(0)}\|_2\geq1-\ep$. Using the expression for $P_m(M)$ we found above, this is equivalent to 
+\[\norm{\sum_{k=0}^m\alpha_k^{(m)}e_m^{(k)}}\geq1-\ep\implies\sum_{k=0}^m\alpha_k^{(m)}\|e_m^{(k)}\|\geq1-\ep\]
+Let $m\to\infty$, and let $e^(0)$ be the limit of the $e_m^{(0)}$. We now suppose that the $e^{(k)}$ converge to zero. I can't find a good formal argument, but the idea is that if the norms of the $e^{(k)}$ drop off, then we can't get the sum above to be big enough since the $\alpha_k$ are constrained to sum to $1$, which results in a contradiction.
+\ssn{d}
+In this case, $y^{(m)}=\frac{1}{m+1}\sum_{k=0}^mx^{(k)}$. Fix $\ep>0$. Then there exists some $N$ where $\|x^{(k)}-x\|<\ep$ for all $k>N$. Split the above sum into the $k\leq N$ and $k>N$ parts. As $m\to\infty$, the contribution from the $k\leq N$ part vanishes, and the other part becomes close to $x$ due to the convergence of the $x^{(k)}$.
+
+For a counterexample, work in $\rn^1$ and let $x^{(k)}=(-1)^k$, which is clearly not convergent. Then $y^{(k)}$ is the harmonic sequence interspersed with zeros, which converges to zero. 
+\subsection*{3}
+\ssn{a}
+The given polynomial evaluated at $M$ is zero, since $\det(xI-M)$ is the characteristic polynomial of $M$. The denominator is the characteristic polynomial evaluated at $1$, and $1$ cannot be a root since the spectral radius of $M$ is strictly less than $1$.
+\ssn{b}
+Unitarily diagonalize $M$ as $Q\Lambda Q^T$. Then, $\|P(M)\|=\|P(\Lambda)\|$, which is a diagonal matrix. Its $2$-norm is simply the maximum of the $P(\lambda_i)$, which is in turn bounded above by the sup norm of $P$ on $[\lambda_\text{min},\lambda_\text{max}]$, so we seek to minimize this over $P$ subject to the degree constraint and that $P(1)=1$. 
+\ssn{c}
+We know that the Chebyshev polynomials have sup norm $1$ on the interval $[-1,1]$, and since we're declaring that $P(1)=1$, this is the best we can do. Further, we have that the first two Chebyshev polynomials evaluated at $1$ are $1$, and by the recurrence relation given in the notes, we can induct on $k$ and show that all the polynomials come out to be $1$ at $1$. 
+\ssn{d}
+At $x=1$, the given expression is obviously $1$. For other values of $x$, the numerator is the Chebyshev polynomial shifted so that its argument lies between $[-1,1]$, so the numerator is minimized. The denominator is there for normalization.
+\ssn{e}
+Suppose another solution exists and call it $f$. By the properties of Chebyshev polynomials, all the extrema of $P_m(x)$ take the values $\pm\|P_m(x)\|_\infty$. 
 \end{document}
