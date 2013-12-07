@@ -72,4 +72,23 @@ We know that the Chebyshev polynomials have sup norm $1$ on the interval $[-1,1]
 At $x=1$, the given expression is obviously $1$. For other values of $x$, the numerator is the Chebyshev polynomial shifted so that its argument lies between $[-1,1]$, so the numerator is minimized. The denominator is there for normalization.
 \ssn{e}
 Suppose another solution exists and call it $f$. By the properties of Chebyshev polynomials, all the extrema of $P_m(x)$ take the values $\pm\|P_m(x)\|_\infty$. 
+\subsection*{4}
+\ssn{a}
+Taking the new values of $\lambda$, the polynomials $P_m(x)$ now take the form $\frac{C_m(x/\rho)}{C_m(1/\rho)}$. Using the recurrence relation from the notes, we have
+\[C_{m+1}(1/\rho)P_{m+1}(x)=C_{m+1}(x/\rho)=\frac{2x}{\rho}C_m(x/\rho)-C_{m-1}(x/\rho)=\frac{2x}{\rho}C_m(1/\rho)P_m(x/\rho)-C_{m-1}(1/\rho)P_{m-1}(x)\]
+\ssn{b}
+Use the result from (2b), which states that $y^{(m)}-x=P_m(M)e_0$. Then, we can write 
+\begin{align*}
+    y^{(m+1)}-x=P_{m+1}(M)e_0&=\frac{2M}{\rho}\frac{C_m(1/\rho)}{C_{m+1}(1/\rho)}P_m(M)e_0-\frac{C_{m-1}(1/\rho)}{C_{m+1}(1/\rho)}P_{m-1}(M)e_0\\
+                             &=\omega_{m+1}M(y^{(m)}-x)-\frac{C_{m-1}(1/\rho)}{C_{m+1}(1/\rho)}(y^{(m-1)}-x)\\
+                             &=\omega_{m+1}(My^{(m)}-x-b)-\frac{C_{m-1}(1/\rho)}{C_{m+1}(1/\rho)}(y^{(m-1)}-x)\\
+\end{align*}
+Now note that 
+\[\frac{C_{m-1}(1/\rho)}{C_{m+1}(1/\rho)}-\omega_{m+1}=\frac{\rho C_{m-1}(1/\rho)-2C_m(1/\rho)}{\rho C_{m+1}(1/\rho)}=-1\]
+by the recurrence relation on the $C_m$, so we can use this to combine the $x$s and cancel out, so then we get 
+\[y^{(m+1)}=\omega_{m+1}(My^{(m)}-b)-\frac{C_{m-1}(1/\rho)}{C_{m+1}(1/\rho)}y^{(m-1)}\]
+Using the $-1$ identity from above again to expand the coefficient of $y^{(m-1)}$ gives us what we want.
+\ssn{c}
+
+
 \end{document}
