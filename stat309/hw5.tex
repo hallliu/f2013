@@ -89,6 +89,29 @@ by the recurrence relation on the $C_m$, so we can use this to combine the $x$s 
 \[y^{(m+1)}=\omega_{m+1}(My^{(m)}-b)-\frac{C_{m-1}(1/\rho)}{C_{m+1}(1/\rho)}y^{(m-1)}\]
 Using the $-1$ identity from above again to expand the coefficient of $y^{(m-1)}$ gives us what we want.
 \ssn{c}
+Write $M=Q\Lambda Q^T$ so that $\|P_m(M)\|_2=\|P_m(\Lambda)\|_2$. This is the maximum value of $P_m(x)=\frac{C_m(x/\rho)}{C_m(1/\rho)}$ on the spectrum of $M$. The largest value that $C_m(x/\rho)$ can take anywhere on $[-\rho,\rho]$ is $1$, and it so happens that $\rho$ is an eigenvalue of $M$ and it attains the value $1$ there. Therefore, $\|P_m(M)\|_2=\frac{1}{C_m(1/\rho)}$. Now, since $1/\rho>1$, we have $C_m(1/\rho)=\cosh(m\cosh^{-1}(1/\rho))$. Since hyperbolic cosine is a monotonically increasing function for argument $>0$, $C_m(1/\rho)$ is monotonically increasing in $m$, so $\|P_m(M)\|_2$ is monotonically decreasing in $m$.
+\ssn{d}
+We have $\cosh^{-1}(x)=\log(x+\sqrt{x^2-1})$, so $\exp(\cosh^{-1}(1/\rho))=\frac{1}{\rho}(1+\sqrt(1-\rho^2))$. On the other hand, 
+\[(\omega-1)^{-1}=\frac{1+\sqrt{1-\rho^2}}{1-\sqrt{1-\rho^2}}=\frac{(1+\sqrt{1-\rho^2})^2}{\rho^2}=\left(\frac{1+\sqrt{1-\rho^2}}{\rho}\right)^2=e^{2\sigma}\]
+and the desired equality follows.
+
+Then, we have
+\[\cosh(m\sigma)=\frac{e^{-2m\sigma}+1}{2e^{-m\sigma}}=\frac{(\omega-1)^m+1}{2(\omega-1)^{m/2}}\]
+and inverting this gives us $\|P_m(M)\|_2$.
+\ssn{e}
+We have
+\[\omega_m=\frac{2C_{m-1}(1/\rho)}{\rho C_{m}(1/\rho)}=\frac{2\|P_m(M)\|}{\rho\|P_{m-1}(M)\|}=\frac{2(1+(\omega-1)^{m-1})(\omega-1)^{1/2}}{\rho(1+(\omega-1)^m)}=\frac{2\sqrt{\omega-1}}{\rho}\frac{1+(\omega-1)^{m-1}}{1+(\omega-1)^m}\]
+Since $\omega-1\in[0,1]$, this sequence is monotone decreasing. Further, as $m\to\infty$, the term on the right goes to $1$, so the limit is $\frac{2\sqrt{\omega-1}}{\rho}=\frac{1}{2}\sqrt{\frac{\omega-1}{\rho^2}}$. Solving the expression of $\omega$ for $\rho^2$, we get $-\frac{4}{\omega^2}+\frac{4}{\omega}$, so plugging this in gives
+\[\frac{1}{2}\sqrt{\frac{\omega-1}{-\frac{4}{\omega^2}+\frac{4}{\omega}}}=\frac{1}{2}\sqrt{\frac{\omega^2(1-\omega)}{-4(\omega-1)}}=\omega\]
+
+\subsection*{5}
+\ssn{a}
+Here, $D$ is the identity, $L$ is $\openm0&0\\-M&0\closem$, and $U$ is $\openm0&-M\\0&0\closem$. Then, applying the SOR iteration gives
+\[\openm x^{(k+1)}\\z^{(k+1)}\closem=\omega\left(\openm b\\b\closem-\openm0&0\\-M&0\closem\openm x^{(k+1)}\\z^{(k+1)}\closem-\openm0&-M\\0&0\closem\openm x^{(k)}\\z^{(k)}\closem\right)+(1-\omega)\openm x^{(k)}\\z^{(k)}\closem\]
+Just looking at the top block gives us
+\[x^{(k+1)}=\omega(b+Mz^{(k)})+(1-\omega)x^{(k)}=\omega(Mz^{(k)}-x^{(k)}+b)+x^{(k)}\]
+as desired, and looking at the bottom block gives
+
 
 
 \end{document}
