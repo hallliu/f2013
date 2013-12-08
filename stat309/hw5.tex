@@ -145,4 +145,6 @@ The given polynomial takes the value $0$ at $1/\alpha$. Since it's a line with a
     \end{cases}
 \]
 The minimum occurs precisely when $\alpha=\frac{1}{\mu}$, which gives the maximum value as $1-\frac{2\lambda_n}{\lambda_1+\lambda_n}=\frac{\lambda_1-\lambda_n}{\lambda_1+\lambda_n}$. Then, plugging this into the bound from (f) gives us what we want.
+\subsection*{7}
+GEPP and Cholesky were coded up with vectorized operations, and the iterative methods were coded up in a fast, non-interpreted language (Cython). Since there are so many hardware optimizations for vectorized code out there, the benefits of vectorization should be considered when choosing an algorithm.
 \end{document}
