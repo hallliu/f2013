@@ -48,7 +48,7 @@ Gauss-Seidel: The matrix $T_\alpha$ satisfies property A after scaling by $\frac
 
 SOR converges iff all solutions $\mu$ to $(1-\omega-\mu)^2-\mu\sigma_i^2\omega^2=0$ have magnitude less than $1$. Rewriting this equation, we get $1+\omega^2+\mu^2-2\omega-2\mu+2\mu\omega-\mu\sigma_i^2\omega^2=0$, or $\mu^2+(2\omega-2-\sigma_i^2\omega^2)\mu+1-2\omega=0$. Applying quadratic formula gives us 
 \[\mu=\frac{-((2\omega-2-\sigma_i^2\omega^2)\pm\sqrt{(2\omega-2-\sigma_i^2\omega^2)^2-4(1-2\omega)}}{2}\]
-Setting equal to $1$ gives
+Setting equal to $1$ gives %TODO
 \subsection*{2}
 \ssn{a}
 If $x^{(0)}=x$, then for all $k$, $x^{(k)}=x$, so $y^{(m)}$ can be written as $x\sum_{k=0}^m\alpha_k^{(m)}$. Since the $y^{(m)}$ are supposed to approximate the true solution $x$, it makes sense to constrain that sum to be $1$.
@@ -57,7 +57,7 @@ First, we note that $x^{(k)}=M^kx^{(0)}+\sum_{i=0}^{k-1}M^{i}b$. We have $x^{(0)
 \ssn{c}
 Suppose that the limit isn't less than $1$. Then, for all $\ep>0$, there exists some arbitrarily large $m$ such that there is some associated $e_m^{(0)}$ of norm $1$ that satisfies $\|P_m(M)e_m^{(0)}\|_2\geq1-\ep$. Using the expression for $P_m(M)$ we found above, this is equivalent to 
 \[\norm{\sum_{k=0}^m\alpha_k^{(m)}e_m^{(k)}}\geq1-\ep\implies\sum_{k=0}^m\alpha_k^{(m)}\|e_m^{(k)}\|\geq1-\ep\]
-Let $m\to\infty$, and let $e^(0)$ be the limit of the $e_m^{(0)}$. We now suppose that the $e^{(k)}$ converge to zero. I can't find a good formal argument, but the idea is that if the norms of the $e^{(k)}$ drop off, then we can't get the sum above to be big enough since the $\alpha_k$ are constrained to sum to $1$, which results in a contradiction.
+Let $m\to\infty$, and let $e^(0)$ be the limit of the $e_m^{(0)}$. We now suppose that the $e^{(k)}$ converge to zero. I can't find a good formal argument, but the idea is that if the norms of the $e^{(k)}$ drop off, then we can't get the sum above to be big enough since the $\alpha_k$ are constrained to sum to $1$, which results in a contradiction. %TODO: not true/handwavy
 \ssn{d}
 In this case, $y^{(m)}=\frac{1}{m+1}\sum_{k=0}^mx^{(k)}$. Fix $\ep>0$. Then there exists some $N$ where $\|x^{(k)}-x\|<\ep$ for all $k>N$. Split the above sum into the $k\leq N$ and $k>N$ parts. As $m\to\infty$, the contribution from the $k\leq N$ part vanishes, and the other part becomes close to $x$ due to the convergence of the $x^{(k)}$.
 
@@ -104,7 +104,7 @@ We have
 \[\omega_m=\frac{2C_{m-1}(1/\rho)}{\rho C_{m}(1/\rho)}=\frac{2\|P_m(M)\|}{\rho\|P_{m-1}(M)\|}=\frac{2(1+(\omega-1)^{m-1})(\omega-1)^{1/2}}{\rho(1+(\omega-1)^m)}=\frac{2\sqrt{\omega-1}}{\rho}\frac{1+(\omega-1)^{m-1}}{1+(\omega-1)^m}\]
 Since $\omega-1\in[0,1]$, this sequence is monotone decreasing. Further, as $m\to\infty$, the term on the right goes to $1$, so the limit is $\frac{2\sqrt{\omega-1}}{\rho}=\frac{1}{2}\sqrt{\frac{\omega-1}{\rho^2}}$. Solving the expression of $\omega$ for $\rho^2$, we get $-\frac{4}{\omega^2}+\frac{4}{\omega}$, so plugging this in gives
 \[\frac{1}{2}\sqrt{\frac{\omega-1}{-\frac{4}{\omega^2}+\frac{4}{\omega}}}=\frac{1}{2}\sqrt{\frac{\omega^2(1-\omega)}{-4(\omega-1)}}=\omega\]
-
+%TODO: not true
 \subsection*{5}
 \ssn{a}
 Here, $D$ is the identity, $L$ is $\openm0&0\\-M&0\closem$, and $U$ is $\openm0&-M\\0&0\closem$. Then, applying the SOR iteration gives
