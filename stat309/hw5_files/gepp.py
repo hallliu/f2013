@@ -2,20 +2,20 @@ import numpy as np
 import scipy.sparse as sp
 
 '''
-Takes a sparse matrix A and returns its LU factorization in dense matrices
+Takes a sparse matrix A(lil) and returns its LU factorization (both lil)
 '''
 def gepp(a):
-    l_orig = np.eye(a.shape[0], dtype=a.dtype)
-    u_orig = a.A
+    n = a.shape[0]
+    l = sp.identity(n, dtype=a.dtype, format='lil')
+    u = sp.lil_matrix(a).copy()
 
     permut = np.arange(a.shape[0], dtype='int32')
 
-    for i in range(a.shape[0]):
-        l = l_orig[i:, i:]
-        u = u_orig[i:, i:]
+    for i in range(a.shape[0] - 1):
 
         # Find max leading entry
-        maxind = np.argmax(np.abs(u[:, 0]))
+        maxind = np.argmax(np.abs(u[i:, i]).A)
+
         # Swap them in the thing we're using to keep track of permutations
         i1 = np.where(permut == maxind + i)
         i2 = np.where(permut == i)
@@ -24,20 +24,20 @@ def gepp(a):
         permut[i2] = temp
 
         # Actually swap the rows
-        temp = u[0, :].copy()
-        u[0, :] = u[maxind, :]
-        u[maxind, :] = temp
+        temp = u[i, :]
+        u[i, :] = u[maxind + i, :]
+        u[maxind + i, :] = temp
 
         # Swap the rows on the L matrix too
-        temp = l_orig[i, :i].copy()
-        l_orig[i, :i] = l_orig[maxind + i, :i]
-        l_orig[maxind + i, :i] = temp
+        if i != 0:
+            temp = l[i, :i]
+            l[i, :i] = l[maxind + i, :i]
+            l[maxind + i, :i] = temp
 
         # Do Gaussian elimination
-        l[1:, 0] = u[1:, 0] / u[0, 0]
-        u[1:, 0] = 0
-        for j in range(1, u.shape[1]):
-            u[1:, j] = u[1:, j] - l[1:, 0] * u[0, j]
+        l[i+1:, i] = u[i+1:, i] / u[i, i]
+        u[i+1:, i] = 0
+        for j in range(i+1, u.shape[1]):
+            u[i+1:, j] = u[i+1:, j] - l[i+1:, i] * u[i, j]
 
-    
-    return (l_orig, u_orig, permut)
+    return (l, u, permut)
