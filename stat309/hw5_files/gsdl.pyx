@@ -16,7 +16,7 @@ def gsdl(A, np.ndarray[np.float64_t, ndim=1] b):
     cdef double A_diag
     
     # Objects for storing the data from A
-    cdef np.ndarray[np.int32_t, ndim=1] indptrs = A.indptrs
+    cdef np.ndarray[np.int32_t, ndim=1] indptrs = A.indptr
     cdef np.ndarray[np.int32_t, ndim=1] indices = A.indices
     cdef np.ndarray[np.float64_t, ndim=1] data = A.data
 

@@ -7,6 +7,6 @@ gsdl_source = ['gsdl.pyx']
 
 setup(
     cmdclass = {'build_ext': build_ext},
-    ext_modules = [Extension("gsdl", gsdl_sourcefiles, extra_compile_args=['-O3', '-std=gnu99'])]
+    ext_modules = [Extension("gsdl", gsdl_source, extra_compile_args=['-O3', '-std=gnu99'])],
     include_dirs=[np.get_include()]
 )
