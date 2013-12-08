@@ -25,6 +25,7 @@
 \nc{\tl}[1]{\widetilde{#1}}
 \nc{\norm}[1]{\left\|{#1}\right\|}
 \nc{\ta}{\theta}
+\nc{\vp}{\varphi}
 \begin{document}
 
 Name: Hall Liu
@@ -111,7 +112,39 @@ Here, $D$ is the identity, $L$ is $\openm0&0\\-M&0\closem$, and $U$ is $\openm0&
 Just looking at the top block gives us
 \[x^{(k+1)}=\omega(b+Mz^{(k)})+(1-\omega)x^{(k)}=\omega(Mz^{(k)}-x^{(k)}+b)+x^{(k)}\]
 as desired, and looking at the bottom block gives
-
-
-
+\[z^{(k+1)}=\omega(b+x^{(k+1)})+(1-\omega)z^{(k)}=\omega(Mx^{(k+1)}-z^{(k)}+b)+z^{(k)}\]
+\ssn{b}
+Defining $y^{(m)}$ as given and using the above iterations, first assume $m=2k$. Then
+\[y^{(m+1)}=z^{(k)}=\omega(Mx^{(k)}-z^{(k-1)}+b)+z^{(k-1)}=\omega(My^{(m)}-y^{(m-1)}+b)+y^{(m-1)}\]
+and if $m=2k+1$, then
+\[y^{(m+1)}=x^{(k+1)}=\omega(Mz^{(k)}-x^{(k)}+b)+x^{(k)}=\omega(My^{(m)}-y^{(m-1)}+b)+y^{(m-1)}\]
+which is what we want.
+\subsection*{6}
+\ssn{a}
+The gradient of a quadratic form $x^TAx$ is $A^Tx+Ax$, and the gradient of $b^Tx$ is $b$, so taken together the gradient of $\vp(x_k)$ is $A^Tx_k+Ax_k-2b=2Ax_k-2b=-2r_k$. Computing the second derivative, we have $2A$, which is positive definite. Therefore the stationary points minimize $\vp$.
+\ssn{b}
+If we want to minimize $\vp(x_k+\alpha p_k)$, we must have $\nabla\vp(x_k+\alpha p_k)=0$, or $2Ax_k+2\alpha Ap_k-2b=2\alpha Ap_k-2r_k=0$. Left-multiplying by $p_k^T$ gives $\alpha p_k^TAp_k-p_k^Tr_k$, or $\alpha=\frac{p_k^Tr_k}{p_k^TAp_k}$.
+\ssn{c}
+The expression for $\vp(x_{k+1})$ is the following. Subscripts are dropped because they're all subbed with $k$.
+\[(x+\alpha p)^TA(x+\alpha p)-2b^T(x+\alpha p)=x^TAx+\alpha(p^TAx+x^TAp)+\alpha^2p^TAp-2b^Tx-2\alpha b^Tp\]
+Note that $p^TAx=x^TAp$ because $A$ is symmetric. Subtracting off $\vp(x)=x^TAx-2b^Tx$ then gives
+\[\frac{2(x^TAp)(r^Tp)}{p^TAp}+\frac{(r^Tp)^2}{p^TAp}-\frac{2(b^Tp)(r^Tp)}{p^TAp}\]
+We have $r^T=b^T-x^TA$, so $x^TA=b^T-r^T$, and thus $x^TAp=b^Tp-r^Tp$. Then, expanding out the first term will cancel out the last term and subtract off twice the second term, so we get what we're looking for.
+\ssn{d}
+From the lectures, the iteration equation for steepest descent is $x^{(k+1)}=x^{(k)}+\alpha_kr^{(k)}$, which is the same as the one in (b) with $r^{(k)}$ in the place of $p_k$. The value of $\alpha_k$ is given in the lectures as $\frac{(r^{(k)T}r^{(k)}}{r^{(k)T}Ar^{(k)}}$, which is again the same as the $\alpha_k$ we derived in (b) with $r^{(k)}$ in the place of $p_k$.
+\ssn{e}
+$A$ is symmetric and positive definite, therefore orthogonally diagonalizable as $Q\Lambda Q^T$. Then 
+\[\|P(A)x\|_A^2=x^TP(A)Q\Lambda Q^TP(A)x=x^TQP(\Lambda)Q^TQ\Lambda Q^TQP(\Lambda)Q^Tx=x^TQP(\Lambda)^2\Lambda Q^Tx=x^TP(\Lambda)^2Ax\]
+We can bound this from above by replacing $P(\Lambda)$ with a matrix with $\max(P(\lambda_i))^2$ on the diagonals, thereby getting the upper bound $\max(P(\lambda_i))\|x\|_A^2$. Taking the square root on both sides gives the desired inequality.
+\ssn{f}
+We have $P_\alpha(A)(x_{k-1}-x_*)=x_{k-1}-x_*-\alpha Ax_{k-1}-\alpha Ax_*=x_{k-1}-x_*-\alpha Ax_{k-1}+\alpha b=x_{k-1}-x_*+\alpha r_{k-1}=x_k-x_*$, so the inequality follows by plugging into the bound in (e).
+\ssn{g}
+The given polynomial takes the value $0$ at $1/\alpha$. Since it's a line with a bend in it, the maximum value of $|1-\alpha t|$ must be attained at one of the endpoints, $t=\lambda_n$ or $t=\lambda_1$. For $1/\alpha<\frac{\lambda_1+\lambda_n}{2}\equiv \mu$, the maximum occurs at $t=\lambda_n$ and otherwise at $t=\lambda_1$, since the graph of $|1-\alpha t|$ is symmetric about $1/\alpha$. Then, the maximum as a function of $\alpha$ can be expressed as
+\[
+    g(\alpha)=\begin{cases}
+        |1-\alpha\lambda_n|&\text{if }\alpha\geq\frac{1}{\mu}\\
+        |1-\alpha\lambda_1|&\text{if }\alpha<\frac{1}{\mu}\\
+    \end{cases}
+\]
+The minimum occurs precisely when $\alpha=\frac{1}{\mu}$, which gives the maximum value as $1-\frac{2\lambda_n}{\lambda_1+\lambda_n}=\frac{\lambda_1-\lambda_n}{\lambda_1+\lambda_n}$. Then, plugging this into the bound from (f) gives us what we want.
 \end{document}
