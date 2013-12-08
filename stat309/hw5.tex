@@ -46,9 +46,7 @@ The iteration matrix is a matrix with zeros everywhere except the superdiagonal 
 
 Gauss-Seidel: The matrix $T_\alpha$ satisfies property A after scaling by $\frac{1}{2}$, and this scaling term disappears once we form the iteration matrix. To find the eigenvalues of the scaled matrix, the discussion in the notes implies that the eigenvalues are either $0$ or squares of the singular values of the matrix with $-\frac{1}{2}$ on the diagonal and the subdiagonal. At the same time, the singular values of that matrix are the absolute values of the eigenvalues of the Jacobi iteration matrix, which are $\cos(j\theta)$. Thus, the greatest eigenvalue of the Gauss-Seidel iteration matrix is $\cos(\theta)^2$, which means that it converges because $\cos(\theta)<1$. In addition, this means that the rate of convergence is also squared, or $\log(\cos(\theta))^2$.
 
-SOR converges iff all solutions $\mu$ to $(1-\omega-\mu)^2-\mu\sigma_i^2\omega^2=0$ have magnitude less than $1$. Rewriting this equation, we get $1+\omega^2+\mu^2-2\omega-2\mu+2\mu\omega-\mu\sigma_i^2\omega^2=0$, or $\mu^2+(2\omega-2-\sigma_i^2\omega^2)\mu+1-2\omega=0$. Applying quadratic formula gives us 
-\[\mu=\frac{-((2\omega-2-\sigma_i^2\omega^2)\pm\sqrt{(2\omega-2-\sigma_i^2\omega^2)^2-4(1-2\omega)}}{2}\]
-Setting equal to $1$ gives %TODO
+SOR converges for all $\omega\in(0,2)$ because $A$ is symmetric and positive definite.
 \subsection*{2}
 \ssn{a}
 If $x^{(0)}=x$, then for all $k$, $x^{(k)}=x$, so $y^{(m)}$ can be written as $x\sum_{k=0}^m\alpha_k^{(m)}$. Since the $y^{(m)}$ are supposed to approximate the true solution $x$, it makes sense to constrain that sum to be $1$.
@@ -104,7 +102,7 @@ We have
 \[\omega_m=\frac{2C_{m-1}(1/\rho)}{\rho C_{m}(1/\rho)}=\frac{2\|P_m(M)\|}{\rho\|P_{m-1}(M)\|}=\frac{2(1+(\omega-1)^{m-1})(\omega-1)^{1/2}}{\rho(1+(\omega-1)^m)}=\frac{2\sqrt{\omega-1}}{\rho}\frac{1+(\omega-1)^{m-1}}{1+(\omega-1)^m}\]
 Since $\omega-1\in[0,1]$, this sequence is monotone decreasing. Further, as $m\to\infty$, the term on the right goes to $1$, so the limit is $\frac{2\sqrt{\omega-1}}{\rho}=\frac{1}{2}\sqrt{\frac{\omega-1}{\rho^2}}$. Solving the expression of $\omega$ for $\rho^2$, we get $-\frac{4}{\omega^2}+\frac{4}{\omega}$, so plugging this in gives
 \[\frac{1}{2}\sqrt{\frac{\omega-1}{-\frac{4}{\omega^2}+\frac{4}{\omega}}}=\frac{1}{2}\sqrt{\frac{\omega^2(1-\omega)}{-4(\omega-1)}}=\omega\]
-%TODO: not true
+%TODO: not true, 1/2c_m(x)+1/2
 \subsection*{5}
 \ssn{a}
 Here, $D$ is the identity, $L$ is $\openm0&0\\-M&0\closem$, and $U$ is $\openm0&-M\\0&0\closem$. Then, applying the SOR iteration gives
