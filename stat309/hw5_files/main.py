@@ -68,15 +68,14 @@ def time_accr_solves(n, density):
     C = genpossym(n, density)
     b = np.random.randn(n)
 
-    import ipdb;ipdb.set_trace()
     print('matrices generated')
-    #acc['gepp'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gepp')) - b)
+    acc['gepp'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gepp')) - b)
     print('gepp done')
     acc['gsdl'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gsdl')[0]) - b)
     print('gsdl done')
-    acc['chol'] = np.linalg.norm(A.dot(gen_solve(C, b, 'chol')) - b)
+    acc['chol'] = np.linalg.norm(C.dot(gen_solve(C, b, 'chol')) - b)
     print('chol done')
-    acc['sdsc'] = np.linalg.norm(A.dot(gen_solve(C, b, 'sdsc')) - b)
+    acc['sdsc'] = np.linalg.norm(C.dot(gen_solve(C, b, 'sdsc')) - b)
 
     print("accuracies done")
     '''
