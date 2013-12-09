@@ -49,7 +49,7 @@ def gen_solve(A, b, method, **kwargs):
         return backsolve(u, 'U', y)
     
     if method == 'chol':
-        f = chol.chol(A)
+        f = sp.csr_matrix(chol.chol(A))
         y = backsolve(f, 'L', b)
         return backsolve(f.T, 'U', y)
 
@@ -68,13 +68,9 @@ def time_accr_solves(n, density):
     C = genpossym(n, density)
     b = np.random.randn(n)
 
-    print('matrices generated')
     acc['gepp'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gepp')) - b)
-    print('gepp done')
     acc['gsdl'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gsdl')[0]) - b)
-    print('gsdl done')
     acc['chol'] = np.linalg.norm(C.dot(gen_solve(C, b, 'chol')) - b)
-    print('chol done')
     acc['sdsc'] = np.linalg.norm(C.dot(gen_solve(C, b, 'sdsc')) - b)
 
     print("accuracies done")
@@ -83,13 +79,15 @@ def time_accr_solves(n, density):
     '''
     times = {}
     setup = '''
-A = gendd(n, density)
-C = genpossym(n, density)
-b = np.random.randn(n)
-'''
-#    times['gepp'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gepp\')', setup=setup).repeat(5, 1))
-#    times['gsdl'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gsdl\')', setup=setup).repeat(5, 1))
-#    times['chol'] = min(timeit.Timer(stmt='gen_solve(C, b, \'chol\')', setup=setup).repeat(5, 1))
-#    times['sdsc'] = min(timeit.Timer(stmt='gen_solve(C, b, \'sdsc\')', setup=setup).repeat(5, 1))
+from main import gen_solve, gendd, genpossym
+import numpy as np
+A = gendd({0}, {1})
+C = genpossym({0}, {1})
+b = np.random.randn({0})
+'''.format(n, density)
+    times['gepp'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gepp\')', setup=setup).repeat(1, 1))
+    times['gsdl'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gsdl\')', setup=setup).repeat(1, 1))
+    times['chol'] = min(timeit.Timer(stmt='gen_solve(C, b, \'chol\')', setup=setup).repeat(1, 1))
+    times['sdsc'] = min(timeit.Timer(stmt='gen_solve(C, b, \'sdsc\')', setup=setup).repeat(1, 1))
 
     return (acc, times)
