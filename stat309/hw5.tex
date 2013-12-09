@@ -55,7 +55,7 @@ First, we note that $x^{(k)}=M^kx^{(0)}+\sum_{i=0}^{k-1}M^{i}b$. We have $x^{(0)
 \ssn{c}
 Suppose that the limit isn't less than $1$. Then, for all $\ep>0$, there exists some arbitrarily large $m$ such that there is some associated $e_m^{(0)}$ of norm $1$ that satisfies $\|P_m(M)e_m^{(0)}\|_2\geq1-\ep$. Using the expression for $P_m(M)$ we found above, this is equivalent to 
 \[\norm{\sum_{k=0}^m\alpha_k^{(m)}e_m^{(k)}}\geq1-\ep\implies\sum_{k=0}^m\alpha_k^{(m)}\|e_m^{(k)}\|\geq1-\ep\]
-Let $m\to\infty$, and let $e^(0)$ be the limit of the $e_m^{(0)}$. We now suppose that the $e^{(k)}$ converge to zero. I can't find a good formal argument, but the idea is that if the norms of the $e^{(k)}$ drop off, then we can't get the sum above to be big enough since the $\alpha_k$ are constrained to sum to $1$, which results in a contradiction. %TODO: not true/handwavy
+Let $m\to\infty$, and let $e^(0)$ be the limit of the $e_m^{(0)}$. We now suppose that the $e^{(k)}$ converge to zero. I can't find a good formal argument, but the idea is that if the norms of the $e^{(k)}$ drop off, then we can't get the sum above to be big enough since the $\alpha_k$ are constrained to sum to $1$, which results in a contradiction. 
 \ssn{d}
 In this case, $y^{(m)}=\frac{1}{m+1}\sum_{k=0}^mx^{(k)}$. Fix $\ep>0$. Then there exists some $N$ where $\|x^{(k)}-x\|<\ep$ for all $k>N$. Split the above sum into the $k\leq N$ and $k>N$ parts. As $m\to\infty$, the contribution from the $k\leq N$ part vanishes, and the other part becomes close to $x$ due to the convergence of the $x^{(k)}$.
 
@@ -98,11 +98,7 @@ Then, we have
 \[\cosh(m\sigma)=\frac{e^{-2m\sigma}+1}{2e^{-m\sigma}}=\frac{(\omega-1)^m+1}{2(\omega-1)^{m/2}}\]
 and inverting this gives us $\|P_m(M)\|_2$.
 \ssn{e}
-We have
-\[\omega_m=\frac{2C_{m-1}(1/\rho)}{\rho C_{m}(1/\rho)}=\frac{2\|P_m(M)\|}{\rho\|P_{m-1}(M)\|}=\frac{2(1+(\omega-1)^{m-1})(\omega-1)^{1/2}}{\rho(1+(\omega-1)^m)}=\frac{2\sqrt{\omega-1}}{\rho}\frac{1+(\omega-1)^{m-1}}{1+(\omega-1)^m}\]
-Since $\omega-1\in[0,1]$, this sequence is monotone decreasing. Further, as $m\to\infty$, the term on the right goes to $1$, so the limit is $\frac{2\sqrt{\omega-1}}{\rho}=\frac{1}{2}\sqrt{\frac{\omega-1}{\rho^2}}$. Solving the expression of $\omega$ for $\rho^2$, we get $-\frac{4}{\omega^2}+\frac{4}{\omega}$, so plugging this in gives
-\[\frac{1}{2}\sqrt{\frac{\omega-1}{-\frac{4}{\omega^2}+\frac{4}{\omega}}}=\frac{1}{2}\sqrt{\frac{\omega^2(1-\omega)}{-4(\omega-1)}}=\omega\]
-%TODO: not true, 1/2c_m(x)+1/2
+This doesn't seem to be true. Take the polynomial $\lambda P_m(x)+(1-\lambda)$ for some $\lambda\in(0,1)$. Then the value of this at $1$ is $1$, it has degree $m$, and its sup norm is $\|\lambda P_m(x)+(1-\lambda)\|_\infty\leq\lambda\|P_m(x)\|_\infty+(1-\lambda)=1$.
 \subsection*{5}
 \ssn{a}
 Here, $D$ is the identity, $L$ is $\openm0&0\\-M&0\closem$, and $U$ is $\openm0&-M\\0&0\closem$. Then, applying the SOR iteration gives
@@ -146,5 +142,49 @@ The given polynomial takes the value $0$ at $1/\alpha$. Since it's a line with a
 \]
 The minimum occurs precisely when $\alpha=\frac{1}{\mu}$, which gives the maximum value as $1-\frac{2\lambda_n}{\lambda_1+\lambda_n}=\frac{\lambda_1-\lambda_n}{\lambda_1+\lambda_n}$. Then, plugging this into the bound from (f) gives us what we want.
 \subsection*{7}
-GEPP and Cholesky were coded up with vectorized operations, and the iterative methods were coded up in a fast, non-interpreted language (Cython). Since there are so many hardware optimizations for vectorized code out there, the benefits of vectorization should be considered when choosing an algorithm.
+GEPP, Cholesky, and steepest descent were coded up with vectorized operations, and Gauss-Seidel was coded up in a fast, non-interpreted language (Cython). Since there are so many hardware optimizations for vectorized code out there, the benefits of vectorization should be considered when choosing an algorithm. The code was tested on a range of densities varying from $0.001$ to $0.5$, and on sizes ranging from $10$ to $500$. Throughout, the $b$ vector used was sampled from a standard normal distribution, and the nonzero entries of $A$ are uniformly generated between $0$ and $1$. 
+
+The GEPP and Cholesky algorithms were coded to work on densified versions of these matrices, since the sparse implementation of these were incredibly slow due to the need to dynamically allocate memory to store new nonzero elements.
+
+Accuracy was measured by calculating $\|A\h{x}-b\|_2$. Since we can control the accuracy of the two iterative methods by adjusting the criterion for convergence, we let the iterative algorithms terminate when they surpass the accuracy of the non-iterative algorithm on the corresponding matrix (GEPP vs. Gauss-Seidel and Cholesky vs. steepest descent). 
+
+Throughout, in the graphs presented, GEPP is represented with a dot, Cholesky is represented with a star, steepest descent is represented with a circle, and Gauss-Seidel is represented with a plus.
+
+First, we analyze the effect of shape and density on runtime. Below is a plot of runtime versus size for density-$0.02$
+
+\includegraphics[width=0.6\textwidth]{hw5_files/runtime_shape_20.png}
+
+On a log-log plot, it seems that the runtime for the non-iterative methods increases faster than that for the iterative methods, and the runtimes for the methods on symmetric, positive-definite matrices are overall lower than those for general matrices.
+
+For the density-runtime relation, we choose the shape to be $200$.
+
+\includegraphics[width=0.6\textwidth]{hw5_files/runtime_density_200.png}
+
+As expected, the runtimes for the non-iterative methods do not change, as they're operating on the dense version of those matrices. Gauss-Seidel behaves as expected and increases in runtime for increased density, but steepest descent levels off after a while. This is probably due to the larger matrices incurring greater error, and therefore steepest descent needs less iterations to finish.
+
+Now, we look at the effects of size and density on the number of iterations. First we look at iterations versus size for density $0.05$.
+
+\includegraphics[width=0.6\textwidth]{hw5_files/iters_shape_50.png}
+
+The size doesn't seem to have much effect past a certain point, with the number of iterations stabilizing. Note that all the iteration counts for Gauss-Seidel are a multiple of 10. This is due to the implementation only checking for error every tenth iteration to save on time.
+
+Iterations versus density for size $300$:
+
+\includegraphics[width=0.6\textwidth]{hw5_files/iters_density_300.png}
+
+Curiously, the number of iterations needed for steepest descent rises, then drops with increasing density, and the number of iterations for Gauss-Seidel remains constant. This is probably related to the trend in accuracy with density, as we will see next.
+
+Backwards error versus size for density $0.01$ is next. We only plot the backwards error for the non-iterative methods, as the accuracy of the iterative methods is pinned to these.
+
+\includegraphics[width=0.6\textwidth]{hw5_files/acc_shape_10.png}
+
+Error grows steadily with size, as expected. For some reason, the error from the Cholesky method is consistently greater than that from GEPP, but not by much. 
+
+Backwards error versus density for size $400$:
+
+\includegraphics[width=0.6\textwidth]{hw5_files/acc_density_400.png}
+
+Surprisingly, density actually has an effect on error. I guess it's because all the zeros in the more sparse matrices don't incur rounding errors when getting multiplied or added.
+
+Finally, we remark that since the runtime for the iterative methods to achieve the same amount of error as the non-iterative methods is smaller, we can probably say that if they ran for the same amount of time, then the iterative methods would incur less error. The main disadvantage then with the iterative methods is that they do not allow for a quick solution with another value of $b$.
 \end{document}

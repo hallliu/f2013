@@ -14,7 +14,8 @@ def runtimes_shape(density, results):
     plt.scatter(sizes, chol_runtimes, marker='*')
     plt.scatter(sizes, gsdl_runtimes, marker='+')
     plt.yscale('log')
-    plt.show()
+    plt.xscale('log')
+    plt.savefig('runtime_shape_{0}.png'.format(int(density*1000)), dpi=200)
 
 def runtimes_density(shape, results):
     ds = sorted(results[shape].keys())
@@ -30,7 +31,7 @@ def runtimes_density(shape, results):
     plt.scatter(ds, chol_runtimes, marker='*')
     plt.yscale('log')
     plt.xscale('log')
-    plt.show()
+    plt.savefig('runtime_density_{0}.png'.format(shape), dpi=200)
 
 def iterations_density(shape, results):
     ds = sorted(results[shape].keys())
@@ -41,7 +42,7 @@ def iterations_density(shape, results):
     plt.scatter(ds, sdsc_iters, marker='o')
     plt.scatter(ds, gsdl_iters, marker='+')
     plt.xscale('log')
-    plt.show()
+    plt.savefig('iters_density_{0}.png'.format(shape), dpi=200)
 
 def iterations_shape(density, results):
     sizes = sorted(results.keys())
@@ -51,7 +52,7 @@ def iterations_shape(density, results):
     plt.figure()
     plt.scatter(sizes, sdsc_iters, marker='o')
     plt.scatter(sizes, gsdl_iters, marker='+')
-    plt.show()
+    plt.savefig('iters_shape_{0}.png'.format(int(density*1000)), dpi=200)
 
 def accuracy_shape(density, results):
     sizes = sorted(results.keys())
@@ -62,7 +63,7 @@ def accuracy_shape(density, results):
     plt.scatter(sizes, gepp_accuracy, marker='.')
     plt.scatter(sizes, chol_accuracy, marker='*')
     plt.ylim(0, max(max(gepp_accuracy), max(chol_accuracy)))
-    plt.show()
+    plt.savefig('acc_shape_{0}.png'.format(int(density*1000)), dpi=200)
 
 def accuracy_density(shape, results):
     ds = sorted(results[shape].keys())
@@ -74,6 +75,6 @@ def accuracy_density(shape, results):
     plt.scatter(ds, chol_accuracy, marker='*')
     plt.ylim(0, max(max(gepp_accuracy), max(chol_accuracy)))
     plt.xscale('log')
-    plt.show()
+    plt.savefig('acc_density_{0}.png'.format(shape), dpi=200)
 
 
