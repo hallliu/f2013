@@ -7,21 +7,21 @@ import sdsc
 import timeit
 
 def genpossym(n, density, fmt='csr'):
-    a = sp.rand(n, n, fmt=fmt, density=density)
+    a = sp.rand(n, n, format='lil', density=density)
     a += a.T
     for i in range(n):
-        rowsum = np.sum(np.abs(a[i, :])) - np.abs(a[i, i])
+        rowsum = np.abs(a[i, :]).sum() - np.abs(a[i, i])
         a[i, i] = np.abs(rowsum) + 1
 
-    return a
+    return a.asformat(fmt)
 
 def gendd(n, density, fmt='csr'):
-    a = sp.rand(n, n, fmt=fmt, density=density)
+    a = sp.rand(n, n, format='lil', density=density)
     for i in range(n):
-        rowsum = np.sum(np.abs(a[i, :])) - np.abs(a[i, i])
+        rowsum = np.abs(a[i, :]).sum() - np.abs(a[i, i])
         a[i, i] = np.abs(rowsum) + 1
 
-    return a
+    return a.asformat(fmt)
 
 '''
 Backsolve a sparse A(csr) against b. tri is 'L' if lower-triangular, 'U' otherwise.
@@ -68,23 +68,29 @@ def time_accr_solves(n, density):
     C = genpossym(n, density)
     b = np.random.randn(n)
 
-    acc['gepp'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gepp')) - x)
-    acc['gsdl'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gsdl')) - x)
-    acc['chol'] = np.linalg.norm(A.dot(gen_solve(C, b, 'chol')) - x)
-    acc['sdsc'] = np.linalg.norm(A.dot(gen_solve(C, b, 'sdsc')) - x)
+    import ipdb;ipdb.set_trace()
+    print('matrices generated')
+    #acc['gepp'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gepp')) - b)
+    print('gepp done')
+    acc['gsdl'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gsdl')[0]) - b)
+    print('gsdl done')
+    acc['chol'] = np.linalg.norm(A.dot(gen_solve(C, b, 'chol')) - b)
+    print('chol done')
+    acc['sdsc'] = np.linalg.norm(A.dot(gen_solve(C, b, 'sdsc')) - b)
 
+    print("accuracies done")
     '''
     Now, use the timeit module to time gen_solve for each solution method
     '''
     times = {}
     setup = '''
-            A = gendd(n, density)
-            C = genpossym(n, density)
-            b = np.random.randn(n)
-            '''
-    times['gepp'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gepp\')', setup=setup).repeat(5))
-    times['gsdl'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gsdl\')', setup=setup).repeat(5))
-    times['chol'] = min(timeit.Timer(stmt='gen_solve(C, b, \'chol\')', setup=setup).repeat(5))
-    times['sdsc'] = min(timeit.Timer(stmt='gen_solve(C, b, \'sdsc\')', setup=setup).repeat(5))
-            
+A = gendd(n, density)
+C = genpossym(n, density)
+b = np.random.randn(n)
+'''
+#    times['gepp'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gepp\')', setup=setup).repeat(5, 1))
+#    times['gsdl'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gsdl\')', setup=setup).repeat(5, 1))
+#    times['chol'] = min(timeit.Timer(stmt='gen_solve(C, b, \'chol\')', setup=setup).repeat(5, 1))
+#    times['sdsc'] = min(timeit.Timer(stmt='gen_solve(C, b, \'sdsc\')', setup=setup).repeat(5, 1))
+
     return (acc, times)

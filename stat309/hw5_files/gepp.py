@@ -13,6 +13,7 @@ def gepp(a):
 
     for i in range(a.shape[0] - 1):
 
+        print(i)
         # Find max leading entry
         maxind = np.argmax(np.abs(u[i:, i]).A)
 
@@ -23,11 +24,13 @@ def gepp(a):
         permut[i1] = permut[i2]
         permut[i2] = temp
 
+        print('swapping rows')
         # Actually swap the rows
         temp = u[i, :]
         u[i, :] = u[maxind + i, :]
         u[maxind + i, :] = temp
 
+        print('swapping rows in L')
         # Swap the rows on the L matrix too
         if i != 0:
             temp = l[i, :i]
@@ -35,6 +38,7 @@ def gepp(a):
             l[maxind + i, :i] = temp
 
         # Do Gaussian elimination
+        print('doing GE')
         l[i+1:, i] = u[i+1:, i] / u[i, i]
         u[i+1:, i] = 0
         for j in range(i+1, u.shape[1]):
