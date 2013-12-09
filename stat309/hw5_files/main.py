@@ -69,9 +69,14 @@ def time_accr_solves(n, density):
     b = np.random.randn(n)
 
     acc['gepp'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gepp')) - b)
-    acc['gsdl'] = np.linalg.norm(A.dot(gen_solve(A, b, 'gsdl')[0]) - b)
+
+    gsdl_data = gen_solve(A, b, 'gsdl', error_th=acc['gepp'], iter_th=100)
+    acc['gsdl'] = (np.linalg.norm(A.dot(gsdl_data[0]) - b), gsdl_data[1])
+
     acc['chol'] = np.linalg.norm(C.dot(gen_solve(C, b, 'chol')) - b)
-    acc['sdsc'] = np.linalg.norm(C.dot(gen_solve(C, b, 'sdsc')) - b)
+
+    sdsc_data = gen_solve(C, b, 'sdsc', error_th=acc['chol'], iter_th=100)
+    acc['sdsc'] = (np.linalg.norm(C.dot(sdsc_data[0]) - b), sdsc_data[1])
 
     print("accuracies done")
     '''
@@ -86,7 +91,7 @@ C = genpossym({0}, {1})
 b = np.random.randn({0})
 '''.format(n, density)
     times['gepp'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gepp\')', setup=setup).repeat(1, 1))
-    times['gsdl'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gsdl\')', setup=setup).repeat(1, 1))
+    times['gsdl'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gsdl\', error_th={0}, iter_th=100)'.format(acc['gepp']), setup=setup).repeat(1, 1))
     times['chol'] = min(timeit.Timer(stmt='gen_solve(C, b, \'chol\')', setup=setup).repeat(1, 1))
     times['sdsc'] = min(timeit.Timer(stmt='gen_solve(C, b, \'sdsc\')', setup=setup).repeat(1, 1))
 
