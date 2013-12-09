@@ -5,6 +5,7 @@ import chol
 import gsdl
 import sdsc
 import timeit
+from collections import defaultdict
 
 def genpossym(n, density, fmt='csr'):
     a = sp.rand(n, n, format='lil', density=density)
@@ -75,7 +76,7 @@ def time_accr_solves(n, density):
 
     acc['chol'] = np.linalg.norm(C.dot(gen_solve(C, b, 'chol')) - b)
 
-    sdsc_data = gen_solve(C, b, 'sdsc', error_th=acc['chol'], iter_th=100)
+    sdsc_data = gen_solve(C, b, 'sdsc', error_th=acc['chol'], iter_th=1000)
     acc['sdsc'] = (np.linalg.norm(C.dot(sdsc_data[0]) - b), sdsc_data[1])
 
     print("accuracies done")
@@ -93,6 +94,17 @@ b = np.random.randn({0})
     times['gepp'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gepp\')', setup=setup).repeat(1, 1))
     times['gsdl'] = min(timeit.Timer(stmt='gen_solve(A, b, \'gsdl\', error_th={0}, iter_th=100)'.format(acc['gepp']), setup=setup).repeat(1, 1))
     times['chol'] = min(timeit.Timer(stmt='gen_solve(C, b, \'chol\')', setup=setup).repeat(1, 1))
-    times['sdsc'] = min(timeit.Timer(stmt='gen_solve(C, b, \'sdsc\')', setup=setup).repeat(1, 1))
+    times['sdsc'] = min(timeit.Timer(stmt='gen_solve(C, b, \'sdsc\', error_th={0}, iter_th=1000)'.format(acc['chol']), setup=setup).repeat(1, 1))
 
     return (acc, times)
+
+def collect_data():
+    sizes = [10,20,30,40,50,75,100,150,200,250,300,400,500]
+    densities = [0.001,0.002,0.005,0.01,0.02,0.05,0.1,0.2,0.5]
+    result = defaultdict(dict)
+    for s in sizes:
+        for d in densities:
+            print(s, d)
+            result[s][d] = time_accr_solves(s, d)
+
+    return result
