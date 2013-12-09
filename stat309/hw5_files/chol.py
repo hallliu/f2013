@@ -13,11 +13,4 @@ def chol(a):
 
     return f
 
-def genpossym(n):
-    a = np.random.randn(n, n)
-    a += a.T
-    for i in range(n):
-        rowsum = np.sum(np.abs(a[i, :])) - np.abs(a[i, i])
-        a[i, i] = np.abs(rowsum) + 1
 
-    return a
