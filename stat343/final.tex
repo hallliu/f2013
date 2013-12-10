@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage[namelimits,sumlimits]{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{mathrsfs}
+\usepackage[cm]{fullpage}
+\newcommand{\tab}{\hspace*{5em}}
+\newcommand{\conj}{\overline}
+\newcommand{\dd}{\partial}
+\newcommand{\ep}{\epsilon}
+\newcommand{\openm}{\begin{pmatrix}}
+\newcommand{\closem}{\end{pmatrix}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\im}{im}
+\newcommand{\nc}{\newcommand}
+\newcommand{\rn}{\mathbb{R}}
+\nc{\h}[1]{\widehat{#1}}
+\nc{\ssn}[1]{\subsubsection*{#1}}
+\nc{\inner}[2]{\langle #1,#2\rangle}
+\begin{document}
+Name: Hall Liu
+
+Date: \today 
+\vspace{1.5cm}
+\subsection*{1}
+\ssn{a}
+Taking a plot of residuals versus index, we have the following:
+
+\includegraphics[width=0.6\textwidth]{final_files/1a_resids.png}
+
+There doesn't seem to be any nonconstant variance, though there might be a few runs here and there and a point pretty far off from the rest near the middle. In addition, nonlinearity might also be a possiblility, as there's a noticable bend in the residuals.
+
+Since we're dealing with temporal data, it's a good idea to check for correlated errors by plotting successive residuals against each other. We obtain the following plot:
+
+\includegraphics[width=0.6\textwidth]{final_files/1a_succ.png}
+
+There seems to be a slight linear trend. To check this numerically, we compute the Durbin-Watson statistic and get a value of $1.2472$ with a $p$-value of $4.687\times10^{-5}$, indicating that there's probably autocorrelation.
+\ssn{b}
+Computing a generalized least squares model, we have the estimate of $\rho$ as $0.4003$ with confidence interval $(0.1987, 0.5694)$.
+\ssn{c}
+If we use the estimate for $\rho$ from the \verb|gls| fit, we can obtain a covariance matrix $\Sigma=SS^T$ and transform the residuals by taking $S^{-1}e$, which provides us with an RSS and therefore an estimate of $\sigma^2$. Then, we can fit a smaller model with gls, fixing the correlation at the estimated $\rho$, then transform the residuals from that accordingly and perform the $F$-test as usual.
+
+This is the R code for testing the quadratic model against the linear model. The others are all similar to this, but with different numbers. The \verb|findRSS| function is attached in the appendix.
+
+\begin{verbatim}
+years = 1:100
+model2 = gls(Nile ~ years + I(years^2), method="ML", correlation=corAR1(form=~years))
+rho = coef(model2$modelStruct$corStruct, unconstrained=FALSE)
+syy = findRSS(rho, gls(Nile ~ years, method="ML", correlation=corAR1(value=rho, form=~years, fixed=TRUE)))
+rss = findRSS(rho, model2)
+ssreg = syy-rss
+msreg = ssreg / (model2$dims$p - 1)
+f = msreg / (rss / (100-model2$dims$p))
+p = pf(f, 1, 97)
+\end{verbatim}
+
+Testing the successive models against each other, we have that the $F$ value for linear against intercept is $41.034$, for quadratic against linear is $11.986$, and cubic against quadratic is $0.0232$. Since addition of the cubic terms gives no additional significant improvement to the model, we conclude that the quadratic model is the best choice.
+\end{document}
