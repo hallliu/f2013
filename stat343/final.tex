@@ -59,4 +59,137 @@ p = pf(f, 1, 97)
 \end{verbatim}
 
 Testing the successive models against each other, we have that the $F$ value for linear against intercept is $41.034$, for quadratic against linear is $11.986$, and cubic against quadratic is $0.0232$. Since addition of the cubic terms gives no additional significant improvement to the model, we conclude that the quadratic model is the best choice.
+\ssn{d}
+Plotting the predicted points against the fitted ones, and displaying below, it seems that the level of the Nile will be growing between 1970 and 1990 (note that I indexed the years starting from year 1871 as 1, so 1970-1990 corresponds to 100-120). 
+
+\includegraphics[width=0.6\textwidth]{final_files/1d_quadratic.png}
+
+If we had only considered the linear model, it has a slope of $-2.753$, so we would have predicted the level to be decreasing during that time.
+\ssn{e}
+Since we can re-express this gls model as an ols model by considering $S^{-1}y=S^{-1}X\beta-S^{-1}e$, where $S^{-1}e\sim N(0,\sigma^2I)$, we can compute the variance of $\beta$ using formulas we know, or $\h{\sigma^2}(X^TS^TS^{-1}X)^{-1}$, so $\var(x_0^T\h{\beta})=\h{\sigma}^2x_0^T(X^TS^TS^{-1}X)^{-1}x_0$, where $x_0=\openm 1&110&110^2\closem^T$. 
+
+The values we actually want are $\var(x_0^T\h{\beta}+e_{110})$ and $E(x_0^T\h{\beta}+e_{110})$, where $e_{110}$ is correlated with all the other errors. However, since the correlation of $e_{110}$ with anything we actually know is bounded above by $\rho^{10}=2\times10^{-6}$, we probably don't need to worry about the correlation and instead we can just assume that it has mean $0$ and variance $\h{\sigma}^2$. 
+
+Thus, the predicted value for the flow of the Nile can be computed with \verb|predict(model2, data.frame(years=c(110)))|, which returns $755.6486$ flow units. The standard error of prediction is $164.7584$, computed with
+\begin{verbatim}
+model = gls(Nile ~ years + I(years^2), method="ML", correlation=corAR1(form=~years))
+rho = coef(model$modelStruct$corStruct, unconstrained=FALSE)
+x0 = c(1, 110, 110^2)
+years = 1:100
+x = matrix(0, 100,3)
+x = years^(col(x)-1)
+ss = getSigma(rho, 100)
+s = chol(ss)
+shat = sqrt(findRSS(rho, model) / 97)
+sepred = shat * sqrt(1+t(x0)%*%solve(t(x)%*%t(s)%*%solve(s)%*%x)%*%x0)
+\end{verbatim}
+and this gives us a $95\%$ confidence interval of $755.65\pm327.99$.
+%By a formula found on Wikipedia, the distribution of errors for years $101-110$ given the errors for years $1-100$ (which we estimate by residuals $r$) has mean $-\Sigma_{21}\Sigma_{11}^{-1}r$ and variance $\Sigma_{22}-\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}$, where $\Sigma_{ij}$ are the blocks of the covariance matrix constructed over $110$ years under the AR(1) assumption. Then, if we assume independence of the $e_i$ and $\h{\beta}$, we can calculate these two values.
+%The following R code was used to compute $E(e_{110})$ and $\var(e_{110})$:
+%\begin{verbatim}
+%years = 1:100
+%ext_years = 1:110
+%model = gls(Nile ~ years + I(years^2), method="ML", correlation=corAR1(form=~years))
+%rho = coef(model$modelStruct$corStruct, unconstrained=FALSE)
+%sig = getSigma(rho, 110)
+%s11 = sig[1:100,1:100]
+%s12 = sig[1:100,101:110]
+%s21 = sig[101:110,1:100]
+%s22 = sig[101:110,101:110]
+%mean = -s21%*%solve(s11)%*%model$residuals
+%var = s22 - s21%*%solve(s11)%*%s12
+%\end{verbatim}
+%Looking at the numerical evidence from this, it seems that the distribution of $e_{110}$ isn't really dependent on all the residuals from before, since 
+\subsection*{2}
+\ssn{a}
+Looking at the summary of the \verb|pima| data, we see zeros in the glucose, diastolic, triceps, insulin, and bmi variables, which should all be positive for a person who's still alive. Therefore, we exclude the data points where these are zero. Removing $376$ of these and setting the \verb|test| variable to categorical, we have the following summary:
+\begin{verbatim}
+    pregnant         glucose        diastolic         triceps         insulin            bmi       
+ Min.   : 0.000   Min.   : 56.0   Min.   : 24.00   Min.   : 7.00   Min.   : 14.00   Min.   :18.20  
+ 1st Qu.: 1.000   1st Qu.: 99.0   1st Qu.: 62.00   1st Qu.:21.00   1st Qu.: 76.75   1st Qu.:28.40  
+ Median : 2.000   Median :119.0   Median : 70.00   Median :29.00   Median :125.50   Median :33.20  
+ Mean   : 3.301   Mean   :122.6   Mean   : 70.66   Mean   :29.15   Mean   :156.06   Mean   :33.09  
+ 3rd Qu.: 5.000   3rd Qu.:143.0   3rd Qu.: 78.00   3rd Qu.:37.00   3rd Qu.:190.00   3rd Qu.:37.10  
+ Max.   :17.000   Max.   :198.0   Max.   :110.00   Max.   :63.00   Max.   :846.00   Max.   :67.10  
+ NA's   :376      NA's   :376     NA's   :376      NA's   :376     NA's   :376      NA's   :376    
+    diabetes           age          test    
+ Min.   :0.0850   Min.   :21.00   0   :262  
+ 1st Qu.:0.2698   1st Qu.:23.00   1   :130  
+ Median :0.4495   Median :27.00   NA's:376  
+ Mean   :0.5230   Mean   :30.86             
+ 3rd Qu.:0.6870   3rd Qu.:36.00             
+ Max.   :2.4200   Max.   :81.00             
+ NA's   :376      NA's   :376
+\end{verbatim}
+\ssn{b}
+Running the linear model on glucose against all other variables as predictors, we have
+\begin{verbatim}
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 75.57419    8.08972   9.342  < 2e-16 ***
+pregnant    -0.21685    0.48754  -0.445   0.6567    
+diastolic    0.18262    0.10014   1.824   0.0690 .  
+triceps      0.02770    0.14665   0.189   0.8503    
+insulin      0.11740    0.01027  11.433  < 2e-16 ***
+bmi         -0.08960    0.22836  -0.392   0.6950    
+diabetes     0.19555    3.40567   0.057   0.9542    
+age          0.36997    0.16183   2.286   0.0228 *  
+test1       21.65020    2.75623   7.855 4.07e-14 ***
+\end{verbatim}
+The presence of so many insignificant predictors indicates that we should do variable selection and remove some predictors. Indeed, if we look at the correlations between the predictors, we see a high correlation between \verb|age| and \verb|pregnant|, and between \verb|bmi| and \verb|triceps|. Running the AIC criterion on the full model, we remove everything but \verb|diastolic, insulin, age|, and \verb|test|, resulting in a $R^2$ of $0.4839$ versus $0.4843$ for the full model, indicating that the removal didn't harm our model much.
+
+As for transformations, if we look at a plot of glucose versus insulin, it's distinctly nonlinear. If we apply a log transformation to insulin (which makes sense because it's a concentration), we see something much better. Thus, we apply this transformation. Below are two plots; the one on the right is post-transformation. If we do AIC again after transforming, we get the same results, so we have a good set of predictors.
+
+\noindent\includegraphics[width=0.5\textwidth]{final_files/2b_notransform.png}
+\includegraphics[width=0.5\textwidth]{final_files/2b_transformed.png}
+\ssn{c}
+First, run Box-Cox on the response, since it's also a concentration and might need transforming. The result has zero pretty much in the center for the confidence interval for $\lambda$, so it's reasonable to try a log transformation. If we do so, running AIC again gives the same result, the $R^2$ increases slightly, but we also end up increasing the significance of some of the predictors ($p$-value for diastolic goes from $0.1$ to $0.06$). Thus, we stick with this transformation. The summary of the final model follows.
+
+\begin{verbatim}
+Call:
+lm(formula = I(log(glucose)) ~ diastolic + age + test + I(log(insulin)), 
+    data = pima_fixed)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.50739 -0.10834 -0.00583  0.10757  0.71376 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(>|t|)    
+(Intercept)     3.6859438  0.0795078  46.360  < 2e-16 ***
+diastolic       0.0013991  0.0007515   1.862   0.0634 .  
+age             0.0022999  0.0009731   2.363   0.0186 *  
+test1           0.1478315  0.0211551   6.988 1.23e-11 ***
+I(log(insulin)) 0.1814284  0.0138257  13.123  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.1762 on 387 degrees of freedom
+Multiple R-squared:  0.5074,    Adjusted R-squared:  0.5023 
+F-statistic: 99.64 on 4 and 387 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+Looking at the following plot of the residuals of the reduced and transformed model, there are no apparent problems. There is no reason to expect serial correlation since we're not dealing with time or spatial data.
+
+\includegraphics[width=0.6\textwidth]{final_files/2c_resids.png}
+
+Similarly, if we look at a Q-Q plot of the residuals, normality assumptions seem to hold too.
+
+\includegraphics[width=0.6\textwidth]{final_files/2c_resids_norm.png}
+
+\ssn{d}
+If we examine the jackknife residuals, with 392 valid observations, the Bonferroni threshold is $3.86$, and the point over that is case $446$ (index 226) at $4.242$. Similarly, if we look at a half-normal plot of the Cook's distances (below), case 446 (index 226) is hugely influential, with case 673 (index 348) coming in second far behind. Thus, the two points we might want to look at are at index 226 and 348
+
+\includegraphics[width=0.6\textwidth]{final_files/2d_cooks.png}
+
+The following is the data for the two points we identified:
+\begin{verbatim}
+    pregnant glucose diastolic triceps insulin  bmi diabetes age test
+673       10      68       106      23      49 35.5    0.285  47    0
+446        0     180        78      63      14 59.4    2.420  25    1
+\end{verbatim}
+Case 446 is the biggest offender. Apart from having an absurdly high BMI (which doesn't really matter because it's not in our model), her diabetes score is the maximum of all of them and her insulin is the lowest. It makes sense for this person to be an outlier as well as influential. Case 673 also her her insulin on the low side and her glucose on the high side. Since the model specifies a positive coefficient for insulin, it makes sense that 673 is influential.
+\ssn{e}
+If we let $a$ be the coefficient of insulin, then $\log(\text{glucose})$ increases as $a\log(\text{insulin})$, or that glucose behaves as a power of insulin. To say that high levels of insulin cause high levels of glucose would be absurd -- insulin is released in response to glucose. In that case, we probably picked the wrong variable to use as the response here, but that's what the problem told us to do...
+\subsection*{3}
+
 \end{document}

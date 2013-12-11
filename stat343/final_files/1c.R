@@ -14,7 +14,7 @@ getSigma = function(rho, n) {
 years = 1:100
 model2 = gls(Nile ~ years, method="ML", correlation=corAR1(form=~years))
 rho = coef(model2$modelStruct$corStruct, unconstrained=FALSE)
-syy = findRSS(rho, gls(Nile ~ 1, method="ML", correlation=corAR1(value=rho, form=~years, fixed=TRUE)))
+syy = findRSS(rho, gls(Nile ~ years, method="ML", correlation=corAR1(value=rho, form=~years, fixed=TRUE)))
 rss = findRSS(rho, model2)
 ssreg = syy-rss
 msreg = ssreg / (model2$dims$p - 1)
