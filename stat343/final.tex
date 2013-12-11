@@ -25,7 +25,6 @@
 Name: Hall Liu
 
 Date: \today 
-\vspace{1.5cm}
 \subsection*{1}
 \ssn{a}
 Taking a plot of residuals versus index, we have the following:
@@ -170,11 +169,11 @@ F-statistic: 99.64 on 4 and 387 DF,  p-value: < 2.2e-16
 
 Looking at the following plot of the residuals of the reduced and transformed model, there are no apparent problems. There is no reason to expect serial correlation since we're not dealing with time or spatial data.
 
-\includegraphics[width=0.6\textwidth]{final_files/2c_resids.png}
+\includegraphics[width=0.5\textwidth]{final_files/2c_resids.png}
 
 Similarly, if we look at a Q-Q plot of the residuals, normality assumptions seem to hold too.
 
-\includegraphics[width=0.6\textwidth]{final_files/2c_resids_norm.png}
+\includegraphics[width=0.5\textwidth]{final_files/2c_resids_norm.png}
 
 \ssn{d}
 If we examine the jackknife residuals, with 392 valid observations, the Bonferroni threshold is $3.86$, and the point over that is case $446$ (index 226) at $4.242$. Similarly, if we look at a half-normal plot of the Cook's distances (below), case 446 (index 226) is hugely influential, with case 673 (index 348) coming in second far behind. Thus, the two points we might want to look at are at index 226 and 348
@@ -191,5 +190,94 @@ Case 446 is the biggest offender. Apart from having an absurdly high BMI (which 
 \ssn{e}
 If we let $a$ be the coefficient of insulin, then $\log(\text{glucose})$ increases as $a\log(\text{insulin})$, or that glucose behaves as a power of insulin. To say that high levels of insulin cause high levels of glucose would be absurd -- insulin is released in response to glucose. In that case, we probably picked the wrong variable to use as the response here, but that's what the problem told us to do...
 \subsection*{3}
+\ssn{a}
+The scenario looks like we're trying to use spectroscopy to measure gasoline octane level rather than using some more destructive method, so predictive power is probably what we're going for, rather than interpretability. In addition, we have $n<p$, so we can't use any of the variable selection procedures because they all require fitting a full model with OLS first. Thus, it seems that PLS is the best suited, since it tends to produce models with less predictors.
+\ssn{b}
+Looking at the scree plot below, it doesn't look like there's much beyond $6$ components that we need to worry about, so we just take $6$ components.
 
+\includegraphics[width=0.6\textwidth]{final_files/3b_scree.png}
+
+Fitting the model on the training set, we have that the in-model error is $0.2272$ and that the test error is $0.2728$. The model output is as follows:
+
+\begin{verbatim}
+Call:
+lm(formula = training_resp ~ pcaM$x[, 1:nComp])
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.56363 -0.14515 -0.00781  0.13853  0.53556 
+
+Coefficients:
+                      Estimate Std. Error  t value Pr(>|t|)    
+(Intercept)           87.19388    0.03506 2486.794  < 2e-16 ***
+pcaM$x[, 1:nComp]PC1  -2.80620    0.16474  -17.034  < 2e-16 ***
+pcaM$x[, 1:nComp]PC2   5.01672    0.52631    9.532  4.6e-12 ***
+pcaM$x[, 1:nComp]PC3 -23.38878    0.61875  -37.800  < 2e-16 ***
+pcaM$x[, 1:nComp]PC4  -3.01915    0.83677   -3.608 0.000814 ***
+pcaM$x[, 1:nComp]PC5  -0.63436    1.32250   -0.480 0.633953    
+pcaM$x[, 1:nComp]PC6   1.89802    1.90808    0.995 0.325565    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.2454 on 42 degrees of freedom
+Multiple R-squared:  0.9775,    Adjusted R-squared:  0.9743 
+F-statistic:   304 on 6 and 42 DF,  p-value: < 2.2e-16
+\end{verbatim}
+If we use cross-validation with \verb|pcr|, we end up with $7$ components with $K=10$, which gives an in-model error of $0.1853$ and a test error of $0.2426$. The error estimated by cross-validation was $0.2516$. The model is as follows:
+\begin{verbatim}
+Call:
+lm(formula = training_resp ~ pcaM$x[, 1:nComp])
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.42021 -0.13282 -0.00223  0.13591  0.38593 
+
+Coefficients:
+                      Estimate Std. Error  t value Pr(>|t|)    
+(Intercept)           87.19388    0.02892 3014.814  < 2e-16 ***
+pcaM$x[, 1:nComp]PC1  -2.80620    0.13589  -20.650  < 2e-16 ***
+pcaM$x[, 1:nComp]PC2   5.01672    0.43413   11.556 2.54e-14 ***
+pcaM$x[, 1:nComp]PC3 -23.38878    0.51038  -45.826  < 2e-16 ***
+pcaM$x[, 1:nComp]PC4  -3.01915    0.69021   -4.374 8.48e-05 ***
+pcaM$x[, 1:nComp]PC5  -0.63436    1.09087   -0.582    0.564    
+pcaM$x[, 1:nComp]PC6   1.89802    1.57390    1.206    0.235    
+pcaM$x[, 1:nComp]PC7  -8.98733    1.97550   -4.549 4.91e-05 ***
+pcaM$x[, 1:nComp]PC8  -2.16228    2.12825   -1.016    0.316    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.2025 on 40 degrees of freedom
+Multiple R-squared:  0.9854,    Adjusted R-squared:  0.9825 
+F-statistic: 337.8 on 8 and 40 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+We chose $K$ to be $10$ because it's fairly standard and computational resources weren't really a concern here.
+\ssn{c}
+From the below plot of cross-validation error, it seems that the lowest error comes at $6$ components, so we use that to predict.
+
+\includegraphics[width=0.6\textwidth]{final_files/3c_pls_cv.png}
+
+We get a training error of $0.1543$ and a test error of $0.2718$, and cross-validation estimated an error of $0.2366$. Due to the large number of nonzero coefficients, it's infeasable to put the whole model up here, so here's a plot of the coefficients versus predictor
+
+\includegraphics[width=0.6\textwidth]{final_files/3c_pls_coefs.png}
+
+\ssn{d}
+For PCR, changing the cross-validation method to leave-one-out gives the same number of components to use. For PLS, changing to leave-one-out still gives $6$ components. The leave-one-out estimate of the error for PCR is still $0.2363$, and the leave-one-out estimate of error for PLS is $0.2398$. In both cases, the leave-one-out estimate was better, which is somewhat unexpected. 
+\ssn{e}
+First, fit the LASSO model to the full data to determine the number of breakpoints we should look for.
+\begin{verbatim}
+las = lars(gasoline$NIR[1:49,], gasoline$octane[1:49])
+nBp = dim(las$beta)[1]
+\end{verbatim}
+Then, compute the cross-validated error and find which breakpoint minimizes it
+\begin{verbatim}
+out = cv.lars(gasoline$NIR[1:49,], gasoline$octane[1:49], K=10, index=seq(from=0, to=1, length=nBp))
+minBp = which.min(out$cv)
+\end{verbatim}
+Finally, run the prediction on the test set at the appropriate breakpoint and compute the rmse
+\begin{verbatim}
+lasso_pred = predict(las, gasoline$NIR[50:59,])
+rmse(lasso_pred$fit[,minBp], gasoline$octane[50:59])
+\end{verbatim}
+This gives a result of $0.2740$. It seems that PCR with number of components determined by cross-validation was the best approach for this data set.
 \end{document}
